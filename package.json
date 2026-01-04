@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.84.1",
     "bootstrap": "^5.3.3",
     "random-js": "^2.1.0",
     "react": "^19.0.0",

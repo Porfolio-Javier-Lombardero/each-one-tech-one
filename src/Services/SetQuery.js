@@ -1,7 +1,7 @@
 export const SetQuery = (topic) => {
   switch (topic) {
     case "App's & Software":
-      return "Software OR software OR develop";
+      return "Software OR microsoft OR develop";
     case "Smartphones":
       return "iphone OR samsung galaxy OR xiaomi OR huawei OR smartphone";
     case "Gadgets":

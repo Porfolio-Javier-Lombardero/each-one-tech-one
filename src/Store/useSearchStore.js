@@ -2,8 +2,9 @@ import { create } from "zustand";
 import { newsFetch } from "../Services/setNewsFetch";
 
 import { checkLocalStorage } from "../Services/setLocalStorage";
+import { devtools } from "zustand/middleware";
 
-const useSearchStore = create((set) => ({
+const useSearchStore = (create((set) => ({
   news: null,
   events: null,
   rapshody: null,
@@ -86,6 +87,6 @@ const useSearchStore = create((set) => ({
       singleNew: noticia,
     }));
   },
-}));
+})));
 
 export default useSearchStore;

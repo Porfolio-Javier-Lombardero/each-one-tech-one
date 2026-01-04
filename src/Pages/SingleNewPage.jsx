@@ -7,13 +7,10 @@ export const SingleNewPage = () => {
   
   const {singleNew} = useSearchStore()
 
-   const [single, setsingle] = useState(singleNew)
-
-console.log(single)
-  
+  const [single, _] = useState(singleNew)
 
   // const [single, setsingle] = useState(TopHeadlines.articles[0])
-   const splittedCont = single ?  single.cont.split(" ") : "";
+  const splittedCont = single ?  single.cont.split(" ") : "";
 
   return (
     <div>
@@ -66,7 +63,11 @@ console.log(single)
           </div>
           <div className="col-12 d-flex justify-content-center py-4 px-3">
             <h4 className="alt-font text-primary fw-bold " >
-             {'" ' + singleNew? singleNew.desc : "" + ' "'} 
+              {
+                singleNew && singleNew.desc ? (
+                  single.desc
+                ) : ""
+              } 
               </h4>
           </div>
           <div className="col-12 col-lg-6 p-2">

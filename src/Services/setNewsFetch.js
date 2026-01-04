@@ -14,10 +14,7 @@ export const newsFetch = async (topic) => {
   }
 
   const query = SetQuery(topic);
-
-   console.log(query)
-
-   const hoy = today()
+  const hoy = today()
 
   const url = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&expand=content&max=50&in=title,description&q=${query}&from=${hoy}&apikey=${API_KEY}`;
 

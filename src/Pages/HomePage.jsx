@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
 import { LatestNewsCard } from "../Components/LatestNewsCard";
 import { OtherNewsCard } from "../Components/OtherNewsCard";
 import { TopicCard } from "../Components/TopicCard";
 import { TrendyNowCard } from "../Components/TrendyNowCard";
 import useSearchStore from "../Store/useSearchStore";
+import { useFetch } from "../Hooks/useFetch";
+import { useEffect } from "react";
 
 
 // import TopHeadlines from "../Mocks/TopHeadlines.json";
@@ -11,15 +12,25 @@ import useSearchStore from "../Store/useSearchStore";
 export const HomePage = () => {
   // const [tops, settops] = useState(TopHeadlines.articles);
 
-  const { SearchHeadlines, SearchEvents,  SearchRapsodhy,events,rapshody, news } = useSearchStore();
+  const { fetchData } = useFetch(null);
+
+  const { SearchEvents,  SearchRapsodhy, events,rapshody, SearchHeadlines,news } = useSearchStore();
 
   useEffect(() => {
-     SearchHeadlines(null);
+    //SearchHeadlines()
     SearchEvents()
     SearchRapsodhy()
   }, []);
 
-  console.log(news)
+  
+  if (fetchData.isLoading){
+    return <div>Cargando...</div>
+  }
+
+  if (fetchData.isError){
+    return <div>Error al cargar las noticias...</div>
+  }
+  
 
   return (
     <>
@@ -48,7 +59,7 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row align-items-end justify-content-between px-3 gx-2 gy-5">
-          {news &&
+          {/* {news &&
             news.map((noticia, index) => {
               return index === 0 ? (
                 <div className="col-12 col-lg-6" key={index}>
@@ -61,7 +72,22 @@ export const HomePage = () => {
               ) : (
                 ""
               );
-            })}
+            })} */}
+            {
+              fetchData.data && fetchData.data.map((noticia, index) => {
+                return index === 0 ? (
+                  <div className="col-12 col-lg-6" key={index}>
+                    <LatestNewsCard key={noticia.id} noticia={noticia} />
+                  </div>
+                ) : index < 10 ? (
+                  <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
+                    <OtherNewsCard key={noticia.id} noticia={noticia} />
+                  </div>
+                ) : (
+                  ""
+                );
+              })
+            }
 
           {/* <button className="col-2 btn btn-primary">see all</button> */}
         </div>
@@ -78,8 +104,8 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row  align-items-end px-3 gx-3 gy-3 gy-md px-4 pb-5">
-          {news &&
-            news
+          {fetchData.data &&
+            fetchData.data
               .map((noticia) => {
                 return (
                    
