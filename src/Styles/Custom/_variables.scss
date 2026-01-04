@@ -101,13 +101,18 @@ $btn-font-family: "Neue-Regular";
 $btn-hover-color: $secondary ;
 $btn-outline-primary-hover-color: $white;
 
-$btn-hover-border-color: $primary;
+$btn-hover-border-color: $white;
 $btn-hover-shadow: none;
 $btn-padding-y-sm: 0.7px;
 $btn-padding-x-sm: 7px;
 $btn-font-size-sm: 0.8rem;
 $btn-border-radius-sm: 20px;
-$btn-border-width-sm: 1px;
+$btn-border-width-sm: 0px;
+$btn-active-box-shadow:none ;
+$btn-focus-box-shadow:none;
+$btn-box-shadow: none;
+$btn-active-border-shade-amount:  0%;
+$btn-active-border-tint-amount:   0%;
 
 
 $gradient: linear-gradient(180deg, rgba(transparent, 0) 66%, rgba($secondary, .99));

@@ -5,7 +5,7 @@ import fondoContact  from "../assets/img/fondoContact.png"
 export const ContactPage = () => {
   return (
     <>
-    <section className='container-fluid mb-0 pb-3 ' id='hero'>
+    <section className='container-fluid mb-0 pb-3 ' id='herOther'>
       <div className="row justify-content-center mb-0">
       <div className="col-12 p-2 mt-3 ps-3 ms-5">
         <h1 className='h1 display-1 fw-bolder text-primary'>Contact Us</h1>

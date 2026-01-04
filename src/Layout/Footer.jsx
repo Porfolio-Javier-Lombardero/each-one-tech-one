@@ -5,7 +5,7 @@ export const Footer = () => {
     
 <footer className="bg-primary text-white text-center py-3">
     <div className="container">
-        <p className="mb-0">© 2023 Each-one-Tech-one. All rights reserved.</p>
+        <p className="mb-0">© 2025 Each-one-Tech-one. All rights reserved.</p>
         <p className="mb-0">
             Follow us on 
             <a href="https://facebook.com" className="text-white mx-2">Facebook</a> | 

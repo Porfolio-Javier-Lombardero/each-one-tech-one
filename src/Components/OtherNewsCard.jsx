@@ -12,11 +12,11 @@ export const OtherNewsCard = ({noticia}) => {
         <div className=" card p-2  bg-secondary border border-secondary ">
           <div className="col-12 border border-info mb-3"></div>
           <div className="col-6 d-flex ms-1 ">
-            <button className="btn btn-sm btn-primary">
+            <button className="btn btn-sm btn-primary me-1">
               Interviwes
             </button>
-            <button className="btn btn-sm btn-outline-primary ms-1">
-              artist
+            <button className="btn btn-sm btn-outline-primary lh-sm">
+              New Release
             </button>
           </div>
           <div className="card-body pt-1 ">

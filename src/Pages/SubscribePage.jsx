@@ -5,8 +5,8 @@ export const SubscribePage = () => {
 
 
   return (
-    
-      <section className="container-fluid px-0 px-sm-4" id="hero">
+    <>
+      <section className="container-fluid px-0 px-sm-4" id="herOther">
         <div className="row p-1 p-sm-4 gy-4">
           <div className="col-12 p-2 p-sm-3 d-flex justify-content-center">
             <h1 className="h1 display-2 d-flex flex-column align-items-start p-2">
@@ -29,6 +29,9 @@ export const SubscribePage = () => {
           <div className="col-12 col-md-4"></div>
           <div className="col-12 col-md-8 p-4 text-primary">
             <h4 className="mb-3">Fill this Form</h4>
+
+         </div>
+     
             <form 
               action="POST"
               className="d-flex flex-column justify-content-around align-items-start"
@@ -80,8 +83,9 @@ export const SubscribePage = () => {
               </button>
             </form>
           </div>
-        </div>
+        
       </section>
+      </>
    
   );
 };

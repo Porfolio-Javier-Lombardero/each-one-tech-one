@@ -22,6 +22,7 @@ export const HomePage = () => {
     SearchRapsodhy()
   }, []);
 
+<<<<<<< HEAD
   
   if (fetchData.isLoading){
     return <div>Cargando...</div>
@@ -31,9 +32,12 @@ export const HomePage = () => {
     return <div>Error al cargar las noticias...</div>
   }
   
+=======
+
+>>>>>>> 831dc0e2b81a6dcc1839cc909e3566fc8c709110
 
   return (
-    <>
+    <div className="home">
       <section
         className="container-fluid d-flex justify-content-center align-items-center "
         id="hero"
@@ -169,6 +173,6 @@ export const HomePage = () => {
        
         </div>
       </section>
-    </>
+    </div>
   );
 };

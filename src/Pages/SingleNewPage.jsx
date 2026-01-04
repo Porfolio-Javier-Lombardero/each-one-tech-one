@@ -7,7 +7,14 @@ export const SingleNewPage = () => {
   
   const {singleNew} = useSearchStore()
 
+<<<<<<< HEAD
   const [single, _] = useState(singleNew)
+=======
+   const [single, setsingle] = useState(singleNew)
+
+
+  
+>>>>>>> 831dc0e2b81a6dcc1839cc909e3566fc8c709110
 
   // const [single, setsingle] = useState(TopHeadlines.articles[0])
   const splittedCont = single ?  single.cont.split(" ") : "";
@@ -20,7 +27,7 @@ export const SingleNewPage = () => {
           <div className="col-12 col-md-8 d-flex justify-content-center justify-content-md-start  ps-0 ps-md-2 pb-0  mb-0 ">
             
           </div>
-          <div className="col-6 col-md-4 d-flex justify-content-md-evenly align-items-center pb-4">
+          <div className="col-4  d-flex justify-content-around justify-content-md-evenly align-items-center pb-4" style={{cursor:"pointer"}}>
             <Facebook />
             <Share />
             <Tweeter />

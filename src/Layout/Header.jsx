@@ -32,7 +32,7 @@ export const Header = () => {
             className="collapse navbar-collapse "
             id="navbarSupportedContent"
           >
-            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondary border border-primary border-2 rounded-pill p-1 ">
+            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondary  border-2 rounded-pill p-1 ">
               <li className="nav-item">
                 <div className="nav-link active" aria-current="page" href="#">
                   <Link to={"/"}>Home</Link>
@@ -85,7 +85,7 @@ export const Header = () => {
 
           </div>
           <form
-              className="d-flex  bg-secondary rounded-pill mt-lg-2 py-2 border border-primary border-2"
+              className="d-flex  bg-secondary rounded-pill mt-lg-2 py-2 border border-secondary border-2"
               role="search"
               onSubmit={handleSubmit}
             >

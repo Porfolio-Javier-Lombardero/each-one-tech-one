@@ -16,10 +16,10 @@ const {SingleNew} = useSearchStore()
         <div className="card card-first bg-primary text-secondary d-flex  p-0 p-md-2" style={{maxHeight:"420px"}}>
          
           <div className="col-6 mt-3 mb-0 ms-3 d-flex ">
-            <button className="btn btn-outline-secondary d-none d-sm-inline text-secondary ms-2" >ygyg</button>
-            <button className="btn btn-outline-secondary d-none d-sm-inline text-secondary ms-2" >ygyg</button>
-            <button className="btn btn-outline-secondary btn-sm d-inline d-sm-none text-secondary ms-2" >gyuuygyg</button>
-            <button className="btn btn-outline-secondary btn-sm d-inline d-sm-none text-secondary ms-2" >gyuuygyg</button>
+            <button className="btn btn-outline-secondary d-none d-sm-inline text-secondary ms-2" >Latest</button>
+            <button className="btn btn-outline-secondary d-none d-sm-inline text-secondary ms-2" >Tech</button>
+            <button className="btn btn-outline-secondary btn-sm d-inline d-sm-none text-secondary ms-2" >Latest</button>
+            <button className="btn btn-outline-secondary btn-sm d-inline d-sm-none text-secondary ms-2" >Tech</button>
           
           </div>
           <div className="card-body ">
