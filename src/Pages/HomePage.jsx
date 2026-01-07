@@ -6,7 +6,6 @@ import useSearchStore from "../Store/useSearchStore";
 import { useFetch } from "../Hooks/useFetch";
 import { useEffect } from "react";
 
-
 // import TopHeadlines from "../Mocks/TopHeadlines.json";
 
 export const HomePage = () => {
@@ -14,27 +13,28 @@ export const HomePage = () => {
 
   const { fetchData } = useFetch(null);
 
-  const { SearchEvents,  SearchRapsodhy, events,rapshody, SearchHeadlines,news } = useSearchStore();
+  const {
+    SearchEvents,
+    SearchRapsodhy,
+    events,
+    rapshody,
+    SearchHeadlines,
+    // news,
+  } = useSearchStore();
 
   useEffect(() => {
     //SearchHeadlines()
-    SearchEvents()
-    SearchRapsodhy()
+    SearchEvents();
+    SearchRapsodhy();
   }, []);
 
-<<<<<<< HEAD
-  
-  if (fetchData.isLoading){
-    return <div>Cargando...</div>
+  if (fetchData.isLoading) {
+    return <div>Cargando...</div>;
   }
 
-  if (fetchData.isError){
-    return <div>Error al cargar las noticias...</div>
+  if (fetchData.isError) {
+    return <div>Error al cargar las noticias...</div>;
   }
-  
-=======
-
->>>>>>> 831dc0e2b81a6dcc1839cc909e3566fc8c709110
 
   return (
     <div className="home">
@@ -77,32 +77,31 @@ export const HomePage = () => {
                 ""
               );
             })} */}
-            {
-              fetchData.data && fetchData.data.map((noticia, index) => {
-                return index === 0 ? (
-                  <div className="col-12 col-lg-6" key={index}>
-                    <LatestNewsCard key={noticia.id} noticia={noticia} />
-                  </div>
-                ) : index < 10 ? (
-                  <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
-                    <OtherNewsCard key={noticia.id} noticia={noticia} />
-                  </div>
-                ) : (
-                  ""
-                );
-              })
-            }
+          {fetchData.data &&
+            fetchData.data.map((noticia, index) => {
+              return index === 0 ? (
+                <div className="col-12 col-lg-6" key={index}>
+                  <LatestNewsCard key={noticia.id} noticia={noticia} />
+                </div>
+              ) : index < 10 ? (
+                <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
+                  <OtherNewsCard key={noticia.id} noticia={noticia} />
+                </div>
+              ) : (
+                ""
+              );
+            })}
 
           {/* <button className="col-2 btn btn-primary">see all</button> */}
         </div>
         <div className="row p-4  g-2 px-6 align-items-end "></div>
       </section>
 
-      <section 
+      <section
         className="container-fluid p-1 p-sm-4 pb-4 bg-secondary"
         id="topics"
       >
-        <div className="row p-4 mb-3" >
+        <div className="row p-4 mb-3">
           <div className="col-12 py-2 border-top border-primary border-2">
             <h2 className="h2 display-3">TRENDY NOW</h2>
           </div>
@@ -112,15 +111,13 @@ export const HomePage = () => {
             fetchData.data
               .map((noticia) => {
                 return (
-                   
-                    <div className="col-12  col-md-6  col-lg-3" key={noticia.id}>
+                  <div className="col-12  col-md-6  col-lg-3" key={noticia.id}>
                     <TopicCard noticia={noticia} />
                   </div>
                 );
               })
               .splice(0, 4)}
         </div>
-
       </section>
 
       <section
@@ -133,15 +130,16 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row p-3 px-md-5">
-       {
-        events && events.map((noticia, i)=>{
-        return (
-       i < 8 ? <div className="col-12" key={noticia.id}>
-              <TrendyNowCard noticia={noticia}/>
-          </div> : "")  
-           
-        })
-       }
+          {events &&
+            events.map((noticia, i) => {
+              return i < 8 ? (
+                <div className="col-12" key={noticia.id}>
+                  <TrendyNowCard noticia={noticia} />
+                </div>
+              ) : (
+                ""
+              );
+            })}
         </div>
       </section>
 
@@ -158,19 +156,16 @@ export const HomePage = () => {
         <div className="row   px-3">
           <div className="col-12 px-3 px-sm-5 ">
             <div className="row  mb-2 px-2 px-sm-4 justify-content-between">
-             { rapshody && rapshody.map((noiticia)=>{
-              return(
-              <div className="col-12 col-md-5  my-4" key={noiticia.id}>
-                <TopicCard noticia={noiticia} />
-              </div> 
-              )
-             })
-
-             }
-       
+              {rapshody &&
+                rapshody.map((noiticia) => {
+                  return (
+                    <div className="col-12 col-md-5  my-4" key={noiticia.id}>
+                      <TopicCard noticia={noiticia} />
+                    </div>
+                  );
+                })}
             </div>
           </div>
-       
         </div>
       </section>
     </div>

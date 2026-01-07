@@ -7,16 +7,11 @@ export const SingleNewPage = () => {
   
   const {singleNew} = useSearchStore()
 
-<<<<<<< HEAD
-  const [single, _] = useState(singleNew)
-=======
+
+
    const [single, setsingle] = useState(singleNew)
 
-
-  
->>>>>>> 831dc0e2b81a6dcc1839cc909e3566fc8c709110
-
-  // const [single, setsingle] = useState(TopHeadlines.articles[0])
+// const [single, setsingle] = useState(TopHeadlines.articles[0])
   const splittedCont = single ?  single.cont.split(" ") : "";
 
   return (
