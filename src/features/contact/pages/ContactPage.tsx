@@ -1,6 +1,8 @@
 import React from 'react'
-import { Facebook, Share, Tweeter} from '../../../assets/Icons'
-import fondoContact  from "../assets/img/fondoContact.png"
+
+import fondoContact from '../../../assets/images/fondoContact.png'
+import { Facebook, Share, Tweeter } from '@/assets/Icons'
+
 
 export const ContactPage = () => {
   return (

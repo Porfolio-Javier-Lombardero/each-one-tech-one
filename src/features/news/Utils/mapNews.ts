@@ -1,10 +1,11 @@
-import { formatDate } from "../features/news/Utils/formatter";
-import { RandomNumb } from "../features/news/Utils/randomNumb";
+import { formatDate } from "./formatter";
+
+
 export const mapNews = (noticias) => {
   if (!noticias) return;
 
   return noticias.map((item) => ({
-    id: RandomNumb(),
+    id: crypto.randomUUID(),
     titulo: item.title,
     desc: item.description,
     cont: item.content,

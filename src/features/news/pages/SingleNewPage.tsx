@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Facebook, Share, Tweeter } from "../../../assets/Icons"
-import{Loader}  from "../Components/Loader"
-import useSearchStore from "../../../Store/useSearchStore";
+
+
+
+import { Loader } from "@/shared/components/Loader";
+import useSearchStore from "../store/useSearchStore";
+import { Facebook, Share, Tweeter } from "@/assets/Icons";
 // import  TopHeadlines from "../Mocks/TopHeadlines.json"
 export const SingleNewPage = () => {
   

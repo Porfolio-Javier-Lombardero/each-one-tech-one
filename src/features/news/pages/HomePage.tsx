@@ -1,10 +1,10 @@
 import { LatestNewsCard } from "../components/LatestNewsCard";
-import { OtherNewsCard } from "../Components/OtherNewsCard";
-import { TopicCard } from "../Components/TopicCard";
-import { TrendyNowCard } from "../Components/TrendyNowCard";
-import useSearchStore from "../../../Store/useSearchStore";
-import { useFetch } from "../Hooks/useFetch";
+import { OtherNewsCard } from "../components/OtherNewsCard";
+import { TopicCard } from "../components/TopicCard";
+import useSearchStore from "../store/useSearchStore";
+import { useFetch } from "../../../shared/Hooks/useFetch";
 import { useEffect } from "react";
+import { TrendyNowCard } from "@/features/news/components/TrendyNowCard";
 
 // import TopHeadlines from "../Mocks/TopHeadlines.json";
 

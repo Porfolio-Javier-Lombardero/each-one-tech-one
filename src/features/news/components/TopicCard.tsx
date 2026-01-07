@@ -1,7 +1,9 @@
 import React from "react";
  import { Link } from "react-router-dom";
-import jeanLuc from "../assets/img/jeanLuc.jpg";
-import useSearchStore from "../../../Store/useSearchStore";
+import useSearchStore from "../store/useSearchStore";
+
+
+
 
 export const TopicCard = ({noticia}) => {
 
@@ -15,7 +17,7 @@ export const TopicCard = ({noticia}) => {
         style={{ minHeight: "500px" }}
       >
         <img
-          src={noticia? noticia.img : jeanLuc}
+          src={noticia? noticia.img : ""}
           className="img-fluid position-absolute h-100 object-fit-cover rounded "
           alt=""
         />

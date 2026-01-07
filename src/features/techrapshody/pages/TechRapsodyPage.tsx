@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
-import useSearchStore from '../../../Store/useSearchStore'
-import { TopicCard } from '../Components/TopicCard'
+
+
+import useSearchStore from '@/features/news/store/useSearchStore'
+import { TopicCard } from '@/features/news/components/TopicCard'
 
 export const TechRapsodyPage = () => {
 

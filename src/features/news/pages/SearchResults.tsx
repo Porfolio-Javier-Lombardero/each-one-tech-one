@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
-import useSearchStore from "../../../Store/useSearchStore";
-import { useFilterStore } from "../../../Store/useFilterStore";
-import { Loader } from "../Components/Loader";
+
+
 import { LatestNewsCard } from "../components/LatestNewsCard";
-import { OtherNewsCard } from "../Components/OtherNewsCard";
+
 import { useParams } from "react-router-dom";
+import { useFilterStore } from "../store/useFilterStore";
+import useSearchStore from "../store/useSearchStore";
+import { OtherNewsCard } from "../components/OtherNewsCard";
+import { Loader } from "@/shared/components/Loader";
 
 export const SearchResults = () => {
   const { news, loading, SearchHeadlines } = useSearchStore();
@@ -60,7 +63,7 @@ export const SearchResults = () => {
       <section className="container-fluid  pt-3  px-5 d-flex flex-column justify-content-end bg-secondary position-relative">
         <div className="row p-2 py-4  gy-0  border-top border-primary border-2 align-items-end ">
           {loading ? (
-            <Loader />
+            <Loader/>
           ) : filtredNews ? (
             filtredNews.map((noticia, index) => {
               return index === 0 ? (

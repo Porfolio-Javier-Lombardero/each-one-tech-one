@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { newsFetch } from '../../Services/setNewsFetch';
+
 import { useQuery } from '@tanstack/react-query';
+import { newsFetch } from '@/features/news/hooks/setNewsFetch';
 
 export const useFetch = (topic) => {
 

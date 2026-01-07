@@ -1,7 +1,8 @@
 import { create } from "zustand";
-import { newsFetch } from "../Services/setNewsFetch";
 
-import { checkLocalStorage } from "../Services/setLocalStorage";
+
+
+import { newsFetch } from "../hooks/setNewsFetch";
 
 
 const useSearchStore = (create((set) => ({
@@ -11,9 +12,10 @@ const useSearchStore = (create((set) => ({
   loading: true,
   error: false,
 
-  SearchHeadlines: async (topic) => {
+  SearchHeadlines: async (encodedBar) => {
+    console.log("cosas")
     try {
-      const noticias = await newsFetch(topic);
+      const noticias = await newsFetch(encodedBar);
 
       set({
         news: noticias,
@@ -29,18 +31,11 @@ const useSearchStore = (create((set) => ({
   },
   SearchRapsodhy: async () => {
     const topic = "rapshody";
-    const check = checkLocalStorage(topic);
+  
 
-    if (check) {
-      set({
-        rapshody: check.results,
-        loading: false,
-        error: false,
-      });
-    }
 
     try {
-      const noticias = await newsFetch(topic);
+      const noticias = await newsFetch(encodedBar);
 
       set({
         rapshody: noticias,
@@ -57,18 +52,9 @@ const useSearchStore = (create((set) => ({
   SearchEvents: async () => {
     const topic = "fair OR event";
 
-    const check = checkLocalStorage(topic);
 
-    if (check) {
-      set({
-        events: check.results,
-        loading: false,
-        error: false,
-      });
-      return;
-    }
     try {
-      const noticias = await newsFetch(topic);
+      const noticias = await newsFetch(encodedBar);
 
       set({
         events: noticias,
