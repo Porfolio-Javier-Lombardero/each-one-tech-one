@@ -1,4 +1,4 @@
-const Topics = {
+export const Topics = {
 robotics:577123751,
 policy: 577065682,
 social:577055593,

@@ -1,4 +1,4 @@
-import { LatestNewsCard } from "../Components/LatestNewsCard";
+import { LatestNewsCard } from "../components/LatestNewsCard";
 import { OtherNewsCard } from "../Components/OtherNewsCard";
 import { TopicCard } from "../Components/TopicCard";
 import { TrendyNowCard } from "../Components/TrendyNowCard";
