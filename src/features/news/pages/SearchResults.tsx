@@ -1,25 +1,24 @@
 import React, { useEffect } from "react";
 
-
 import { LatestNewsCard } from "../components/LatestNewsCard";
 
-import { useParams } from "react-router-dom";
-import { useFilterStore } from "../store/useFilterStore";
-import useSearchStore from "../store/useSearchStore";
+// import { useParams } from "react-router-dom";
+// import { useFilterStore } from "../store/useFilterStore";
+// import useSearchStore from "../store/useSearchStore";
 import { OtherNewsCard } from "../components/OtherNewsCard";
 import { Loader } from "@/shared/components/Loader";
 
 export const SearchResults = () => {
-  const { news, loading, SearchHeadlines } = useSearchStore();
+  // const { news, loading, SearchHeadlines } = useSearchStore();
 
-  const { query } = useParams();
+  // const { query } = useParams();
 
-  const { filtredNews, resetFilter, yesterdayNews, lastWeekNews } =
-    useFilterStore();
+  // const { filtredNews, resetFilter, yesterdayNews, lastWeekNews } =
+  //   useFilterStore();
 
-  useEffect(() => {
-    SearchHeadlines(query);
-  }, []);
+  // useEffect(() => {
+  //   SearchHeadlines(query);
+  // }, []);
 
   return (
     <>
@@ -31,19 +30,19 @@ export const SearchResults = () => {
           <div className="col-12 d-flex ps-2 pt-3 pb-0  mb-0">
             <button
               className="btn btn-outline-primary d-none d-sm-inline text-primary ms-2"
-              onClick={() => resetFilter()}
+              // onClick={() => resetFilter()}
             >
               Today
             </button>
             <button
               className="btn btn-outline-primary d-none d-sm-inline text-primary ms-2"
-              onClick={() => yesterdayNews(news)}
+              // onClick={() => yesterdayNews(news)}
             >
               Yesterday
             </button>
             <button
               className="btn btn-outline-primary d-none d-sm-inline text-primary ms-2"
-              onClick={() => lastWeekNews(news)}
+              // onClick={() => lastWeekNews(news)}
             >
               Older
             </button>
@@ -62,8 +61,8 @@ export const SearchResults = () => {
 
       <section className="container-fluid  pt-3  px-5 d-flex flex-column justify-content-end bg-secondary position-relative">
         <div className="row p-2 py-4  gy-0  border-top border-primary border-2 align-items-end ">
-          {loading ? (
-            <Loader/>
+          {/* {loading ? (
+            <Loader />
           ) : filtredNews ? (
             filtredNews.map((noticia, index) => {
               return index === 0 ? (
@@ -90,7 +89,7 @@ export const SearchResults = () => {
             })
           ) : (
             <p>Hecho a dreder</p>
-          )}
+          )} */}
         </div>
         <button className="btn btn-lg border border-primary border-2 rounded-pill align-self-end m-4">
           see all

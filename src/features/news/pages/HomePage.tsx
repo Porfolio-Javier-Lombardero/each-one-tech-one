@@ -1,9 +1,9 @@
 import { LatestNewsCard } from "../components/LatestNewsCard";
 import { OtherNewsCard } from "../components/OtherNewsCard";
 import { TopicCard } from "../components/TopicCard";
-import useSearchStore from "../store/useSearchStore";
-import { useFetch } from "../../../shared/Hooks/useFetch";
-import { useEffect } from "react";
+// import useSearchStore from "../store/useSearchStore";
+// import { useFetch } from "../../../shared/Hooks/useFetch";
+// import { useEffect } from "react";
 import { TrendyNowCard } from "@/features/news/components/TrendyNowCard";
 
 // import TopHeadlines from "../Mocks/TopHeadlines.json";
@@ -11,30 +11,30 @@ import { TrendyNowCard } from "@/features/news/components/TrendyNowCard";
 export const HomePage = () => {
   // const [tops, settops] = useState(TopHeadlines.articles);
 
-  const { fetchData } = useFetch(null);
+  // const { fetchData } = useFetch(null);
 
-  const {
-    SearchEvents,
-    SearchRapsodhy,
-    events,
-    rapshody,
-    SearchHeadlines,
-    // news,
-  } = useSearchStore();
+  // const {
+  //   SearchEvents,
+  //   SearchRapsodhy,
+  //   events,
+  //   rapshody,
+  //   SearchHeadlines,
+  //   // news,
+  // } = useSearchStore();
 
-  useEffect(() => {
-    //SearchHeadlines()
-    SearchEvents();
-    SearchRapsodhy();
-  }, []);
+  // useEffect(() => {
+  //   //SearchHeadlines()
+  //   SearchEvents();
+  //   SearchRapsodhy();
+  // }, []);
 
-  if (fetchData.isLoading) {
-    return <div>Cargando...</div>;
-  }
+  // if (fetchData.isLoading) {
+  //   return <div>Cargando...</div>;
+  // }
 
-  if (fetchData.isError) {
-    return <div>Error al cargar las noticias...</div>;
-  }
+  // if (fetchData.isError) {
+  //   return <div>Error al cargar las noticias...</div>;
+  // }
 
   return (
     <div className="home">
@@ -63,7 +63,7 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row align-items-end justify-content-between px-3 gx-2 gy-5">
-          {/* {news &&
+           {/* {news &&
             news.map((noticia, index) => {
               return index === 0 ? (
                 <div className="col-12 col-lg-6" key={index}>
@@ -76,7 +76,7 @@ export const HomePage = () => {
               ) : (
                 ""
               );
-            })} */}
+            })} 
           {fetchData.data &&
             fetchData.data.map((noticia, index) => {
               return index === 0 ? (
@@ -90,7 +90,7 @@ export const HomePage = () => {
               ) : (
                 ""
               );
-            })}
+            })} */}
 
           {/* <button className="col-2 btn btn-primary">see all</button> */}
         </div>
@@ -107,7 +107,7 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row  align-items-end px-3 gx-3 gy-3 gy-md px-4 pb-5">
-          {fetchData.data &&
+          {/* {fetchData.data &&
             fetchData.data
               .map((noticia) => {
                 return (
@@ -116,8 +116,8 @@ export const HomePage = () => {
                   </div>
                 );
               })
-              .splice(0, 4)}
-        </div>
+              .splice(0, 4)}*/}
+        </div> 
       </section>
 
       <section
@@ -130,7 +130,7 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row p-3 px-md-5">
-          {events &&
+          {/* {events &&
             events.map((noticia, i) => {
               return i < 8 ? (
                 <div className="col-12" key={noticia.id}>
@@ -139,7 +139,7 @@ export const HomePage = () => {
               ) : (
                 ""
               );
-            })}
+            })} */}
         </div>
       </section>
 
@@ -156,14 +156,14 @@ export const HomePage = () => {
         <div className="row   px-3">
           <div className="col-12 px-3 px-sm-5 ">
             <div className="row  mb-2 px-2 px-sm-4 justify-content-between">
-              {rapshody &&
+              {/* {rapshody &&
                 rapshody.map((noiticia) => {
                   return (
                     <div className="col-12 col-md-5  my-4" key={noiticia.id}>
                       <TopicCard noticia={noiticia} />
                     </div>
                   );
-                })}
+                })} */}
             </div>
           </div>
         </div>
