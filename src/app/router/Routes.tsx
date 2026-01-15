@@ -1,14 +1,14 @@
 
 import { RouteObject } from 'react-router-dom'
-import { MainLayOut } from '../../shared/Layout/MainLayOut'
-import { HomePage } from '../../features/news/pages/HomePage'
-import { TopicPage } from '../../features/news/pages/TopicPage'
-import { SingleNewPage } from '../../features/news/pages/SingleNewPage'
-import { SearchResults } from '../../features/news/pages/SearchResults'
-import { ContactPage } from '../../features/contact/pages/ContactPage'
-import { SubscribePage } from '../../features/newsletter/pages/SubscribePage'
-import { TechRapsodyPage } from '../../features/techrapshody/pages/TechRapsodyPage'
-import { NotFound } from '../../shared/pages/NotFound'
+import { MainLayOut } from '../../components/shared/layout/MainLayOut'
+import { HomePage } from '../../pages/HomePage'
+import { TopicPage } from '../../pages/news-related-pages/TopicPage'
+import { SingleNewPage } from '../../pages/news-related-pages/SingleNewPage'
+import { SearchResults } from '../../pages/news-related-pages/SearchResults'
+import { ContactPage } from '../../pages/ContactPage'
+import { SubscribePage } from '../../pages/SubscribePage'
+import { TechRapsodyPage } from '../../pages/news-related-pages/TechRapsodyPage'
+import { NotFound } from '../../pages/NotFound'
 
 
 export const Routes: RouteObject[] = [
@@ -21,11 +21,11 @@ export const Routes: RouteObject[] = [
                 element: <HomePage />
             },
             {
-                path: 'topic/:topic',
+                path: '/:topic',
                 element: <TopicPage />
             },
             {
-                path: 'news/:id',
+                path: 'single',
                 element: <SingleNewPage />
             },
             {

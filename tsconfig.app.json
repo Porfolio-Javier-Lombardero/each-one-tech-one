@@ -1,8 +1,8 @@
 {
-  "compilerOptions":  {
+  "compilerOptions": {
     /* Base Options */
     "target": "ES2020",
-    "useDefineForClassFields":  true,
+    "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -12,7 +12,7 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit":  true,
+    "noEmit": true,
     "jsx": "react-jsx",
 
     /* Linting - Strict mode */
@@ -29,13 +29,16 @@
 
     /* Path Aliases */
     "baseUrl": ".",
-    "paths":  {
+    "paths": {
       "@/*": ["./src/*"],
       "@/app/*": ["./src/app/*"],
-      "@/features/*": ["./src/features/*"],
-      "@/shared/*": ["./src/shared/*"],
+      "@/components/*": ["./src/components/*"],
       "@/assets/*": ["./src/assets/*"],
-      "@/config/*": ["./src/config/*"]
+      "@/pages/*": ["./src/pages/*"],
+      "@/stores/*": ["./src/stores/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/types/*": ["src/lib/types/*"],
+      "@/Utils/*": ["./src/Utils/*"]
     },
 
     /* React 19 specific */
