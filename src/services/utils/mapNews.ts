@@ -1,5 +1,5 @@
 import { News, SingleNew, TechCrunchArticle, TechCrunchArticleArray } from "../../lib/types/d.news.types";
-import { formatDate } from "./formatDate";
+import { formatDate } from "@/utils/formatDates";
 
 
 

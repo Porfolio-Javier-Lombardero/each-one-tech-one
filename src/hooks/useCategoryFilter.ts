@@ -1,4 +1,5 @@
 import { Topics } from '@/lib/constants/topics';
+import { DateFilterType } from '@/lib/types/d.news.types';
 import { useNewsStore } from '@/stores/useNewsStore';
 
 export const useCategoryFilter = () => {
@@ -16,17 +17,20 @@ export const useCategoryFilter = () => {
         return Topics.AI;
       case "Policy & Regulation":
         return Topics.policy;
-      case "Rapshody":
+      case "Hardware":
         return Topics.hardware;
       default:
         return undefined;
     }
   };
 
-  const setCategory = (topic: string | undefined) => {
+  const setCategory = (
+    topic: string | undefined,
+    dateFilter: DateFilterType = 'today'
+  ) => {
     const topicId = getTopicId(topic);
     if (topicId !== undefined) {
-      searchByCategory(topicId);
+      searchByCategory(topicId, dateFilter);
     }
   };
 

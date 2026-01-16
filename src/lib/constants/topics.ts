@@ -24,7 +24,7 @@ export const Categories = {
     Gadgets: "Gadgets",
     AI:"A.I.",
     policy:"Policy & Regulation",
-    Rapshody: "R&R",
+    Rapshody: "Hardware",
     }
 
 
