@@ -38,7 +38,7 @@
       "@/stores/*": ["./src/stores/*"],
       "@/services/*": ["./src/services/*"],
       "@/types/*": ["src/lib/types/*"],
-      "@/Utils/*": ["./src/Utils/*"]
+      "@/Utils/*": ["src/utils/*"]
     },
 
     /* React 19 specific */

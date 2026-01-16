@@ -29,7 +29,7 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
         </div>
         <div className="card-body pt-1 ">
           <h4 className="card-title  truncate-after-second-line pt-1">
-            {noticia.titulo}
+            {noticia.titulo.replace(/[#&]|82\d*/g, ' ')}
           </h4>
           <p className="card-subtitle  text-primary mb-3 ">
             {noticia.fecha}

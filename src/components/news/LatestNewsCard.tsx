@@ -29,7 +29,7 @@ export const LatestNewsCard = ({ noticia }: CardProps) => {
         </div>
         <div className="card-body ">
           <h3 className="card-title truncate-after-second-line text-secondary">
-            {noticia.titulo}
+            {noticia.titulo.replace(/[#&]|82\d*/g, ' ')}
           </h3>
           <p className="lead card-subtitle mb-4">{noticia.fecha}</p>
           <div className="ratio ratio-21x9 rounded ">

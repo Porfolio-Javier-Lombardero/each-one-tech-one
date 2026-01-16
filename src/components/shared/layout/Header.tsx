@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SearchIcon } from "../../../assets/icons/SearchIcon";
 import { Link, useNavigate } from "react-router-dom";
-import { useCategoryFilter } from "@/services/utils/hooks/useCategoryFilter";
+import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 import { Categories } from "@/lib/constants/topics";
 
 export const Header = () => {
@@ -22,8 +22,9 @@ export const Header = () => {
 
   };
 
-  const handleSubmit = (event) => {
-    const field = new FormData(event.target);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const field = new FormData(event.currentTarget);
     const find = field.get("query");
 
     navigate(`/${find}`);
@@ -52,7 +53,7 @@ export const Header = () => {
                 Object.values(Categories).map(value => (
                   <li key={value} className="nav-item" onClick={() => handleClick(value)}>
                     <div className="nav-link " >
-                      <p>{value}</p>
+                      <p className="text-primary" style={{ cursor: "pointer" }}>{value}</p>
                     </div>
                   </li>
                 ))
@@ -103,8 +104,8 @@ export const Header = () => {
             </li>
             {Object.values(Categories).map(value => (
               <li key={value} className="nav-item" onClick={() => handleClick(value)}>
-                <div className="nav-link " >
-                  <p>{value}</p>
+                <div className="nav-link fs-6 py-2 ps-2 " >
+                  <p >{value}</p>
                 </div>
               </li>
             ))

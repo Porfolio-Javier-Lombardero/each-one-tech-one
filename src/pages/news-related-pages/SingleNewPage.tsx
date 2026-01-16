@@ -4,7 +4,7 @@ import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 import { useNewsStore } from "@/stores/useNewsStore";
-import { cleanHTML } from "@/Utils/useCleanHtml";
+import { cleanHTML } from "@/utils/useCleanHtml";
 
 
 export const SingleNewPage = () => {
@@ -31,7 +31,7 @@ export const SingleNewPage = () => {
             <Tweeter />
           </div>
           <div className=" col-12  p-3  p-md-0 p-md-3  ">
-            <h1 className="display-4  text-warp">{singleNew.titulo}</h1>
+            <h1> {singleNew.titulo.replace(/[#&]|82\d*/g, ' ')}</h1>
           </div>
         </div>
       </div>
@@ -45,6 +45,10 @@ export const SingleNewPage = () => {
           </div>
         </div>
         <div className="row g-0 g-md-5">
+          <div className="col-12 d-flex justify-content-center py-4 px-3">
+            <h4> {singleNew.desc.replace(/<\/?p>|[#&]|82\d*/g, '')}</h4>
+
+          </div>
           <div className="col-12 pt-2 col-md-6  d-flex align-self-start justify-content-center p-5">
             {singleNew.img && (
               <img
@@ -58,9 +62,7 @@ export const SingleNewPage = () => {
           <div className="col-12 col-md-6 px-4 px-md-3 pt-3 d-flex justify-content-center align-items-stretch ">
             <div className="lh-lg" dangerouslySetInnerHTML={{ __html: cleanHTML(singleNew.cont) }} />
           </div>
-          <div className="col-12 d-flex justify-content-center py-4 px-3">
-            <h4 className="alt-font text-primary fw-bold ">{singleNew.desc}</h4>
-          </div>
+
           <div className="col-12 col-lg-6 p-2">
             <div className="w-100 px-4 d-flex flex-wrap justify-content-around  "></div>
           </div>

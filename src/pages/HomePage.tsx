@@ -1,46 +1,12 @@
 import { LatestNewsCard } from "../components/news/LatestNewsCard";
 import { OtherNewsCard } from "../components/news/OtherNewsCard";
-import { TopicCard } from "../components/news/TopicCard";
-
-// import { useFetch } from "../../../shared/Hooks/useFetch";
-import { useEffect } from "react";
-import { TrendyNowCard } from "@/components/news/TrendyNowCard";
-import { useNewsStore } from "@/stores/useNewsStore";
-import { SingleNew } from "@/lib/types/d.news.types";
-
-// import TopHeadlines from "../Mocks/TopHeadlines.json";
+import { Loader } from "@/components/shared/Loader";
+import { useHomeNews } from "@/hooks/useHomeNews";
 
 export const HomePage = () => {
-  const searchNews = useNewsStore(state=> state.searchHeadLines)
-  const news = useNewsStore(state => state.news);
-  const loading = useNewsStore(state => state.loading);
+  const { news, loading } = useHomeNews();
 
-
-  useEffect(() => {
-    // Solo hacer fetch si no hay datos
- if(!news)   searchNews(0)
-  
-  
-  }, []); // Solo ejecuta una vez al montar
-
-  // const {
-  //  SearchEvents,
-  //   SearchRapsodhy,
-  //   events,
-  //   rapshody,
-  //   searchHeadLines,
-  //   news,
-  // } = useNewsStore();
-
-
-
-  // if (fetchData.isLoading) {
-  //   return <div>Cargando...</div>;
-  // }
-
-  // if (fetchData.isError) {
-  //   return <div>Error al cargar las noticias...</div>;
-  // }
+  if (loading) return <Loader />;
 
   return (
     <div className="home">
@@ -70,7 +36,7 @@ export const HomePage = () => {
         </div>
         <div className="row align-items-end justify-content-between px-3 gx-2 gy-5">
           {news &&
-            news.map((noticia , index) => {
+            news.map((noticia, index) => {
               if (index === 0) {
                 return (
                   <div className="col-12 col-lg-6" key={index}>
