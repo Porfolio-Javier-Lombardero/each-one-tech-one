@@ -1,17 +1,16 @@
 import { DateFilterType } from "@/lib/types/d.news.types";
 
 
-// Obtiene el inicio del día actual (00:00:00)
-export const todayStart = (): string => {
-  const date = new Date();
-  date.setUTCHours(0, 0, 0, 0);
-  return date.toISOString();
+// Obtiene el momento actual (ahora)
+export const todayEnd = (): string => {
+  return new Date().toISOString();
 };
 
-// Obtiene el final del día actual (23:59:59)
-export const todayEnd = (): string => {
+// Obtiene 26 horas antes del momento actual
+export const todayStart = (): string => {
   const date = new Date();
-  date.setUTCHours(23, 59, 59, 999);
+  const hours = date.getUTCHours();
+  date.setUTCHours(hours - 26);
   return date.toISOString();
 };
 
@@ -47,15 +46,45 @@ export const lastWeekEnd = (): string => {
   return date.toISOString();
 };
 
+// Obtiene el inicio de hace 7 días (00:00:00) - para rangos extendidos
+export const sevenDaysAgoStart = (): string => {
+  const date = new Date();
+  date.setUTCDate(date.getUTCDate() - 7);
+  date.setUTCHours(0, 0, 0, 0);
+  return date.toISOString();
+};
+
 // Retorna el rango de fechas según el filtro {after, before}
 export interface DateRange {
   after: string;
-  before?: string;
+  before: string; // Ya no es opcional
 }
 
-export const getDateRangeByFilter = (filter: DateFilterType): DateRange => {
+export const getDateRangeByFilter = (
+  filter: DateFilterType,
+  topic?: number | string
+): DateRange => {
+  // Excepción para Smartphones: extender rango a 7 días
+  const isSmartphoneSearch = typeof topic === 'string' && (
+    topic.toLowerCase().includes('smartphone') ||
+    topic.toLowerCase().includes('iphone') ||
+    topic.toLowerCase().includes('android')
+  );
+
   switch (filter) {
+    case "all":
+      return {
+        after: lastWeekStart(),
+        before: todayEnd()
+      };
     case 'yesterday':
+      // Si es Smartphones, usar rango de 7 días
+      if (isSmartphoneSearch) {
+        return {
+          after: sevenDaysAgoStart(),
+          before: todayEnd()
+        };
+      }
       return {
         after: yesterdayStart(),
         before: yesterdayEnd()
@@ -67,9 +96,16 @@ export const getDateRangeByFilter = (filter: DateFilterType): DateRange => {
       };
     case 'today':
     default:
+      // Si es Smartphones, usar rango de 7 días
+      if (isSmartphoneSearch) {
+        return {
+          after: sevenDaysAgoStart(),
+          before: todayEnd()
+        };
+      }
       return {
-        after: todayStart()
-        // No before - hasta ahora
+        after: todayStart(),
+        before: todayEnd()
       };
   }
 };

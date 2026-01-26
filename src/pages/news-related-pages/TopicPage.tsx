@@ -11,28 +11,41 @@ export const TopicPage = () => {
   const [dateFilter, setDateFilter] = useState<DateFilterType>('today');
   const { topicNews, loading } = useTopicNews(topic, dateFilter);
 
+   const [seeAll, setSeeAll] = useState(false)
+
+  const handleSeeAll = ()=>{
+    setSeeAll(!seeAll)
+  }
+
+
+      // 3. HELPER para mensajes de UI
+    const getEmptyMessage = (dateFilter: string): string => {
+        switch (dateFilter) {
+            case 'today':
+                return 'No articles published today yet';
+            case 'yesterday':
+                return 'No articles published yesterday';
+            case 'lastWeek':
+                return 'No older articles found';
+            default:
+                return 'No articles found';
+        }
+    };
+
+
   // Resetear filtro a 'today' cuando cambie el topic
   useEffect(() => {
-    setDateFilter('today');
+    if (dateFilter !== 'today') {
+      setDateFilter('today');
+    }
+    setSeeAll(false)
   }, [topic]);
 
   if (loading) return <Loader />;
 
   if (!topicNews) return <Loader />;
 
-  // Mensaje cuando no hay artículos
-  const getEmptyMessage = (): string => {
-    switch (dateFilter) {
-      case 'today':
-        return 'No articles published today yet';
-      case 'yesterday':
-        return 'No articles published yesterday';
-      case 'lastWeek':
-        return 'No older articles found';
-      default:
-        return 'No articles found';
-    }
-  };
+
 
   return (
     <>
@@ -86,25 +99,41 @@ export const TopicPage = () => {
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
           {topicNews.length === 0 ? (
             <div className="col-12 text-center py-2">
-              <h3 className="text-muted">{getEmptyMessage()}</h3>
+              <h3 className="text-muted">{getEmptyMessage(dateFilter)}</h3>
             </div>
           ) : (
-            topicNews.map((newsItem, i) =>
-              i < 1 ? (
-                <div className="col-12 col-md-4 col-lg-6" key={newsItem.id}>
-                  <LatestNewsCard noticia={newsItem} />
-                </div>
-              ) : (
-                <div className="col-12 col-md-4 col-lg-3" key={newsItem.id}>
-                  <OtherNewsCard noticia={newsItem} />
-                </div>
-              )
-            )
-          )}
+        topicNews &&
+            topicNews.map((noticia, index) => {
+              if (index === 0) {
+                return (
+                  <div className="col-12 col-lg-6" key={index}>
+                    <LatestNewsCard key={noticia.id} noticia={noticia} />
+                  </div>
+                );
+              } else if (index < 10) {
+                return (
+                  <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
+                    <OtherNewsCard key={noticia.id} noticia={noticia} />
+                  </div>
+                );
+              }
+              return null;
+            }))}
+                {seeAll &&
+            topicNews?.slice(10).map((noticia) => (
+              <div className="col-12 col-md-4 col-lg-3" key={noticia.id}>
+                <OtherNewsCard noticia={noticia} />
+              </div>
+            ))}
         </div>
-        <button className="btn btn-lg border border-primary border-2 rounded-pill align-self-end m-4">
-          see all
-        </button>
+        {
+          dateFilter === 'lastWeek'? (   
+           <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>{seeAll? "view less" : "view All"}</button>
+          )
+        :
+        (" ")
+        }
+     
         <div className="separador"></div>
       </section>
     </>

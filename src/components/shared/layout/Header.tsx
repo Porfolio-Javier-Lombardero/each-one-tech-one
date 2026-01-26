@@ -13,8 +13,7 @@ export const Header = () => {
 
   const handleDropdown = () => {
     setdropdown(!dropdown)
-  }
-    ;
+  };
 
   const handleClick = (topic: string) => {
     setCategory(topic)
@@ -40,12 +39,12 @@ export const Header = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div
-            className="collapse navbar-collapse "
+            className="collapse navbar-collapse"
             id="navbarSupportedContent"
-          >
-            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondary  border-2 rounded-pill p-1 ">
+            >
+            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondary border border-primary border-2 rounded-pill p-1">
               <li className="nav-item">
-                <div className="nav-link active" aria-current="page" >
+                <div className="nav-link active" aria-current="page">
                   <Link to={"/"}>Home</Link>
                 </div>
               </li>

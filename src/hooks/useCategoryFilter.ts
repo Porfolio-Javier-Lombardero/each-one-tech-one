@@ -5,12 +5,12 @@ import { useNewsStore } from '@/stores/useNewsStore';
 export const useCategoryFilter = () => {
   const searchByCategory = useNewsStore(state => state.searchByCategory)
 
-  const getTopicId = (topic: string | undefined): number | undefined => {
+  const getTopicId = (topic: string | undefined): number | string | undefined => {
     switch (topic) {
       case "App's & Software":
         return Topics.apps;
       case "Smartphones":
-        return Topics.apps;
+        return "smartphone OR iPhone OR Android OR mobile OR Samsung OR Pixel OR foldable"
       case "Gadgets":
         return Topics.gadgets;
       case "A.I.":
@@ -24,18 +24,17 @@ export const useCategoryFilter = () => {
     }
   };
 
-  const setCategory = (
-    topic: string | undefined,
-    dateFilter: DateFilterType = 'today'
-  ) => {
-    const topicId = getTopicId(topic);
+  const setCategory = (topic: string , dateFilter: DateFilterType = 'today') => {
+    const topicId: number | string | undefined = getTopicId(topic);
     if (topicId !== undefined) {
       searchByCategory(topicId, dateFilter);
     }
   };
 
+
   return {
     setCategory,
-    getTopicId
+    getTopicId,
+
   };
 };

@@ -1,4 +1,4 @@
-export type DateFilterType = 'today' | 'yesterday' | 'lastWeek';
+export type DateFilterType = "all"| 'today' | 'yesterday' | 'lastWeek';
 
 export interface SingleNew {
     id: `${string}-${string}-${string}-${string}-${string}`;
@@ -6,6 +6,7 @@ export interface SingleNew {
     desc: string;
     cont: string;
     fechaIso: string;
+    tags: number[] ;
     fecha: string;
     url: string;
     img?: any

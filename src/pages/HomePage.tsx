@@ -1,12 +1,20 @@
+import { useState } from "react";
 import { LatestNewsCard } from "../components/news/LatestNewsCard";
 import { OtherNewsCard } from "../components/news/OtherNewsCard";
 import { Loader } from "@/components/shared/Loader";
 import { useHomeNews } from "@/hooks/useHomeNews";
 
 export const HomePage = () => {
+
+  const [seeAll, setSeeAll] = useState(false)
+
   const { news, loading } = useHomeNews();
 
   if (loading) return <Loader />;
+
+  const handleSeeAll = ()=>{
+    setSeeAll(!seeAll)
+  }
 
   return (
     <div className="home">
@@ -52,37 +60,14 @@ export const HomePage = () => {
               }
               return null;
             })}
-          {/* {news &&
-            news.map((noticia, index) => {
-              return index === 0 ? (
-                <div className="col-12 col-lg-6" key={index}>
-                  <LatestNewsCard key={noticia.id} noticia={noticia} />
-                </div>
-              ) : index < 10 ? (
-                <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
-                  <OtherNewsCard key={noticia.id} noticia={noticia} />
-                </div>
-              ) : (
-                ""
-              );
-            })} 
-          {fetchData.data &&
-            fetchData.data.map((noticia, index) => {
-              return index === 0 ? (
-                <div className="col-12 col-lg-6" key={index}>
-                  <LatestNewsCard key={noticia.id} noticia={noticia} />
-                </div>
-              ) : index < 10 ? (
-                <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
-                  <OtherNewsCard key={noticia.id} noticia={noticia} />
-                </div>
-              ) : (
-                ""
-              );
-            })} */}
-
-          {/* <button className="col-2 btn btn-primary">see all</button> */}
+          {seeAll &&
+            news?.slice(10).map((noticia) => (
+              <div className="col-12 col-md-4 col-lg-3" key={noticia.id}>
+                <OtherNewsCard noticia={noticia} />
+              </div>
+            ))}
         </div>
+        <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>{seeAll? "view less" : "view All"}</button>
         <div className="row p-4  g-2 px-6 align-items-end "></div>
       </section>
 
