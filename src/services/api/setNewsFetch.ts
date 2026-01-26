@@ -22,43 +22,49 @@ export const newsFetch = async (
   const dateRange = getDateRangeByFilter(dateFilter, topic);
 
   // ==================== INTENTO 1: TechCrunch ====================
-  try {
-    const techCrunchOptions = {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': CRUNCH_API_KEY,
-        'x-rapidapi-host': 'techcrunch1.p.rapidapi.com'
+  // Si topic es string, saltar TechCrunch e ir directo a Guardian (mejores resultados)
+  if (typeof topic !== 'string') {
+    try {
+      const techCrunchOptions = {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-key': CRUNCH_API_KEY,
+          'x-rapidapi-host': 'techcrunch1.p.rapidapi.com'
+        }
+      };
+
+      // Construir URL según el tipo de topic
+      const techCrunchUrl = typeof topic === "string"
+        ? `https://techcrunch1.p.rapidapi.com/v2/posts?search=${encodeURIComponent(topic)}&orderby=relevance&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`
+        : `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`;
+
+      console.log('🔍 TechCrunch URL:', techCrunchUrl);
+
+      const techCrunchResponse = await fetch(techCrunchUrl, techCrunchOptions);
+
+      if (!techCrunchResponse.ok) {
+        throw new Error(`TechCrunch API error: ${techCrunchResponse.status}`);
       }
-    };
 
-    // Construir URL según el tipo de topic
-    const techCrunchUrl = typeof topic === "string"
-      ? `https://techcrunch1.p.rapidapi.com/v2/posts?search=${encodeURIComponent(topic)}&orderby=relevance&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`
-      : `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`;
+      const techCrunchData = await techCrunchResponse.json();
+      const newsArray = techCrunchData.data;
 
-    const techCrunchResponse = await fetch(techCrunchUrl, techCrunchOptions);
+      // Si TechCrunch devuelve resultados, retornar
+      if (newsArray && newsArray.length > 0) {
+        const news = mapNews(newsArray);
+        console.log(`✅ TechCrunch: ${newsArray.length} articles found`);
+        return news;
+      }
 
-    if (!techCrunchResponse.ok) {
-      throw new Error(`TechCrunch API error: ${techCrunchResponse.status}`);
+      console.warn(`⚠️ TechCrunch: No articles found for topic ${topic}`);
+
+    } catch (error) {
+      console.error('❌ TechCrunch API failed:', error);
     }
-
-    const techCrunchData = await techCrunchResponse.json();
-    const newsArray = techCrunchData.data;
-
-    // Si TechCrunch devuelve resultados, retornar
-    if (newsArray && newsArray.length > 0) {
-      const news = mapNews(newsArray);
-      console.log(`✅ TechCrunch: ${newsArray.length} articles found`);
-      return news;
-    }
-
-    console.warn(`⚠️ TechCrunch: No articles found for topic ${topic}`);
-
-  } catch (error) {
-    console.error('❌ TechCrunch API failed:', error);
-  }
+  } // Fin del bloque condicional para TechCrunch
 
   // ==================== INTENTO 2: Guardian API ====================
+  // Para búsquedas por string, Guardian es la mejor opción
   // Si topic es string, usarlo directamente; si es number, buscar en Topics2
   const searchQuery = typeof topic === 'string'
     ? topic
@@ -74,8 +80,7 @@ export const newsFetch = async (
     const guardianOptions = {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        // 'api-key' : GUARDIAN_API_KEY
+        'Content-Type': 'application/json'
       }
     };
 
@@ -83,7 +88,7 @@ export const newsFetch = async (
     const fromDate = formatDateForGuardian(dateRange.after);
     const toDate = formatDateForGuardian(dateRange.before);
 
-    const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=20&q=${encodeURIComponent(searchQuery)}&from-date=${fromDate}&to-date=${toDate}&api-key=8cfd7b29-b2d1-4414-b68e-58a68fbb2d40`;
+    const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=20&order-by=newest&show-fields=all&q=${encodeURIComponent(searchQuery)}&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
 
     const guardianResponse = await fetch(guardianUrl, guardianOptions);
 

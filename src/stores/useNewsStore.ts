@@ -3,7 +3,7 @@ import { News, SingleNew, DateFilterType } from "../lib/types/d.news.types";
 import { newsFetch } from "../services/api/setNewsFetch";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { generateResponse } from "@/services/api/setEventsFetch";
+import { fetchEvents } from "@/services/api/setEventsFetch";
 
 
 interface CategoryCache {
@@ -21,13 +21,13 @@ interface NewsStoreInt {
   loading: boolean;
   error: string | undefined;
   //Actions
-  searchHeadLines: (topic: number , dateFilter: DateFilterType) => Promise<void>;
+  searchHeadLines: (topic: number, dateFilter: DateFilterType) => Promise<void>;
   searchByCategory: (
     topic: number | string,
     dateFilter?: DateFilterType,
   ) => Promise<void>;
   defineSingleNew: (noticia: SingleNew) => void;
-  searchTechEvents:()=> Promise<void>
+  searchTechEvents: () => Promise<void>
 }
 
 // Helper para verificar si una categoría ya está en el caché
@@ -52,7 +52,7 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
   error: undefined,
   events: "",
   // Actions
-  searchHeadLines: async (topic: number , dateFilter: DateFilterType = 'all') => {
+  searchHeadLines: async (topic: number, dateFilter: DateFilterType = 'all') => {
     set((state: NewsStoreInt) => {
       state.loading = true;
     });
@@ -93,7 +93,7 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
 
     try {
       const categoryNews = await newsFetch(topic, dateFilter);
-   
+
       if (categoryNews) {
         set((state: NewsStoreInt) => {
           state.filteredNews.push({
@@ -119,25 +119,31 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
       state.singleNew = noticia;
     });
   },
-  searchTechEvents: async ()=>{
+  searchTechEvents: async () => {
+    // Si ya tenemos eventos en caché, no volver a llamar la API
+    if (get().events) {
+      console.log('📦 Using cached events');
+      return;
+    }
+
     set((state: NewsStoreInt) => {
       state.loading = true;
     });
     try {
-      const data = await generateResponse();
-      console.log(data)
+      const data = await fetchEvents();
+      console.log('✅ Events fetched:', data)
       set((state: NewsStoreInt) => {
-      state.loading = false;
-      state.events = data
-    });
+        state.loading = false;
+        state.events = data
+      });
     } catch (err) {
-     set((state: NewsStoreInt) => {
+      set((state: NewsStoreInt) => {
         state.events = "";
         state.loading = false;
         state.error = err as string;
       })
     } finally {
-      set((state: NewsStoreInt)=>{
+      set((state: NewsStoreInt) => {
         state.loading = false
       });
     }

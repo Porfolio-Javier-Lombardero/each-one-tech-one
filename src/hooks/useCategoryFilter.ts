@@ -10,7 +10,7 @@ export const useCategoryFilter = () => {
       case "App's & Software":
         return Topics.apps;
       case "Smartphones":
-        return "smartphone OR iPhone OR Android OR mobile OR Samsung OR Pixel OR foldable"
+        return "smartphone iPhone Android mobile Samsung Pixel foldable"
       case "Gadgets":
         return Topics.gadgets;
       case "A.I.":
@@ -24,7 +24,7 @@ export const useCategoryFilter = () => {
     }
   };
 
-  const setCategory = (topic: string , dateFilter: DateFilterType = 'today') => {
+  const setCategory = (topic: string, dateFilter: DateFilterType = 'today') => {
     const topicId: number | string | undefined = getTopicId(topic);
     if (topicId !== undefined) {
       searchByCategory(topicId, dateFilter);
