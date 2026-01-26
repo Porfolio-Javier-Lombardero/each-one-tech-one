@@ -3,16 +3,19 @@ import { LatestNewsCard } from "../components/news/LatestNewsCard";
 import { OtherNewsCard } from "../components/news/OtherNewsCard";
 import { Loader } from "@/components/shared/Loader";
 import { useHomeNews } from "@/hooks/useHomeNews";
+import { EventCard } from "@/components/news/EventCard";
 
 export const HomePage = () => {
 
   const [seeAll, setSeeAll] = useState(false)
 
-  const { news, loading } = useHomeNews();
+  const { news, loading, events } = useHomeNews();
 
   if (loading) return <Loader />;
 
-  const handleSeeAll = ()=>{
+
+
+  const handleSeeAll = () => {
     setSeeAll(!seeAll)
   }
 
@@ -67,7 +70,7 @@ export const HomePage = () => {
               </div>
             ))}
         </div>
-        <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>{seeAll? "view less" : "view All"}</button>
+        <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>{seeAll ? "view less" : "view All"}</button>
         <div className="row p-4  g-2 px-6 align-items-end "></div>
       </section>
 
@@ -103,17 +106,16 @@ export const HomePage = () => {
             <h2 className="h2 display-3">SAVE THE DATE</h2>
           </div>
         </div>
-        <div className="row p-3 px-md-5">
-          {/* {events &&
-            events.map((noticia, i) => {
-              return i < 8 ? (
-                <div className="col-12" key={noticia.id}>
-                  <TrendyNowCard noticia={noticia} />
-                </div>
-              ) : (
-                ""
-              );
-            })} */}
+        <div className="row p-3 px-md-5 ">
+        {
+         events && events.map((event)=>{
+            const desglosedEvent = event.split(",")
+           return <EventCard 
+           title={desglosedEvent[0]} 
+           location={desglosedEvent[1]} 
+           date={desglosedEvent[2]}/>
+         })
+        }
         </div>
       </section>
 

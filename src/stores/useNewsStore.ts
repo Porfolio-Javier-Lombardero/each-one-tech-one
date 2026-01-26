@@ -4,6 +4,8 @@ import { newsFetch } from "../services/api/setNewsFetch";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { fetchEvents } from "@/services/api/setEventsFetch";
+import { mapEvents } from "@/services/utils/mapEvents";
+
 
 
 interface CategoryCache {
@@ -17,7 +19,7 @@ interface NewsStoreInt {
   news: News | undefined;
   singleNew: SingleNew | undefined;
   filteredNews: CategoryCache[];
-  events: string
+  events: string[] | undefined
   loading: boolean;
   error: string | undefined;
   //Actions
@@ -50,7 +52,7 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
   filteredNews: [],
   loading: false,
   error: undefined,
-  events: "",
+  events: undefined,
   // Actions
   searchHeadLines: async (topic: number, dateFilter: DateFilterType = 'all') => {
     set((state: NewsStoreInt) => {
@@ -120,7 +122,7 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
     });
   },
   searchTechEvents: async () => {
-    // Si ya tenemos eventos en caché, no volver a llamar la API
+    
     if (get().events) {
       console.log('📦 Using cached events');
       return;
@@ -131,14 +133,16 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
     });
     try {
       const data = await fetchEvents();
-      console.log('✅ Events fetched:', data)
+       
+      const mappedEvents = mapEvents(data)
+
       set((state: NewsStoreInt) => {
         state.loading = false;
-        state.events = data
+        state.events = mappedEvents? mappedEvents : undefined
       });
     } catch (err) {
       set((state: NewsStoreInt) => {
-        state.events = "";
+        state.events = undefined;
         state.loading = false;
         state.error = err as string;
       })

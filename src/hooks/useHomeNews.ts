@@ -1,18 +1,21 @@
 import { useEffect } from "react";
 import { useNewsStore } from "@/stores/useNewsStore";
+import { mapEvents } from "@/services/utils/mapEvents";
 
 export const useHomeNews = () => {
     const searchHeadLines = useNewsStore((state) => state.searchHeadLines);
-    const searchEvents = useNewsStore((state)=> state.searchTechEvents)
+    const searchEvents = useNewsStore((state) => state.searchTechEvents)
     const news = useNewsStore((state) => state.news);
     const loading = useNewsStore((state) => state.loading);
+    const events = useNewsStore((state)=> state.events)
 
     useEffect(() => {
         if (!news) {
             searchHeadLines(0, "all");
         }
         searchEvents()
+     
     }, []);
 
-    return { news, loading };
+    return { news, loading,events };
 };
