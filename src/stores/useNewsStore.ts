@@ -5,8 +5,9 @@ import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { fetchEvents } from "@/services/api/setEventsFetch";
 import { mapEvents } from "@/services/utils/mapEvents";
+import { fetchReviews } from "@/services/api/setReviewsFetch";
 
-
+import { cleanReviewsEmbed } from "@/services/utils/cleanReviewsEmbed";
 
 interface CategoryCache {
   category: number | string;
@@ -19,7 +20,8 @@ interface NewsStoreInt {
   news: News | undefined;
   singleNew: SingleNew | undefined;
   filteredNews: CategoryCache[];
-  events: string[] | undefined
+  events: string[] | undefined;
+  reviews: string[] | undefined
   loading: boolean;
   error: string | undefined;
   //Actions
@@ -28,6 +30,7 @@ interface NewsStoreInt {
     topic: number | string,
     dateFilter?: DateFilterType,
   ) => Promise<void>;
+  searchTechReviews: () => Promise<void>;
   defineSingleNew: (noticia: SingleNew) => void;
   searchTechEvents: () => Promise<void>
 }
@@ -53,6 +56,7 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
   loading: false,
   error: undefined,
   events: undefined,
+  reviews: undefined,
   // Actions
   searchHeadLines: async (topic: number, dateFilter: DateFilterType = 'all') => {
     set((state: NewsStoreInt) => {
@@ -122,7 +126,7 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
     });
   },
   searchTechEvents: async () => {
-    
+
     if (get().events) {
       console.log('📦 Using cached events');
       return;
@@ -133,12 +137,12 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
     });
     try {
       const data = await fetchEvents();
-       
+       console.log(data)
       const mappedEvents = mapEvents(data)
 
       set((state: NewsStoreInt) => {
         state.loading = false;
-        state.events = mappedEvents? mappedEvents : undefined
+        state.events = mappedEvents ? mappedEvents : undefined
       });
     } catch (err) {
       set((state: NewsStoreInt) => {
@@ -149,6 +153,37 @@ const newsState: StateCreator<NewsStoreInt, [["zustand/immer", never]], []> = (
     } finally {
       set((state: NewsStoreInt) => {
         state.loading = false
+      });
+    }
+  },
+  searchTechReviews: async () => {
+
+    if (get().reviews) {
+      console.log('📦 Using cached reviews');
+      return;
+    }
+
+    set((state: NewsStoreInt) => {
+      state.loading = true;
+    });
+    try {
+      const data = await fetchReviews();
+      console.log(data)
+      // const cleanedData = cleanReviewsEmbed(data);
+    //  console.log(cleanedData)
+      set((state: NewsStoreInt) => {
+        state.loading = false;
+        state.reviews = data  ? data : undefined;
+      });
+    } catch (err) {
+      set((state: NewsStoreInt) => {
+        state.reviews = undefined;
+        state.loading = false;
+        state.error = err as string;
+      });
+    } finally {
+      set((state: NewsStoreInt) => {
+        state.loading = false;
       });
     }
   }

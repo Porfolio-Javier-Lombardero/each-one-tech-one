@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-const prompt = "¿Qué grandes eventos (congresos, ferias, conferencias...) del mundo de las nuevas tecnologías va a haber este año en Europa y ee.uu.? Devuelveme la respuesta como si fuera el tag <ul> de html, donde cada <li> sea un evento. No añadas ninguna descricpion de cada evento. Solo la información esencial, a saber; nombre del evento, fecha y ciudad, y que sea toda en inglés. Dame un mínimo de 10 eventos";
+const prompt = "¿Qué grandes eventos (congresos, ferias, conferencias...) del mundo de las nuevas tecnologías va a haber este año 2026 en Europa y ee.uu.? Devuelveme la respuesta como si fuera el tag <ul> de html, donde cada <li> sea un evento (unicamente esa etiquetas html, no añadas ninguna otra) .Cada li debe tener el siguiente formato  <li> Month Day Year, Event Name, City<li>. Las rspuestas han de ser en inglés"
 
 export const fetchEvents = async (): Promise<string> => {
   try {

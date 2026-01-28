@@ -4,12 +4,15 @@ import { OtherNewsCard } from "../components/news/OtherNewsCard";
 import { Loader } from "@/components/shared/Loader";
 import { useHomeNews } from "@/hooks/useHomeNews";
 import { EventCard } from "@/components/news/EventCard";
+import { TopicCard } from "@/components/news/TopicCard";
+import { SingleNew } from "@/lib/types/d.news.types";
+import { VideoPlayer } from "@/components/reviews/VideoPlayer";
 
 export const HomePage = () => {
 
   const [seeAll, setSeeAll] = useState(false)
 
-  const { news, loading, events } = useHomeNews();
+  const { news, loading, events, reviews } = useHomeNews();
 
   if (loading) return <Loader />;
 
@@ -75,7 +78,7 @@ export const HomePage = () => {
       </section>
 
       <section
-        className="container-fluid p-1 p-sm-4 pb-4 bg-secondary"
+        className="container-fluid p-1 p-sm-4 pb-4 bg-secondary "
         id="topics"
       >
         <div className="row p-4 mb-3">
@@ -83,9 +86,9 @@ export const HomePage = () => {
             <h2 className="h2 display-3">TRENDY NOW</h2>
           </div>
         </div>
-        <div className="row  align-items-end px-3 gx-3 gy-3 gy-md px-4 pb-5">
-          {/* {fetchData.data &&
-            fetchData.data
+        <div className="row px-1 d-flex">
+          {news &&
+            news
               .map((noticia) => {
                 return (
                   <div className="col-12  col-md-6  col-lg-3" key={noticia.id}>
@@ -93,13 +96,13 @@ export const HomePage = () => {
                   </div>
                 );
               })
-              .splice(0, 4)}*/}
+              .splice(0, 4)}
         </div>
       </section>
 
       <section
         className="conteiner-fluid p-1 p-sm-4 pb-4 bg-secondary"
-        id="trendy"
+        id="events"
       >
         <div className="row p-4 mb-3">
           <div className="col-12 py-2 border-top border-primary border-2">
@@ -107,21 +110,21 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row p-3 px-md-5 ">
-        {
-         events && events.map((event)=>{
-            const desglosedEvent = event.split(",")
-           return <EventCard 
-           title={desglosedEvent[0]} 
-           location={desglosedEvent[1]} 
-           date={desglosedEvent[2]}/>
-         })
-        }
+          {
+            events && events.map((event) => {
+              const desglosedEvent = event.split(",")
+              return <EventCard
+                date={desglosedEvent[0]}
+                title={desglosedEvent[1]}
+                location={desglosedEvent[2]} />
+            })
+          }
         </div>
       </section>
 
       <section
         className="container-fluid p-1 p-sm-4 bg-secondary"
-        id="rapshody"
+        id="reviews"
       >
         <div className="row p-4 mb-3">
           <div className="col-12 py-2 border-top border-primary border-2">
@@ -129,19 +132,14 @@ export const HomePage = () => {
           </div>
         </div>
 
-        <div className="row   px-3">
-          <div className="col-12 px-3 px-sm-5 ">
-            <div className="row  mb-2 px-2 px-sm-4 justify-content-between">
-              {/* {rapshody &&
-                rapshody.map((noiticia) => {
-                  return (
-                    <div className="col-12 col-md-5  my-4" key={noiticia.id}>
-                      <TopicCard noticia={noiticia} />
-                    </div>
-                  );
-                })} */}
-            </div>
-          </div>
+        <div className="row px-3 justify-content-center">
+          {reviews?.map((item) => (
+            <VideoPlayer
+              key={item.id.videoId}
+              video={item}
+              showDetails={true}
+            />
+          ))}
         </div>
       </section>
     </div>

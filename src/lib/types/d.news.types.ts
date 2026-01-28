@@ -6,8 +6,7 @@ export interface SingleNew {
     desc: string;
     cont: string;
     fechaIso: string;
-    tags: number[] ;
-    fecha: string;
+   fecha: string;
     url: string;
     img?: any
 }

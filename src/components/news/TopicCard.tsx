@@ -1,18 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useNewsStore } from "../../stores/useNewsStore";
+import { SingleNew } from "@/lib/types/d.news.types";
 
 
 
 
-export const TopicCard = ({ noticia }) => {
-  const { defineSingleNew } = useNewsStore();
+export const TopicCard = ({ noticia }: { noticia: SingleNew }) => {
+
+  const defineSingleNew = useNewsStore(state => state.defineSingleNew);
   const navigate = useNavigate();
+
 
   const handleClick = () => {
     defineSingleNew(noticia);
     navigate("/single", { state: { noticia } });
   };
+
 
   return (
     <article onClick={handleClick} style={{ cursor: "pointer" }}>
@@ -21,7 +25,7 @@ export const TopicCard = ({ noticia }) => {
         style={{ minHeight: "500px" }}
       >
         <img
-          src={noticia ? noticia.img : ""}
+          src={noticia.img}
           className="img-fluid position-absolute h-100 object-fit-cover rounded "
           alt=""
         />
@@ -33,10 +37,10 @@ export const TopicCard = ({ noticia }) => {
         >
           <div className="col-6 d-flex pb-2">
             <button className="btn btn-sm btn-outline-secondary text-secondary ms-2">
-              ijhuihui
+              interview
             </button>
             <button className="btn btn-sm btn-outline-secondary text-secondary ms-2">
-              ijhuihui
+              tech
             </button>
           </div>
 

@@ -11,14 +11,12 @@ export const useCategoryFilter = () => {
         return Topics.apps;
       case "Smartphones":
         return "smartphone iPhone Android mobile Samsung Pixel foldable"
-      case "Gadgets":
+      case "Hardware & Gadgets":
         return Topics.gadgets;
       case "A.I.":
         return Topics.AI;
       case "Policy & Regulation":
         return Topics.policy;
-      case "Hardware":
-        return Topics.hardware;
       default:
         return undefined;
     }

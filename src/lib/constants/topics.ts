@@ -5,7 +5,7 @@ export const Topics = {
     policy: 577065682,
     social: 577055593,
     gaming: 577052804,
-    gadgets: 577052803,
+    gadgets: 449223024,
     apps: 577051039,
     AI: 577047203,
     biotech: 577030454,
@@ -38,10 +38,9 @@ export const Topics2 = {
 export const Categories = {
     App: "App's & Software",
     Smartphones: "Smartphones",
-    Gadgets: "Gadgets",
+    Gadgets: "Hardware & Gadgets",
     AI: "A.I.",
-    policy: "Policy & Regulation",
-    Rapshody: "Hardware",
-}
+    policy: "Policy & Regulation"
+   }
 
 
