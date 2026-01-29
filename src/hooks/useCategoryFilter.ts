@@ -8,15 +8,15 @@ export const useCategoryFilter = () => {
   const getTopicId = (topic: string | undefined): number | string | undefined => {
     switch (topic) {
       case "App's & Software":
-        return Topics.apps;
+        return Topics.App;
       case "Smartphones":
         return "smartphone iPhone Android mobile Samsung Pixel foldable"
       case "Hardware & Gadgets":
-        return Topics.gadgets;
+        return Topics.Gadgets;
       case "A.I.":
         return Topics.AI;
       case "Policy & Regulation":
-        return Topics.policy;
+        return Topics.Policy;
       default:
         return undefined;
     }

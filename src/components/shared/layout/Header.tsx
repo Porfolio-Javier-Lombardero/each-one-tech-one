@@ -47,6 +47,18 @@ export const Header = () => {
       }, 100);
     }
   };
+  const handleScrollToEvents = () => {
+    // Si estamos en la homepage, hacer scroll directo
+    if (window.location.pathname === '/') {
+      scrollToElement('events', 100); // 100px offset para el header
+    } else {
+      // Si estamos en otra página, navegar al home y luego hacer scroll
+      navigate('/');
+      setTimeout(() => {
+        scrollToElement('events', 100);
+      }, 100);
+    }
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,18 +70,18 @@ export const Header = () => {
 
   return (
     <header>
-      <nav className="navbar navbar-expand-lg ">
-        <div className="container-fluid  d-flex flex-row flex-lg-column  flex-xl-row align-items-start align-items-xl-center">
-         <button
+      <nav className="navbar navbar-expand-lg  ">
+        <div className="container-fluid  d-flex flex-row flex-lg-column  flex-xl-column align-items-start align-items-xl-start">
+          <button
             className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
             onClick={handleDropdown}  >
-            <span className="navbar-toggler-icon" style={{display:dropdown? "none":"block"}}></span>
+            <span className="navbar-toggler-icon" style={{ display: dropdown ? "none" : "block" }}></span>
           </button>
           <div
             className="collapse navbar-collapse"
             id="navbarSupportedContent"
           >
-            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondartransp  rounded-pill  align-items-center">
+            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondartransp  rounded-pill  align-items-center shadow-sm">
               <li className="nav-item">
                 <div className="nav-link active" aria-current="page">
                   <Link to={"/"}>Home</Link>
@@ -84,7 +96,17 @@ export const Header = () => {
                   </li>
                 ))
               }
-
+              <li className="nav-item">
+                <div className="nav-link" >
+                  <a
+                    className="text-primary text-decoration-none p-0 "
+                    onClick={handleScrollToEvents}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Tech Agenda
+                  </a>
+                </div>
+              </li>
               <li className="nav-item">
                 <div className="nav-link" >
                   <a
@@ -110,7 +132,7 @@ export const Header = () => {
 
           </div>
           <form
-            className="d-flex bg-secondartransp mt-3 mt-lg-3 p-2 py-md-3   rounded-pill"
+            className="d-flex bg-secondartransp mt-3 mt-lg-3 p-2 py-md-3 shadow-sm  rounded-pill"
             role="search"
             onSubmit={handleSubmit}
           >
@@ -135,20 +157,31 @@ export const Header = () => {
           <ul className="pb-3" style={{ listStyle: "none" }} >
 
             <li className="nav-item mobile-menu-item">
-              <div className="nav-link fs-6 py-3 ps-2 " onClick={handleDropdown}>
+              <div onClick={handleDropdown} className="nav-link fs-6 py-3 ps-2 " >
                 <Link to={"/"}>Home</Link>
               </div>
             </li>
             {Object.values(Categories).map(value => (
               <li key={value} className="nav-item mobile-menu-item" onClick={() => handleClick(value)}>
-                <div className="nav-link fs-6 py-1 ps-2 " style={{ cursor: "pointer" }} >
+                <div onClick={handleDropdown} className="nav-link fs-6 py-1 ps-2 " style={{ cursor: "pointer" }} >
                   <p >{value}</p>
                 </div>
               </li>
             ))
             }
             <li className="nav-item mobile-menu-item">
-              <div className="nav-link fs-6 py-1 ps-2" >
+              <div onClick={handleDropdown} className="nav-link fs-6 py-2 ps-2" >
+                <a
+                  className="text-primary text-decoration-none "
+                  onClick={handleScrollToEvents}
+                  style={{ cursor: "pointer" }}
+                >
+                  Tech Agenda
+                </a>
+              </div>
+            </li>
+            <li className="nav-item mobile-menu-item">
+              <div onClick={handleDropdown} className="nav-link fs-6 py-1 ps-2" >
                 <a
                   className="text-primary text-decoration-none "
                   onClick={handleScrollToReviews}
@@ -159,12 +192,12 @@ export const Header = () => {
               </div>
             </li>
             <li className="nav-item mobile-menu-item">
-              <div className="nav-link fs-6 py-2 ps-2" onClick={handleDropdown}>
+              <div onClick={handleDropdown} className="nav-link fs-6 py-2 ps-2" >
                 <Link to={"/subscribe"}>Newsletter</Link>
               </div>
             </li>
             <li className="nav-item mobile-menu-item">
-              <div className="nav-link fs-6 py-3 ps-2" aria-disabled="true" >
+              <div onClick={handleDropdown} className="nav-link fs-6 py-3 ps-2" aria-disabled="true" >
                 <Link to={"/Contact"}>Contact</Link>
               </div>
             </li>

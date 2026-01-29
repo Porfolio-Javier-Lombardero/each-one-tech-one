@@ -27,7 +27,7 @@ export const TopicCard = ({ noticia }: { noticia: SingleNew }) => {
    
 
   return (
-    <article onClick={handleClick} style={{ cursor: "pointer" }}>
+    <article className="mb-3 mb-lg-0" onClick={handleClick} style={{ cursor: "pointer" }}>
       <div
         className="card position-relative rounded "
         style={{ minHeight: "500px" }}

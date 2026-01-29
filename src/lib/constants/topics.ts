@@ -2,11 +2,11 @@ import { News } from "../types/d.news.types"
 
 export const Topics = {
     robotics: 577123751,
-    policy: 577065682,
+    Policy: 577065682,
     social: 577055593,
     gaming: 577052804,
-    gadgets: 449223024,
-    apps: 577051039,
+    Gadgets: 449223024,
+    App: 577051039,
     AI: 577047203,
     biotech: 577030454,
     financialtech: 577030453,
@@ -55,7 +55,7 @@ export const Categories = {
     Smartphones: "Smartphones",
     Gadgets: "Hardware & Gadgets",
     AI: "A.I.",
-    policy: "Policy & Regulation"
+    Policy: "Policy & Regulation"
    }
 
 

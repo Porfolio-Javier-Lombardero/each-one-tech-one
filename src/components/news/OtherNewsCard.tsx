@@ -3,7 +3,8 @@ import { useNewsStore } from "../../stores/useNewsStore";
 
 
 import { CardProps } from "./types/d.comp.types";
-import { Topics } from "@/lib/constants/topics";
+import { Categories, Topics } from "@/lib/constants/topics";
+import React, {} from "react";
 
 
 
@@ -15,7 +16,8 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
     if(noti === undefined){
       return "smartphones"
    }
-  return  Object.keys(Topics).find(key => Topics[key as keyof typeof Topics] === noti) 
+  return  Object.keys(Topics).find(key =>
+     Topics[key as keyof typeof Topics] === noti) 
   }
  
   const handleClick = () => {
@@ -23,17 +25,31 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
     navigate("/single", { state: { noticia } });
   };
 
+  const navigateToTopicPage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    const topic = e.currentTarget.textContent as string
+    const categoryValue = Object.keys(Categories).find(key => 
+      key.toLowerCase() === topic?.toLowerCase()
+    );
+    const categoryTitle = categoryValue ? 
+    Categories[categoryValue as keyof typeof Categories] : undefined;
+   
+   if(categoryTitle === undefined) navigate("/")
+  
+    navigate(`/${categoryTitle || ''}`);
+  }
+
   return (
     <article  onClick={handleClick} style={{ cursor: "pointer"}} >
-      <div className="card p-3  bg-secondartransp  border border-0 ">
+      <div className="card p-3  bg-secondartransp  border border-0 shadow ">
         <span className="border border-top border-primary mt-2 mb-2 rounded-4 "></span>
         <div className="col-6 d-flex ms-1 ">
-          <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 text-secondary ">
+          <button onClick={(e)=>navigateToTopicPage(e)} className="btn btn-sm btn-primary me-2 mt-2 mb-2 text-secondary ">
             {handleCategories(noticia.categories !=undefined ? noticia.categories[0] : undefined)}
           </button>
           {
           noticia.categories?.length > 1 ? 
-          ( <button className="btn btn-sm btn-outline-primary mt-2 mb-2 lh-1">
+          ( <button onClick={(e)=>navigateToTopicPage(e)} className="btn btn-sm btn-outline-primary mt-2 mb-2 lh-1">
            {handleCategories(noticia.categories != undefined ? noticia.categories[1] : undefined)}
           </button>) : ("")
           }

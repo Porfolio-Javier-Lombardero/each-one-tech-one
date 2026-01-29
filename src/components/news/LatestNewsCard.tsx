@@ -18,7 +18,7 @@ export const LatestNewsCard = ({ noticia }: CardProps) => {
   return (
     <article onClick={handleClick} style={{ cursor: "pointer" }} >
 
-      <div className="card card-first bg-primary text-secondary d-flex  p-0 p-md-2" style={{ maxHeight: "450px" }}>
+      <div className="card card-first bg-primary text-secondary d-flex  p-0 p-md-2 shadow" style={{ maxHeight: "450px" }}>
 
         <div className="col-6 mt-3 mb-0 ms-3 d-flex ">
           <button className="btn btn-outline-secondary d-none d-sm-inline text-secondary ms-2" >Latest</button>
