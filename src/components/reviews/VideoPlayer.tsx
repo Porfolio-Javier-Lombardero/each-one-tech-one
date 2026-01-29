@@ -17,7 +17,7 @@ export const VideoPlayer: React.FC<Props> = ({ video }) => {
     return (
         <div className="col-12 col-md-4 col-lg-3 m-2 d-flex flex-column align-items-stretch p-0 m-4">
 
-            <div className="ratio ratio-16x9 bg-black rounded-top position-relative overflow-hidden">
+            <div className="ratio ratio-16x9 bg-secondartransp rounded-top position-relative overflow-hidden">
                 {!isPlaying ? (
                     /* CAPA DE VISTA PREVIA (Optimización de rendimiento) */
                     <button
@@ -51,7 +51,7 @@ export const VideoPlayer: React.FC<Props> = ({ video }) => {
                 )}
             </div>
 
-            <div className="bg-white rounded-bottom p-3 flex-grow-1 d-flex flex-column justify-content-between">
+            <div className="bg-secondartransp rounded-bottom p-3 flex-grow-1 d-flex flex-column justify-content-between">
                 <h4 className="mb-2 card-title fw-bolder text-primary text-truncate-2" style={{ minHeight: '2.5em' }}>{title}</h4>
                 <span className="lead text-primary ">{video.snippet.channelTitle}</span>
             </div>

@@ -115,7 +115,9 @@ export const HomePage = () => {
               return <EventCard
                 date={desglosedEvent[0]}
                 title={desglosedEvent[1]}
-                location={desglosedEvent[2]} />
+                location={desglosedEvent[2]}
+                 url={desglosedEvent[3]} />
+                
             })
           }
         </div>

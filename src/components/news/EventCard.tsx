@@ -3,13 +3,14 @@ import { EventProps } from './types/d.comp.types'
 
 
 
-export const EventCard = ({title, location, date} :EventProps) => {
+export const EventCard = ({title, location, date, url} :EventProps) => {
   return (
-    <article className='row d-flex rounded-2 mx-3  mb-3 p-3 bg-white'>
+    <article className='row d-flex rounded-2 mx-3  mb-3 p-3 bg-secondartransp '>
         <p className='lead col-2'>{date}</p>
         <p className='col-9 d-flex flex-column'> 
         <h3>{title}</h3>
         <p className='fw-regular'>{location}</p>
+        <a href={url} style={{cursor:"pointer"}}>+ info</a>
         </p>
     </article>
   )

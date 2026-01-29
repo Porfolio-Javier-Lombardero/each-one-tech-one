@@ -24,11 +24,11 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
   };
 
   return (
-    <article  onClick={handleClick} style={{ cursor: "pointer" }}>
-      <div className="card p-2 bg-secondartransp  border border-0 ">
-        <div className="col-12  mb-3"></div>
+    <article  onClick={handleClick} style={{ cursor: "pointer"}} >
+      <div className="card p-3  bg-secondartransp  border border-0 ">
+        <span className="border border-top border-primary mt-2 mb-2 rounded-4 "></span>
         <div className="col-6 d-flex ms-1 ">
-          <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 ">
+          <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 text-secondary ">
             {handleCategories(noticia.categories !=undefined ? noticia.categories[0] : undefined)}
           </button>
           {

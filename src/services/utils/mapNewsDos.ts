@@ -1,9 +1,10 @@
+import { GuardianArticle, GuardianArticleArray } from '@/lib/types/d.news.types'
 import { formatDate } from '@/utils/formatDates'
 import React from 'react'
 
-export const mapNewsDos = (newsArrayDos) => {
+export const mapNewsDos = (newsArrayDos :GuardianArticleArray) => {
 
-  return newsArrayDos.map((item)=>({
+  return newsArrayDos.map((item : GuardianArticle)=>({
           id: crypto.randomUUID(),
           titulo: item.webTitle,
           desc: item.fields.trailText,

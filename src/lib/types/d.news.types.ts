@@ -101,4 +101,29 @@ export interface TechCrunchArticle {
     jetpack_sharing_enabled: boolean;
 }
 
+export interface GuardianFields {
+  bodyText: string;
+  trailText: string
+  thumbnail:string
+}
+
+export interface GuardianArticle {
+  id: string;
+  type: string;
+  sectionId: string;
+  sectionName: string;
+  webPublicationDate: string; // ISO string, convertir a Date si lo deseas
+  webTitle: string;
+  webUrl: string;
+  apiUrl: string;
+  tags:string;
+  fields: GuardianFields;
+  isHosted: boolean;
+  pillarId: string;
+  pillarName: string;
+}
+
+
 export type TechCrunchArticleArray = TechCrunchArticle[]
+
+export type GuardianArticleArray = GuardianArticle[]

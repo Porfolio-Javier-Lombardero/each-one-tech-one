@@ -53,8 +53,8 @@
 // colores globales
 $primary: #0A287E;
 $secondary: #f3f3e9;
-$secondartransp:#f3f3e9bc;
-$white: #dadacd;
+$secondartransp:#f3f3e9bd;
+$white: #dadacdb1;
 $info: rgb(159, 157, 157) ;
 $border-radius: 1rem;
 
@@ -106,6 +106,7 @@ $btn-hover-border-color: $white;
 $btn-hover-shadow: none;
 $btn-padding-y-sm: 0.7px;
 $btn-padding-x-sm: 7px;
+$bs-hover-color:$secondary;
 $btn-font-size-sm: 0.8rem;
 $btn-border-radius-sm: 20px;
 $btn-border-width-sm: 0px;

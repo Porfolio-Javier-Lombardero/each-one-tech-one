@@ -5,6 +5,7 @@ import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 import { Categories } from "@/lib/constants/topics";
 import { scrollToElement } from "@/utils/scrollToElement";
 
+
 export const Header = () => {
   const navigate = useNavigate();
 
@@ -58,17 +59,17 @@ export const Header = () => {
   return (
     <header>
       <nav className="navbar navbar-expand-lg ">
-        <div className="container-fluid d-flex flex-column flex-xl-row align-items-start align-items-xl-center">
-          <button
+        <div className="container-fluid  d-flex flex-row flex-lg-column  flex-xl-row align-items-start align-items-xl-center">
+         <button
             className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
             onClick={handleDropdown}  >
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon" style={{display:dropdown? "none":"block"}}></span>
           </button>
           <div
             className="collapse navbar-collapse"
             id="navbarSupportedContent"
           >
-            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondary border border-primary border-2 rounded-pill  align-items-center">
+            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondartransp  rounded-pill  align-items-center">
               <li className="nav-item">
                 <div className="nav-link active" aria-current="page">
                   <Link to={"/"}>Home</Link>
@@ -109,7 +110,7 @@ export const Header = () => {
 
           </div>
           <form
-            className="d-flex  bg-secondary  mt-lg-2 py-3 border border-primary border-2 rounded-pill"
+            className="d-flex bg-secondartransp mt-3 mt-lg-3 p-2 py-md-3   rounded-pill"
             role="search"
             onSubmit={handleSubmit}
           >
@@ -117,7 +118,7 @@ export const Header = () => {
               <SearchIcon />
             </button>
             <input
-              className="form-control p-1"
+              className="form-control bg-transparent  p-1"
               type="search"
               placeholder="separate,by,comma"
               aria-label="Search"
@@ -126,44 +127,44 @@ export const Header = () => {
           </form>
         </div>
       </nav>
-      <div className="container-fluid bg-secondary position-absolute z-3 " style={dropdown ? { top: "0" } : { top: "-100%" }}>
-        <div className="row w-100 justify-content-end ">
-          <div className="col-1 p-2"><button className="btn p-1 btn-lg" onClick={handleDropdown}>X</button></div>
+      <div className="container-sm w-75 w-md-25 rounded-4 bg-secondary position-absolute z-3 shadow-sm" style={dropdown ? { top: "2%", left: "12%" } : { top: "-120%" }}>
+        <div className="row w-100 justify-content-end  pe-5  pt-2">
+          <div className="col-1  "><button className="btn btn-md btn-outline-primary lh-1" onClick={handleDropdown}>close</button></div>
         </div>
-        <div className="row ">
-          <ul className="pb-5 " style={{ listStyle: "none" }}>
+        <div className="row">
+          <ul className="pb-3" style={{ listStyle: "none" }} >
 
-            <li className="nav-item">
-              <div className="nav-link fs-6 py-2 ps-2 " onClick={handleDropdown}>
+            <li className="nav-item mobile-menu-item">
+              <div className="nav-link fs-6 py-3 ps-2 " onClick={handleDropdown}>
                 <Link to={"/"}>Home</Link>
               </div>
             </li>
             {Object.values(Categories).map(value => (
-              <li key={value} className="nav-item" onClick={() => handleClick(value)}>
-                <div className="nav-link fs-6 py-2 ps-2 "style={{ cursor: "pointer" }} >
+              <li key={value} className="nav-item mobile-menu-item" onClick={() => handleClick(value)}>
+                <div className="nav-link fs-6 py-1 ps-2 " style={{ cursor: "pointer" }} >
                   <p >{value}</p>
                 </div>
               </li>
             ))
             }
-             <li className="nav-item">
-                <div className="nav-link fs-6 py-2 ps-2" >
-                  <a
-                    className="text-primary text-decoration-none "
-                    onClick={handleScrollToReviews}
-                    style={{ cursor: "pointer" }}
-                  >
-                    R&R
-                  </a>
-                </div>
-              </li>
-            <li className="nav-item">
+            <li className="nav-item mobile-menu-item">
+              <div className="nav-link fs-6 py-1 ps-2" >
+                <a
+                  className="text-primary text-decoration-none "
+                  onClick={handleScrollToReviews}
+                  style={{ cursor: "pointer" }}
+                >
+                  R&R
+                </a>
+              </div>
+            </li>
+            <li className="nav-item mobile-menu-item">
               <div className="nav-link fs-6 py-2 ps-2" onClick={handleDropdown}>
                 <Link to={"/subscribe"}>Newsletter</Link>
               </div>
             </li>
-            <li className="nav-item">
-              <div className="nav-link fs-6 py-2 ps-2" aria-disabled="true" >
+            <li className="nav-item mobile-menu-item">
+              <div className="nav-link fs-6 py-3 ps-2" aria-disabled="true" >
                 <Link to={"/Contact"}>Contact</Link>
               </div>
             </li>

@@ -44,7 +44,7 @@ export const TopicCard = ({ noticia }: { noticia: SingleNew }) => {
           }}
         >
           <div className="col-6 d-flex pb-2">
-            <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 ">
+            <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 text-secondary" >
             {handleCategories(noticia.categories !=undefined ? noticia.categories[0] : undefined)}
           </button>
           {
