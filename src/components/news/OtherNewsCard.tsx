@@ -3,6 +3,7 @@ import { useNewsStore } from "../../stores/useNewsStore";
 
 
 import { CardProps } from "./types/d.comp.types";
+import { Topics } from "@/lib/constants/topics";
 
 
 
@@ -10,22 +11,33 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
   const defineSingleNew = useNewsStore(state => state.defineSingleNew);
   const navigate = useNavigate();
 
+  const handleCategories = (noti: number | undefined)=>{
+    if(noti === undefined){
+      return "smartphones"
+   }
+  return  Object.keys(Topics).find(key => Topics[key as keyof typeof Topics] === noti) 
+  }
+ 
   const handleClick = () => {
     defineSingleNew(noticia);
     navigate("/single", { state: { noticia } });
   };
 
   return (
-    <article onClick={handleClick} style={{ cursor: "pointer" }}>
-      <div className=" card p-2  bg-secondary border border-secondary ">
-        <div className="col-12 border border-info mb-3"></div>
+    <article  onClick={handleClick} style={{ cursor: "pointer" }}>
+      <div className="card p-2 bg-secondartransp  border border-0 ">
+        <div className="col-12  mb-3"></div>
         <div className="col-6 d-flex ms-1 ">
-          <button className="btn btn-sm btn-primary me-1">
-            Interviwes
+          <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 ">
+            {handleCategories(noticia.categories !=undefined ? noticia.categories[0] : undefined)}
           </button>
-          <button className="btn btn-sm btn-outline-primary lh-sm">
-            New Release
-          </button>
+          {
+          noticia.categories?.length > 1 ? 
+          ( <button className="btn btn-sm btn-outline-primary mt-2 mb-2 lh-1">
+           {handleCategories(noticia.categories != undefined ? noticia.categories[1] : undefined)}
+          </button>) : ("")
+          }
+         
         </div>
         <div className="card-body pt-1 ">
           <h4 className="card-title  truncate-after-second-line pt-1">

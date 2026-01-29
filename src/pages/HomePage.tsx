@@ -5,7 +5,6 @@ import { Loader } from "@/components/shared/Loader";
 import { useHomeNews } from "@/hooks/useHomeNews";
 import { EventCard } from "@/components/news/EventCard";
 import { TopicCard } from "@/components/news/TopicCard";
-import { SingleNew } from "@/lib/types/d.news.types";
 import { VideoPlayer } from "@/components/reviews/VideoPlayer";
 
 export const HomePage = () => {
@@ -40,7 +39,7 @@ export const HomePage = () => {
         </div>
       </section>
       <section
-        className="container-fluid pb-4 p-1 p-sm-4  bg-secondary  pb-4"
+        className="container-fluid pb-4 p-1 p-sm-4    pb-4"
         id="latest-news"
       >
         <div className="row p-4 mb-3">
@@ -78,7 +77,7 @@ export const HomePage = () => {
       </section>
 
       <section
-        className="container-fluid p-1 p-sm-4 pb-4 bg-secondary "
+        className="container-fluid p-1 p-sm-4 pb-4 "
         id="topics"
       >
         <div className="row p-4 mb-3">
@@ -101,7 +100,7 @@ export const HomePage = () => {
       </section>
 
       <section
-        className="conteiner-fluid p-1 p-sm-4 pb-4 bg-secondary"
+        className="conteiner-fluid p-1 p-sm-4 pb-4 "
         id="events"
       >
         <div className="row p-4 mb-3">
@@ -123,7 +122,7 @@ export const HomePage = () => {
       </section>
 
       <section
-        className="container-fluid p-1 p-sm-4 bg-secondary"
+        className="container-fluid p-1 p-sm-4 "
         id="reviews"
       >
         <div className="row p-4 mb-3">

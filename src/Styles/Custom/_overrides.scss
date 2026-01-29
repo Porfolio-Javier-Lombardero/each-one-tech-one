@@ -68,9 +68,10 @@
 
 
 body {
-  background-color: $secondary;
-  background-image: url("../../assets/images/fondoFinal.webp");
-  background-size: contain;
+  // background-color: $secondary;
+  background-image:url("/src/assets/images/fondoFinal.webp");
+  background-size: cover;
+  background-attachment: fixed;
   background-repeat: no-repeat;
 }
 
@@ -79,66 +80,23 @@ section {
 
 }
 
-.navbar-expand-custom .navbar-collapse {
-  display: none;
-}
 
-.navbar-expand-custom .navbar-toggler {
-  display: block;
-}
+// #hero {
+//   background-image: linear-gradient(to top, $secondary 0%, transparent);
 
-/* Dropdown móvil personalizado */
-.mobile-dropdown {
-  transition: top 0.3s ease;
-  top: -100%;
-}
+// }
 
-.mobile-dropdown.show {
-  top: 0 !important;
-}
-
-.mobile-dropdown.hide {
-  top: -100% !important;
-}
-
-/* Mostrar el navbar expandido a partir de 1000px */
-@media (min-width: 1000px) {
-  .navbar-expand-custom .navbar-collapse {
-    display: flex !important;
-    flex-basis: auto;
-  }
-
-  .navbar-expand-custom .navbar-toggler {
-    display: none !important;
-  }
-
-  /* Ocultar el dropdown móvil en pantallas grandes con máxima especificidad */
-  .mobile-dropdown,
-  .mobile-dropdown.show,
-  .mobile-dropdown.hide {
-    display: none !important;
-    visibility: hidden !important;
-    top: -100% !important;
-    z-index: -1 !important;
-  }
-}
-
-
-#hero {
-  background-image: linear-gradient(to top, $secondary 4%, transparent);
-
-}
-
-#herOther {
-  background-image: linear-gradient(to top, $secondary 35%, transparent);
-}
+// #herOther {
+//   background-image: linear-gradient(to top, $secondary 35%, transparent);
+// }
 
 .swiper {
   width: 600px;
   height: 300px;
 }
-
-
+.bg-secondartransp {
+  background-color: $secondartransp !important;
+}
 
 
 @media screen and (max-width: 1540px) {
@@ -151,28 +109,23 @@ section {
 
 @media screen and (max-width: 1300px) {
   .nav-item .nav-link {
-    font-size: 0.98rem;
+    font-size: 1rem;
     text-wrap: nowrap;
   }
 }
 
 @media screen and (max-width: 1230px) {
   .nav-item .nav-link {
-    font-size: 0.91rem;
+    font-size: 0.97rem;
     text-wrap: nowrap;
   }
 }
 
-@media screen and (max-width: 1170px) {
-  .nav-item .nav-link {
-    font-size: 0.83rem;
-    text-wrap: nowrap;
-  }
-}
 
-@media screen and (max-width: 1105px) {
+
+@media screen and (max-width: 1110px) {
   .nav-item .nav-link {
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     text-wrap: nowrap;
   }
 

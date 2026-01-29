@@ -12,6 +12,7 @@ export const mapNews = (newsArray: TechCrunchArticleArray ): News | void => {
     titulo: item.title.rendered,
     desc: item.excerpt.rendered,
     cont: item.content.rendered,
+    categories:item.categories,
     fechaIso: item.date,
     fecha: formatDate(item.date),
     url: item.link,

@@ -5,6 +5,7 @@ export interface SingleNew {
     titulo: string;
     desc: string;
     cont: string;
+    categories:number[];
     fechaIso: string;
    fecha: string;
     url: string;

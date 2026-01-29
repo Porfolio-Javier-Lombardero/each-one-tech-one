@@ -15,13 +15,10 @@ export const Header = () => {
   // Cerrar el dropdown al cambiar el tamaño de pantalla
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1000) {
+      if (window.innerWidth >= 992) {
         setdropdown(false);
       }
     };
-
-    // Ejecutar inmediatamente para asegurar estado correcto al cargar
-    handleResize();
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -60,8 +57,8 @@ export const Header = () => {
 
   return (
     <header>
-      <nav className="navbar navbar-expand-custom">
-        <div className="container-fluid ">
+      <nav className="navbar navbar-expand-lg ">
+        <div className="container-fluid d-flex flex-column flex-xl-row align-items-start align-items-xl-center">
           <button
             className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
             onClick={handleDropdown}  >
@@ -71,7 +68,7 @@ export const Header = () => {
             className="collapse navbar-collapse"
             id="navbarSupportedContent"
           >
-            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondary border border-primary border-2 rounded-pill p-1">
+            <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondary border border-primary border-2 rounded-pill  align-items-center">
               <li className="nav-item">
                 <div className="nav-link active" aria-current="page">
                   <Link to={"/"}>Home</Link>
@@ -79,7 +76,7 @@ export const Header = () => {
               </li>
               {
                 Object.values(Categories).map(value => (
-                  <li key={value} className="nav-item" onClick={() => handleClick(value)}>
+                  <li key={value} className="nav-item mt-3" onClick={() => handleClick(value)}>
                     <div className="nav-link " >
                       <p className="text-primary" style={{ cursor: "pointer" }}>{value}</p>
                     </div>
@@ -89,13 +86,13 @@ export const Header = () => {
 
               <li className="nav-item">
                 <div className="nav-link" >
-                  <button
-                    className="btn btn-link text-decoration-none p-0 text-white"
+                  <a
+                    className="text-primary text-decoration-none p-0 "
                     onClick={handleScrollToReviews}
                     style={{ cursor: "pointer" }}
                   >
                     R&R
-                  </button>
+                  </a>
                 </div>
               </li>
               <li className="nav-item">
@@ -112,7 +109,7 @@ export const Header = () => {
 
           </div>
           <form
-            className="d-flex  bg-secondary rounded-pill mt-lg-2 py-2 border border-secondary border-2"
+            className="d-flex  bg-secondary  mt-lg-2 py-3 border border-primary border-2 rounded-pill"
             role="search"
             onSubmit={handleSubmit}
           >
@@ -129,7 +126,7 @@ export const Header = () => {
           </form>
         </div>
       </nav>
-      <div className={`container-fluid bg-secondary position-absolute z-3 mobile-dropdown ${dropdown ? 'show' : 'hide'}`}>
+      <div className="container-fluid bg-secondary position-absolute z-3 " style={dropdown ? { top: "0" } : { top: "-100%" }}>
         <div className="row w-100 justify-content-end ">
           <div className="col-1 p-2"><button className="btn p-1 btn-lg" onClick={handleDropdown}>X</button></div>
         </div>
@@ -143,12 +140,23 @@ export const Header = () => {
             </li>
             {Object.values(Categories).map(value => (
               <li key={value} className="nav-item" onClick={() => handleClick(value)}>
-                <div className="nav-link fs-6 py-2 ps-2 " >
+                <div className="nav-link fs-6 py-2 ps-2 "style={{ cursor: "pointer" }} >
                   <p >{value}</p>
                 </div>
               </li>
             ))
             }
+             <li className="nav-item">
+                <div className="nav-link fs-6 py-2 ps-2" >
+                  <a
+                    className="text-primary text-decoration-none "
+                    onClick={handleScrollToReviews}
+                    style={{ cursor: "pointer" }}
+                  >
+                    R&R
+                  </a>
+                </div>
+              </li>
             <li className="nav-item">
               <div className="nav-link fs-6 py-2 ps-2" onClick={handleDropdown}>
                 <Link to={"/subscribe"}>Newsletter</Link>
@@ -156,7 +164,7 @@ export const Header = () => {
             </li>
             <li className="nav-item">
               <div className="nav-link fs-6 py-2 ps-2" aria-disabled="true" >
-                <Link to={"/Contact"}>contact</Link>
+                <Link to={"/Contact"}>Contact</Link>
               </div>
             </li>
           </ul>
