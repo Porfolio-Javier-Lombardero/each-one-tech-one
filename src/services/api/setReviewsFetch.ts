@@ -13,6 +13,7 @@
       return data.items
     } catch (error) {
       console.error("Error cargando noticias de video", error);
+      throw error
     }
   };
 

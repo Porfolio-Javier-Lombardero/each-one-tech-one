@@ -1,7 +1,4 @@
 import { useNavigate } from "react-router-dom";
-
-
-
 import { CardProps } from "./types/d.comp.types";
 import { Categories, Topics } from "@/lib/constants/topics";
 import React, { } from "react";
@@ -10,8 +7,14 @@ import { useStore } from "@/store";
 
 
 export const OtherNewsCard = ({ noticia }: CardProps) => {
+  
   const defineSingleNew = useStore(state => state.defineSingleNew);
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    defineSingleNew(noticia);
+    navigate("/single", { state: { noticia } });
+  };
 
   const handleCategories = (noti: number | undefined) => {
     if (noti === undefined) {
@@ -21,26 +24,21 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
       Topics[key as keyof typeof Topics] === noti)
   }
 
-  const handleClick = () => {
-    defineSingleNew(noticia);
-    navigate("/single", { state: { noticia } });
-  };
 
   const navigateToTopicPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     const topic = e.currentTarget.textContent as string
     const categoryValue = Object.keys(Categories).find(key =>
-      key.toLowerCase() === topic?.toLowerCase()
-    );
+      key.toLowerCase() === topic?.toLowerCase());
+    
     const categoryTitle = categoryValue ?
-      Categories[categoryValue as keyof typeof Categories] : undefined;
+    Categories[categoryValue as keyof typeof Categories] : undefined;
 
     if (categoryTitle === undefined) {
-      navigate('/404');
+      navigate('/');
       return;
     }
-
-    navigate(`/${categoryTitle || ''}`);
+   navigate(`/${categoryTitle || ''}`);
   }
 
   return (

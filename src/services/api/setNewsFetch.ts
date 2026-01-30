@@ -5,9 +5,8 @@ import { formatDateForGuardian } from "../../utils/formatDates";
 import { mapNews } from "../utils/mapNews";
 import { mapNewsDos } from "../utils/mapNewsDos";
 
-const CRUNCH_API_KEY = import.meta.env.VITE_TECHCRUNCH_API_KEY
-const GUARDIAN_API_KEY = import.meta.env.VITE_THEGUARDIAN_API_KEY
-
+const CRUNCH_API_KEY = import.meta.env.VITE_TECHCRUNCH_API_KEY;
+const GUARDIAN_API_KEY = import.meta.env.VITE_THEGUARDIAN_API_KEY;
 
 // Helper: Obtener query segura de Topics2
 const getSearchQuery = (topic: number): string | null => {
@@ -16,29 +15,30 @@ const getSearchQuery = (topic: number): string | null => {
 
 export const newsFetch = async (
   topic: number | string,
-  dateFilter: DateFilterType = 'today'
+  dateFilter: DateFilterType = "today",
 ): Promise<News | void> => {
-
   const dateRange = getDateRangeByFilter(dateFilter, topic);
 
   // ==================== INTENTO 1: TechCrunch ====================
   // Si topic es string, saltar TechCrunch e ir directo a Guardian (mejores resultados)
-  if (typeof topic !== 'string') {
+
+  if (typeof topic !== "string") {
     try {
       const techCrunchOptions = {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'x-rapidapi-key': CRUNCH_API_KEY,
-          'x-rapidapi-host': 'techcrunch1.p.rapidapi.com'
-        }
+          "x-rapidapi-key": CRUNCH_API_KEY,
+          "x-rapidapi-host": "techcrunch1.p.rapidapi.com",
+        },
       };
 
       // Construir URL según el tipo de topic
-      const techCrunchUrl = typeof topic === "string"
-        ? `https://techcrunch1.p.rapidapi.com/v2/posts?search=${encodeURIComponent(topic)}&orderby=relevance&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`
-        : `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`;
+      const techCrunchUrl = typeof topic === "string" ?
+        `https://techcrunch1.p.rapidapi.com/v2/posts?search=${encodeURIComponent(topic)}&orderby=relevance&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`
+        :
+        `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`;
 
-      console.log('🔍 TechCrunch URL:', techCrunchUrl);
+
 
       const techCrunchResponse = await fetch(techCrunchUrl, techCrunchOptions);
 
@@ -52,23 +52,20 @@ export const newsFetch = async (
       // Si TechCrunch devuelve resultados, retornar
       if (newsArray && newsArray.length > 0) {
         const news = mapNews(newsArray);
-        console.log(`✅ TechCrunch: ${newsArray.length} articles found`);
         return news;
       }
-
-      console.warn(`⚠️ TechCrunch: No articles found for topic ${topic}`);
-
+    
     } catch (error) {
-      console.error('❌ TechCrunch API failed:', error);
+      console.error("❌ TechCrunch API failed:", error);
+      // No re-throw: permitir fallback al Guardian
     }
-  } // Fin del bloque condicional para TechCrunch
+  }
 
   // ==================== INTENTO 2: Guardian API ====================
   // Para búsquedas por string, Guardian es la mejor opción
   // Si topic es string, usarlo directamente; si es number, buscar en Topics2
-  const searchQuery = typeof topic === 'string'
-    ? topic
-    : getSearchQuery(topic);
+
+  const searchQuery = typeof topic === "string" ? topic : getSearchQuery(topic);
 
   // Si no hay query definida, no tiene sentido hacer el fetch
   if (!searchQuery) {
@@ -78,10 +75,10 @@ export const newsFetch = async (
 
   try {
     const guardianOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     // Formatear fechas para Guardian (YYYY-MM-DD)
@@ -101,17 +98,13 @@ export const newsFetch = async (
 
     if (newsArrayDos.length > 0) {
       const news = mapNewsDos(newsArrayDos);
-      console.log(`✅ Guardian: ${newsArrayDos.length} articles found`);
-      return news;
+      return news ;
     }
-
-    console.warn(`⚠️ Guardian: No articles found for query "${searchQuery}"`);
-
   } catch (error) {
-    console.error('❌ Guardian API failed:', error);
+    console.error("❌ Guardian API failed:", error);
+    throw error;
   }
 
-  // Si ambas APIs fallan, retornar array vacío
   console.error(`❌ No articles found from any source for topic ${topic}`);
   return [];
 };

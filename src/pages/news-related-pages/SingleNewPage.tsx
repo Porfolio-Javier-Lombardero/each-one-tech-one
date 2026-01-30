@@ -4,7 +4,7 @@ import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 import { useStore } from "@/store";
-import { cleanHTML } from "@/utils/useCleanHtml";
+import { cleanHTML } from "@/services/utils/useCleanHtml";
 
 
 export const SingleNewPage = () => {

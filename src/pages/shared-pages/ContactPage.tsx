@@ -1,6 +1,6 @@
 
 
-import fondoContact from '../assets/images/fondoContact.png'
+import fondoContact from '@/assets/images/fondoContact.png'
 import { Facebook } from '@/assets/icons/Facebook'
 import { Share } from '@/assets/icons/Share'
 import { Tweeter } from '@/assets/icons/Tweeter'
