@@ -34,7 +34,7 @@ export const HomePage = () => {
               Tech
               <span className="alt-font-thin"> One</span>
             </h1>
-            <h3 className="text-center">Where tech Meets</h3>
+            <h3 className="text-center" style={{textShadow:"1px 1px 10px white"}}>Where tech Meets</h3>
           </div>
         </div>
       </section>

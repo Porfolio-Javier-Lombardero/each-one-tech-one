@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { DateFilterType } from "@/lib/types/d.news.types";
-import { useNewsStore } from "@/stores/useNewsStore";
+
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
+import { useStore } from "@/store";
 
 export const useTopicNews = (
     topic: string | undefined,
     dateFilter: DateFilterType = 'today'
 ) => {
     const { getTopicId } = useCategoryFilter();
-    const searchByCategory = useNewsStore(state => state.searchByCategory);
-    const loading = useNewsStore((state) => state.loading);
-    const filteredNews = useNewsStore((state) => state.filteredNews);
+    const searchByCategory = useStore(state => state.searchByCategory);
+    const loading = useStore((state) => state.loadingNews);
+    const filteredNews = useStore((state) => state.filteredNews);
 
     // 1. BÚSQUEDA EN CACHÉ (se ejecuta en cada render)
     // En el primer render puede retornar undefined si no existe en caché

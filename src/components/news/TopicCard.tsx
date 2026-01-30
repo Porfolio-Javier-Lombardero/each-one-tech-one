@@ -1,15 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useNewsStore } from "../../stores/useNewsStore";
+
 import { SingleNew } from "@/lib/types/d.news.types";
 import { Topics } from "@/lib/constants/topics";
+import { useStore } from "@/store";
 
 
 
 
 export const TopicCard = ({ noticia }: { noticia: SingleNew }) => {
 
-  const defineSingleNew = useNewsStore(state => state.defineSingleNew);
+  const defineSingleNew = useStore(state => state.defineSingleNew);
   const navigate = useNavigate();
 
 
@@ -18,13 +19,13 @@ export const TopicCard = ({ noticia }: { noticia: SingleNew }) => {
     navigate("/single", { state: { noticia } });
   };
 
-    const handleCategories = (noti: number | undefined)=>{
-      if(noti === undefined){
-        return "smartphones"
-     }
-    return  Object.keys(Topics).find(key => Topics[key as keyof typeof Topics] === noti) 
+  const handleCategories = (noti: number | undefined) => {
+    if (noti === undefined) {
+      return "smartphones"
     }
-   
+    return Object.keys(Topics).find(key => Topics[key as keyof typeof Topics] === noti)
+  }
+
 
   return (
     <article className="mb-3 mb-lg-0" onClick={handleClick} style={{ cursor: "pointer" }}>
@@ -45,14 +46,14 @@ export const TopicCard = ({ noticia }: { noticia: SingleNew }) => {
         >
           <div className="col-6 d-flex pb-2">
             <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 text-secondary" >
-            {handleCategories(noticia.categories !=undefined ? noticia.categories[0] : undefined)}
-          </button>
-          {
-          noticia.categories?.length > 1 ? 
-          ( <button className="btn btn-sm btn-outline-secondary mt-2 mb-2 lh-1">
-           {handleCategories(noticia.categories != undefined ? noticia.categories[1] : undefined)}
-          </button>) : ("")
-          }
+              {handleCategories(noticia.categories != undefined ? noticia.categories[0] : undefined)}
+            </button>
+            {
+              noticia.categories?.length > 1 ?
+                (<button className="btn btn-sm btn-outline-secondary mt-2 mb-2 lh-1">
+                  {handleCategories(noticia.categories != undefined ? noticia.categories[1] : undefined)}
+                </button>) : ("")
+            }
           </div>
 
           <h4 className="h6 card-title fw-bolder text-secondary truncate-after-second-line">

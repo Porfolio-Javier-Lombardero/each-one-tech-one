@@ -132,7 +132,7 @@ export const Header = () => {
 
           </div>
           <form
-            className="d-flex bg-secondartransp mt-3 mt-lg-3 p-2 py-md-3 shadow-sm  rounded-pill"
+            className="d-flex bg-secondartransp mt-3 ms-0 ms-lg-2 mt-lg-3 p-2 py-md-3 shadow-sm  rounded-pill"
             role="search"
             onSubmit={handleSubmit}
           >

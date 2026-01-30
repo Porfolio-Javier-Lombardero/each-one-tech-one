@@ -35,7 +35,7 @@
       "@/components/*": ["./src/components/*"],
       "@/assets/*": ["./src/assets/*"],
       "@/pages/*": ["./src/pages/*"],
-      "@/stores/*": ["./src/stores/*"],
+      "@/stores/*": ["src/store/*"],
       "@/services/*": ["./src/services/*"],
       "@/types/*": ["src/lib/types/*"],
       "@/Utils/*": ["src/utils/*"]

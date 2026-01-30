@@ -3,13 +3,13 @@ import { Loader } from "@/components/shared/Loader";
 import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
-import { useNewsStore } from "@/stores/useNewsStore";
+import { useStore } from "@/store";
 import { cleanHTML } from "@/utils/useCleanHtml";
 
 
 export const SingleNewPage = () => {
 
-  const singleNew = useNewsStore((state) => state.singleNew);
+  const singleNew = useStore((state) => state.singleNew);
 
 
 

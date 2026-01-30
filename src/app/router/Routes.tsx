@@ -5,10 +5,10 @@ import { HomePage } from '../../pages/HomePage'
 import { TopicPage } from '../../pages/news-related-pages/TopicPage'
 import { SingleNewPage } from '../../pages/news-related-pages/SingleNewPage'
 import { SearchResults } from '../../pages/news-related-pages/SearchResults'
-import { ContactPage } from '../../pages/ContactPage'
-import { SubscribePage } from '../../pages/SubscribePage'
-import { TechRapsodyPage } from '../../pages/news-related-pages/TechRapsodyPage'
-import { NotFound } from '../../pages/NotFound'
+import { ContactPage } from '../../pages/shared-pages/ContactPage'
+import { SubscribePage } from '../../pages/shared-pages/SubscribePage'
+
+import { NotFound } from '../../pages/error/NotFound'
 
 
 export const Routes: RouteObject[] = [
@@ -40,10 +40,7 @@ export const Routes: RouteObject[] = [
                 path: 'subscribe',
                 element: <SubscribePage />
             },
-            {
-                path: 'tech-rapsody',
-                element: <TechRapsodyPage />
-            },
+         
             {
                 path: '*',
                 element: <NotFound />

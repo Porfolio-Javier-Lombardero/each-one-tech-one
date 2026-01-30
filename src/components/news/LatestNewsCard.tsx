@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useNewsStore } from "../../stores/useNewsStore";
 import { CardProps } from "./types/d.comp.types";
+import { useStore } from "../../store/";
 
 
 
 export const LatestNewsCard = ({ noticia }: CardProps) => {
 
-  const defineSingleNew = useNewsStore(state => state.defineSingleNew);
+  const defineSingleNew = useStore(state => state.defineSingleNew);
   const navigate = useNavigate();
 
   const handleClick = () => {

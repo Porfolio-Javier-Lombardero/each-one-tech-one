@@ -1,9 +1,9 @@
 import { Topics } from '@/lib/constants/topics';
 import { DateFilterType } from '@/lib/types/d.news.types';
-import { useNewsStore } from '@/stores/useNewsStore';
+import { useStore } from '@/store';
 
 export const useCategoryFilter = () => {
-  const searchByCategory = useNewsStore(state => state.searchByCategory)
+  const searchByCategory = useStore(state => state.searchByCategory)
 
   const getTopicId = (topic: string | undefined): number | string | undefined => {
     switch (topic) {
