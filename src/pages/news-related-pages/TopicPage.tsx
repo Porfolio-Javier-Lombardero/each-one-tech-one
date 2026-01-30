@@ -20,6 +20,10 @@ export const TopicPage = () => {
 
   // 3. HELPER para mensajes de UI
   const getEmptyMessage = (dateFilter: string): string => {
+    if (topic === 'foundAtWeb') {
+      return 'No articles found matching your search';
+    }
+
     switch (dateFilter) {
       case 'today':
         return 'No articles published today yet';
@@ -52,46 +56,50 @@ export const TopicPage = () => {
       <div className="container-fluid m-0 pb-0 topic-page-gradient" id="hero">
         <div className="row  ps-4 pt-5 pb-0 m-0 gy-2 ">
           <div className="col-12 p-3  ">
-            <h1 className="h1 display-2 text-center text-sm-start">{topic}</h1>
+            <h1 className="h1 display-2 text-center text-sm-start">
+              {topic === 'foundAtWeb' ? 'Search Results' : topic}
+            </h1>
           </div>
-          <div className="col-12 d-flex ps-2 pt-3 pb-0  mb-0">
-            <button
-              className={`btn btn-outline-primary d-none d-sm-inline ms-2 ${dateFilter === 'today' ? 'active text-secondary' : ''}`}
-              onClick={() => setDateFilter('today')}
-            >
-              Today
-            </button>
-            <button
-              className={`btn btn-outline-primary d-none d-sm-inline ms-2 ${dateFilter === 'yesterday' ? 'active text-secondary' : ''}`}
-              onClick={() => setDateFilter('yesterday')}
-            >
-              Yesterday
-            </button>
-            <button
-              className={`btn btn-outline-primary d-none d-sm-inline ms-2 ${dateFilter === 'lastWeek' ? 'active text-secondary' : ''}`}
-              onClick={() => setDateFilter('lastWeek')}
-            >
-              Older
-            </button>
-            <button
-              className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 ${dateFilter === 'today' ? 'active text-secondary' : ''}`}
-              onClick={() => setDateFilter('today')}
-            >
-              Today
-            </button>
-            <button
-              className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 ${dateFilter === 'yesterday' ? 'active text-secondary' : ''}`}
-              onClick={() => setDateFilter('yesterday')}
-            >
-              Yesterday
-            </button>
-            <button
-              className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 ${dateFilter === 'lastWeek' ? 'active text-secondary' : ''}`}
-              onClick={() => setDateFilter('lastWeek')}
-            >
-              Older
-            </button>
-          </div>
+          {topic !== 'foundAtWeb' && (
+            <div className="col-12 d-flex ps-2 pt-3 pb-0  mb-0">
+              <button
+                className={`btn btn-outline-primary d-none d-sm-inline ms-2 ${dateFilter === 'today' ? 'active text-secondary' : ''}`}
+                onClick={() => setDateFilter('today')}
+              >
+                Today
+              </button>
+              <button
+                className={`btn btn-outline-primary d-none d-sm-inline ms-2 ${dateFilter === 'yesterday' ? 'active text-secondary' : ''}`}
+                onClick={() => setDateFilter('yesterday')}
+              >
+                Yesterday
+              </button>
+              <button
+                className={`btn btn-outline-primary d-none d-sm-inline ms-2 ${dateFilter === 'lastWeek' ? 'active text-secondary' : ''}`}
+                onClick={() => setDateFilter('lastWeek')}
+              >
+                Older
+              </button>
+              <button
+                className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 ${dateFilter === 'today' ? 'active text-secondary' : ''}`}
+                onClick={() => setDateFilter('today')}
+              >
+                Today
+              </button>
+              <button
+                className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 ${dateFilter === 'yesterday' ? 'active text-secondary' : ''}`}
+                onClick={() => setDateFilter('yesterday')}
+              >
+                Yesterday
+              </button>
+              <button
+                className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 ${dateFilter === 'lastWeek' ? 'active text-secondary' : ''}`}
+                onClick={() => setDateFilter('lastWeek')}
+              >
+                Older
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

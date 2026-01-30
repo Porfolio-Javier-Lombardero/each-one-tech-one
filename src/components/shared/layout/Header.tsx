@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 import { Categories } from "@/lib/constants/topics";
 import { scrollToElement } from "@/utils/scrollToElement";
+import { useStore } from "@/store";
 
 
 export const Header = () => {
@@ -63,9 +64,26 @@ export const Header = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const field = new FormData(event.currentTarget);
-    const find = field.get("query");
+    const find = field.get("query") as string;
 
-    navigate(`/${find}`);
+    if (!find || find.trim() === '') return;
+
+    // Separar por comas y espacios, hacer trim y filtrar vacíos
+    const keywords = find
+      .split(/[,\s]+/)
+      .map(word => word.trim())
+      .filter(word => word.length > 0);
+
+    if (keywords.length === 0) return;
+
+    // Disparar la búsqueda en el store
+    useStore.getState().searchByKeywords(keywords);
+
+    // Limpiar el formulario
+    event.currentTarget.reset();
+
+    // Navegar a la página de resultados
+    navigate('/foundAtWeb');
   };
 
   return (
@@ -132,17 +150,18 @@ export const Header = () => {
 
           </div>
           <form
-            className="d-flex bg-secondartransp mt-3 ms-0 ms-lg-2 mt-lg-3 p-2 py-md-3 shadow-sm  rounded-pill"
+            className="d-flex bg-secondartransp w-75 w-md-50 w-lg-25 mt-3 ms-0 ms-lg-2 mt-lg-3 p-2 py-md-3 shadow-sm rounded-pill"
             role="search"
             onSubmit={handleSubmit}
           >
             <button className="btn btn-sm m-0 text-primary" type="submit">
-              <SearchIcon />
+              <SearchIcon/>
             </button>
             <input
-              className="form-control bg-transparent  p-1"
+              style={{fontSize:"1.1rem"}}
+              className="form-control bg-transparent p-0"
               type="search"
-              placeholder="separate,by,comma"
+              placeholder="search today's news by terms"
               aria-label="Search"
               name="query"
             />

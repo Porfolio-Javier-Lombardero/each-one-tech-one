@@ -15,7 +15,7 @@ export const useTopicNews = (
 
     // 1. BÚSQUEDA EN CACHÉ (se ejecuta en cada render)
     // En el primer render puede retornar undefined si no existe en caché
-    const topicId = getTopicId(topic);
+    const topicId = topic === 'foundAtWeb' ? 'foundAtWeb' : getTopicId(topic);
     const topicNews = filteredNews.find(
         (n) => n.category === topicId && n.dateFilter === dateFilter
     )?.news;
@@ -24,6 +24,9 @@ export const useTopicNews = (
     // Si topicNews es undefined, dispara el fetch que actualizará el store
     // El store actualizado causa un re-render donde topicNews YA tendrá datos
     useEffect(() => {
+        // No hacer fetch para búsquedas, ya están en caché
+        if (topic === 'foundAtWeb') return;
+
         if (topicId !== undefined) {
             // Verificar caché ANTES de disparar el fetch (doble verificación)
             const alreadyInCache = filteredNews.some(

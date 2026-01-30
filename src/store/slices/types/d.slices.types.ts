@@ -8,14 +8,15 @@ export interface NewsSlice {
     news: News | undefined;
     singleNew: SingleNew | undefined;
     filteredNews: CategoryCache[];
-    loadingNews:boolean;
-    error:string | undefined;
+    loadingNews: boolean;
+    error: string | undefined;
     // Actions
     topHeadLines: (topic: string | number, dateFilter?: DateFilterType | undefined) => Promise<void>;
     searchByCategory: (
         topic: number | string,
         dateFilter?: DateFilterType,
-      ) => Promise<void>;
+    ) => Promise<void>;
+    searchByKeywords: (keywords: string[]) => void;
     defineSingleNew: (noticia: SingleNew) => void;
 }
 
@@ -28,9 +29,9 @@ export interface EventsSlice {
 }
 
 export interface ReviewsSlice {
-    reviews: string[]| undefined;
+    reviews: string[] | undefined;
     loadingReviews: boolean;
-    error:string|undefined
+    error: string | undefined
     //Actions
     searchTechReviews: () => Promise<void>;
 }

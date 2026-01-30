@@ -90,5 +90,37 @@ export const createNewsSlice: StateCreator<NewsSlice, [], [["zustand/immer", nev
         set((state: NewsSlice) => {
             state.singleNew = noticia;
         });
+    },
+    searchByKeywords: (keywords: string[]) => {
+        const currentNews = get().news;
+
+        if (!currentNews || currentNews.length === 0) {
+            return;
+        }
+
+        // Buscar noticias cuyo título contenga alguna de las palabras clave
+        const foundNews = currentNews.filter((article) => {
+            const titleLower = article.titulo.toLowerCase();
+            return keywords.some((keyword) =>
+                titleLower.includes(keyword.toLowerCase())
+            );
+        });
+
+        // Remover búsqueda anterior si existe
+        const filteredWithoutSearch = get().filteredNews.filter(
+            (item) => item.category !== 'foundAtWeb'
+        );
+
+        // Agregar nueva búsqueda
+        set((state: NewsSlice) => {
+            state.filteredNews = [
+                ...filteredWithoutSearch,
+                {
+                    category: 'foundAtWeb',
+                    dateFilter: 'today',
+                    news: foundNews,
+                }
+            ];
+        });
     }
 }))

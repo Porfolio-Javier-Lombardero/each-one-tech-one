@@ -158,7 +158,7 @@ section {
 @media screen and (max-width: 1179px) {
   .nav-item .nav-link {
     font-size: 0.85rem;
-  
+
     padding: 0.2rem 0.2rem;
     text-wrap: nowrap;
   }
@@ -209,10 +209,27 @@ section {
   h3 {
     font-size: 1.2rem;
   }
+}
 
+// Utilidades de ancho responsive
+@media (min-width: 992px) {
+  .w-lg-25 {
+    width: 25% !important;
+    max-width: 25% !important;
+  }
 
+  .w-lg-50 {
+    width: 50% !important;
+    max-width: 50% !important;
+  }
 
+  .w-lg-75 {
+    width: 75% !important;
+    max-width: 75% !important;
+  }
 
-
-
+  .w-lg-100 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }

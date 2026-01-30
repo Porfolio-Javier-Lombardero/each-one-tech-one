@@ -13,10 +13,8 @@ const getSearchQuery = (topic: number): string | null => {
   return Topics2[topic as keyof typeof Topics2] || null;
 };
 
-export const newsFetch = async (
-  topic: number | string,
-  dateFilter: DateFilterType = "today",
-): Promise<News | void> => {
+export const newsFetch = async (topic: number | string,dateFilter: DateFilterType = "today",): Promise<News | void> =>
+  {
   const dateRange = getDateRangeByFilter(dateFilter, topic);
 
   // ==================== INTENTO 1: TechCrunch ====================
