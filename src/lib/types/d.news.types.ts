@@ -1,19 +1,37 @@
-export type DateFilterType = "all"| 'today' | 'yesterday' | 'lastWeek';
+export type DateFilterType = "all" | 'today' | 'yesterday' | 'lastWeek';
 
 export interface SingleNew {
     id: `${string}-${string}-${string}-${string}-${string}`;
     titulo: string;
-    desc: string;
+    description: string; // Antes: desc (ahora coincide con DB)
     cont: string;
-    categories:number[];
+    categories: number[];
     fechaIso: string;
-   fecha: string;
+    fecha: string;
     url: string;
     img?: any
 }
 
 
 export type News = SingleNew[]
+
+// Tipos para los datos almacenados en Supabase
+export interface CachedNews {
+    id: number;
+    source: string;
+    techcrunch_id: number;
+    titulo: string;
+    description: string | null;
+    cont: string | null;
+    categories: number[] | null;
+    fecha_iso: string;
+    url: string;
+    img: string | null;
+    created_at: string;
+    updated_at: string;
+    fetch_count: number;
+    search_context: string; // 'homepage', 'category_449', 'category_450', etc.
+}
 
 export interface TechCrunchArticle {
     id: number;
@@ -102,25 +120,25 @@ export interface TechCrunchArticle {
 }
 
 export interface GuardianFields {
-  bodyText: string;
-  trailText: string
-  thumbnail:string
+    bodyText: string;
+    trailText: string
+    thumbnail: string
 }
 
 export interface GuardianArticle {
-  id: string;
-  type: string;
-  sectionId: string;
-  sectionName: string;
-  webPublicationDate: string; // ISO string, convertir a Date si lo deseas
-  webTitle: string;
-  webUrl: string;
-  apiUrl: string;
-  tags:string;
-  fields: GuardianFields;
-  isHosted: boolean;
-  pillarId: string;
-  pillarName: string;
+    id: string;
+    type: string;
+    sectionId: string;
+    sectionName: string;
+    webPublicationDate: string; // ISO string, convertir a Date si lo deseas
+    webTitle: string;
+    webUrl: string;
+    apiUrl: string;
+    tags: string;
+    fields: GuardianFields;
+    isHosted: boolean;
+    pillarId: string;
+    pillarName: string;
 }
 
 

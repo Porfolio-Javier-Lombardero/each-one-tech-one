@@ -46,7 +46,7 @@ export const SingleNewPage = () => {
         </div>
         <div className="row g-0 g-md-5">
           <div className="col-12 d-flex justify-content-center py-4 px-3">
-            <h4> {singleNew.desc.replace(/<\/?p>|[#&;]|82\d*/g, '')}</h4>
+            <h4> {singleNew.description.replace(/<\/?p>|[#&;]|82\d*/g, '')}</h4>
 
           </div>
           <div className="col-12 pt-2 col-md-6  d-flex align-self-start justify-content-center p-5">

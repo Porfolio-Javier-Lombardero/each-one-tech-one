@@ -1,6 +1,7 @@
 import { CategoryCache } from "@/lib/types/d.cache.types";
-import { Events } from "@/lib/types/d.events.types";
+
 import { DateFilterType, News, SingleNew } from "@/lib/types/d.news.types";
+import { SearchResultItem } from "@/lib/types/d.reviews.types";
 
 
 
@@ -21,7 +22,7 @@ export interface NewsSlice {
 }
 
 export interface EventsSlice {
-    events: Events[] | undefined;
+    events: string[] | undefined;
     loadingEvents: boolean;
     error: string | undefined
     //Actions
@@ -29,7 +30,7 @@ export interface EventsSlice {
 }
 
 export interface ReviewsSlice {
-    reviews: string[] | undefined;
+    reviews: SearchResultItem[] | undefined;
     loadingReviews: boolean;
     error: string | undefined
     //Actions
