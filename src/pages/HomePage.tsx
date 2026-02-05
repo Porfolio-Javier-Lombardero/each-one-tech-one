@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { LatestNewsCard } from "../components/news/LatestNewsCard";
 import { OtherNewsCard } from "../components/news/OtherNewsCard";
-import { Loader } from "@/components/shared/Loader";
+import { LatestNewsSkeleton } from "../components/news/LatestNewsSkeleton";
+import { OtherNewsSkeleton } from "../components/news/OtherNewsSkeleton";
 import { useHomeNews } from "@/hooks/useHomeNews";
 import { EventCard } from "@/components/news/EventCard";
 import { TopicCard } from "@/components/news/TopicCard";
@@ -12,8 +13,6 @@ export const HomePage = () => {
   const [seeAll, setSeeAll] = useState(false)
 
   const { news, loading, events, reviews } = useHomeNews();
-
-  if (loading) return <Loader />;
 
 
 
@@ -34,7 +33,7 @@ export const HomePage = () => {
               Tech
               <span className="alt-font-thin"> One</span>
             </h1>
-            <h3 className="text-center" style={{textShadow:"1px 1px 10px white"}}>Where tech Meets</h3>
+            <h3 className="text-center" style={{ textShadow: "1px 1px 10px white" }}>Where tech Meets</h3>
           </div>
         </div>
       </section>
@@ -48,29 +47,44 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row align-items-end justify-content-between px-3 gx-2 gy-5">
-          {news &&
-            news.map((noticia, index) => {
-              if (index === 0) {
-                return (
-                  <div className="col-12 col-lg-6" key={index}>
-                    <LatestNewsCard key={noticia.id} noticia={noticia} />
-                  </div>
-                );
-              } else if (index < 10) {
-                return (
-                  <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
-                    <OtherNewsCard key={noticia.id} noticia={noticia} />
-                  </div>
-                );
-              }
-              return null;
-            })}
-          {seeAll &&
-            news?.slice(10).map((noticia) => (
-              <div className="col-12 col-md-4 col-lg-3" key={noticia.id}>
-                <OtherNewsCard noticia={noticia} />
+          {loading ? (
+            <>
+              <div className="col-12 col-lg-6">
+                <LatestNewsSkeleton />
               </div>
-            ))}
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div className="col-12 col-md-4 col-lg-3" key={`skeleton-${i}`}>
+                  <OtherNewsSkeleton />
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              {news &&
+                news.map((noticia, index) => {
+                  if (index === 0) {
+                    return (
+                      <div className="col-12 col-lg-6" key={index}>
+                        <LatestNewsCard key={noticia.id} noticia={noticia} />
+                      </div>
+                    );
+                  } else if (index < 10) {
+                    return (
+                      <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
+                        <OtherNewsCard key={noticia.id} noticia={noticia} />
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
+              {seeAll &&
+                news?.slice(10).map((noticia) => (
+                  <div className="col-12 col-md-4 col-lg-3" key={noticia.id}>
+                    <OtherNewsCard noticia={noticia} />
+                  </div>
+                ))}
+            </>
+          )}
         </div>
         <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>{seeAll ? "view less" : "view All"}</button>
         <div className="row p-4  g-2 px-6 align-items-end "></div>
@@ -116,8 +130,8 @@ export const HomePage = () => {
                 date={desglosedEvent[0]}
                 title={desglosedEvent[1]}
                 location={desglosedEvent[2]}
-                 url={desglosedEvent[3]} />
-                
+                url={desglosedEvent[3]} />
+
             })
           }
         </div>

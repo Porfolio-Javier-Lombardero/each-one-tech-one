@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { LatestNewsCard } from "../../components/news/LatestNewsCard";
 import { OtherNewsCard } from "../../components/news/OtherNewsCard";
-import { Loader } from "@/components/shared/Loader";
+import { LatestNewsSkeleton } from "../../components/news/LatestNewsSkeleton";
+import { OtherNewsSkeleton } from "../../components/news/OtherNewsSkeleton";
 import { DateFilterType } from "@/lib/types/d.news.types";
 import { useTopicNews } from "@/hooks/useTopicNews";
 
@@ -45,9 +46,7 @@ export const TopicPage = () => {
     setSeeAll(false)
   }, [topic]);
 
-  if (loading) return <Loader />;
-
-  if (!topicNews) return <Loader />;
+  // Mostrar skeletons mientras carga o antes de que el caché se resuelva
 
 
 
@@ -105,7 +104,18 @@ export const TopicPage = () => {
 
       <section className="container-fluid  pt-3  px-5 d-flex flex-column  bg-secondary">
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
-          {topicNews.length === 0 ? (
+          {(loading || !topicNews) ? (
+            <>
+              <div className="col-12 col-lg-6">
+                <LatestNewsSkeleton />
+              </div>
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div className="col-12 col-md-4 col-lg-3" key={`topic-skeleton-${i}`}>
+                  <OtherNewsSkeleton />
+                </div>
+              ))}
+            </>
+          ) : topicNews.length === 0 ? (
             <div className="col-12 text-center py-2">
               <h3 className="text-muted">{getEmptyMessage(dateFilter)}</h3>
             </div>

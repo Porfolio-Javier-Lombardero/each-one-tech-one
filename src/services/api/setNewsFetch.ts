@@ -22,16 +22,16 @@ export const newsFetch = async (topic: number | string, dateFilter: DateFilterTy
       ? 'homepage'
       : `category_${topic}`;
 
-  // ==================== PASO 0: Intentar obtener del CACHÉ (7 días completos) ====================
-  // Estrategia: Buscar TODOS los artículos de los últimos 7 días de esta categoría
+  // ==================== PASO 0: Intentar obtener del CACHÉ (7 horas) ====================
+  // Estrategia: Buscar artículos recientes de las últimas 7 horas de esta categoría
   // Luego filtrar localmente según el dateFilter que el usuario pidió
   if (typeof topic !== "string") {
-    console.log(`🔍 Buscando en caché amplio: context=${searchContext}`);
+    console.log(`🔍 Buscando en caché reciente: context=${searchContext}`);
 
     const cachedNews = await getNewsFromCache(
       'techcrunch',
       searchContext,
-      168 // 7 días de caché
+      7 // 7 horas de caché
     );
 
     if (cachedNews && cachedNews.length > 0) {
@@ -45,7 +45,7 @@ export const newsFetch = async (topic: number | string, dateFilter: DateFilterTy
       });
 
       if (filteredNews.length > 0) {
-        console.log(`✅ ¡Caché encontrado! ${cachedNews.length} artículos (7 días), ${filteredNews.length} después de filtrar por '${dateFilter}' (ahorraste $$$)`);
+        console.log(`✅ ¡Caché encontrado! ${cachedNews.length} artículos (7 horas), ${filteredNews.length} después de filtrar por '${dateFilter}' (ahorraste $$$)`);
         return filteredNews;
       }
 

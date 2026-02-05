@@ -169,8 +169,9 @@ export const Header = () => {
         </div>
       </nav>
       <div className="container-sm w-75 w-md-25 rounded-4 bg-secondary position-absolute z-3 shadow-sm" style={dropdown ? { top: "2%", left: "12%" } : { top: "-120%" }}>
-        <div className="row w-100 justify-content-end  pe-5  pt-2">
-          <div className="col-1  "><button className="btn btn-md btn-outline-primary lh-1" onClick={handleDropdown}>close</button></div>
+        <div className="row w-100 justify-content-end  pe-5  pt-4">
+          <div className="col-1  ">
+            <button className="btn btn-md btn-outline-primary shadow-sm " style={{fontSize:"0.8rem"}} onClick={handleDropdown}>close</button></div>
         </div>
         <div className="row">
           <ul className="pb-3" style={{ listStyle: "none" }} >

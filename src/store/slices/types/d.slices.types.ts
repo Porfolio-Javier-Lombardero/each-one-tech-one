@@ -12,7 +12,7 @@ export interface NewsSlice {
     loadingNews: boolean;
     error: string | undefined;
     // Actions
-    topHeadLines: (topic: string | number, dateFilter?: DateFilterType | undefined) => Promise<void>;
+    searchTopHeadLines: (topic: string | number, dateFilter?: DateFilterType | undefined) => Promise<void>;
     searchByCategory: (
         topic: number | string,
         dateFilter?: DateFilterType,

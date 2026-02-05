@@ -7,6 +7,12 @@
 }
 
 
+// Evitar scroll horizontal global
+html,
+body {
+  overflow-x: hidden;
+}
+
 @font-face {
   font-family: "Neue-Light";
   src: url("/Fonts/NeueMontreal-Light.woff2") format("woff2");
@@ -91,12 +97,21 @@ section {
 // }
 
 .swiper {
+  max-width: 100%;
   width: 600px;
   height: 300px;
 }
 
+// Permitir que los elementos del navbar hagan wrap y no desborden
+
+
 .bg-secondartransp {
   background-color: $secondartransp !important;
+}
+
+// Fondo específico para skeletons de cards de noticias
+.skeleton-card-bg {
+  background-color: darken($secondary, 6%) !important;
 }
 
 .topic-page-gradient {
@@ -106,6 +121,7 @@ section {
 // Efecto hover para el menú móvil
 .mobile-menu-item {
   position: relative;
+  font-weight: normal !important;
 
   &::after {
     content: '';
@@ -158,25 +174,31 @@ section {
 @media screen and (max-width: 1179px) {
   .nav-item .nav-link {
     font-size: 0.85rem;
-
     padding: 0.2rem 0.2rem;
     text-wrap: nowrap;
   }
 }
 
 @media screen and (max-width: 1150px) {
-  .nav-item .nav-link {
-    font-size: 0.78rem;
+  .nav-item .nav-link :not .mobile-menu-item {
+    font-size: 0.76rem;
     padding: 0.15rem 0.2rem;
     font-weight: bold;
     text-wrap: nowrap;
   }
 }
 
-@media screen and (max-width: 1108px) {
+@media screen and (max-width: 1138px) {
   .nav-item .nav-link {
-    font-size: 0.71rem;
+    font-size: 0.74rem;
     padding: 0.15rem 0.15rem;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .nav-item .nav-link {
+    font-size: 0.68rem;
     text-wrap: nowrap;
   }
 }
@@ -232,4 +254,10 @@ section {
     width: 100% !important;
     max-width: 100% !important;
   }
+}
+
+// Placeholder styling for skeletons (Bootstrap placeholder)
+.placeholder {
+  border-radius: .5rem;
+  background-color: rgba(255, 255, 255, 0.2);
 }

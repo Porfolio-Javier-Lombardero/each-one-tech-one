@@ -24,7 +24,7 @@ export const createNewsSlice: StateCreator<NewsSlice, [], [["zustand/immer", nev
     loadingNews: false,
     error: undefined,
     //Actions
-    topHeadLines: async (topic: string | number, dateFilter: DateFilterType | undefined = 'all') => {
+    searchTopHeadLines: async (topic: string | number, dateFilter: DateFilterType | undefined = 'all') => {
         set((state: NewsSlice) => {
             state.loadingNews = true;
         });

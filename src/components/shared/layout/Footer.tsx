@@ -9,7 +9,7 @@ export const Footer = () => {
         <p className="mb-0">
             Follow us on 
             <a href="https://facebook.com" className="text-white mx-2">Facebook</a> | 
-            <a href="https://twitter.com" className="text-white mx-2">Twitter</a> | 
+            <a href="https://x.com" className="text-white mx-2">X</a> | 
             <a href="https://instagram.com" className="text-white mx-2">Instagram</a>
         </p>
     </div>

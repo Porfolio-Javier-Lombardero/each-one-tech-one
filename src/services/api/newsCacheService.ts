@@ -24,13 +24,13 @@ export function convertCachedToSingleNew(cached: CachedNews): SingleNew {
  * Buscar noticias en el caché de Supabase con estrategia de caché amplio
  * @param source - Fuente de la noticia: 'techcrunch' o 'theguardian'
  * @param searchContext - Contexto de búsqueda: 'homepage', 'category_449', etc.
- * @param maxAge - Edad máxima del caché en horas (default: 168 horas = 7 días)
+ * @param maxAge - Edad máxima del caché en horas (default: 7 horas)
  * @returns Array de noticias o null si no hay caché válido
  */
 export async function getNewsFromCache(
     source: string,
     searchContext: string,
-    maxAge: number = 168 // 7 días por defecto
+    maxAge: number = 7 // 7 horas por defecto
 ): Promise<SingleNew[] | null> {
     try {
         const maxAgeDate = new Date(Date.now() - maxAge * 60 * 60 * 1000).toISOString();

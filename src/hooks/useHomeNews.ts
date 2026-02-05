@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useStore } from "@/store";
 
 export const useHomeNews = () => {
-    const searchHeadLines = useStore((state) => state.topHeadLines);
+    const searchHeadLines = useStore((state) => state.searchTopHeadLines);
     const searchEvents = useStore((state) => state.searchTechEvents)
     const searchReviwes = useStore((state) => state.searchTechReviews)
     const news = useStore((state) => state.news);
@@ -12,7 +12,7 @@ export const useHomeNews = () => {
 
     useEffect(() => {
         if (!news) {
-            searchHeadLines(0, "all");
+            searchHeadLines(0, undefined);
         }
         searchEvents()
         searchReviwes()
@@ -20,3 +20,5 @@ export const useHomeNews = () => {
 
     return { news, loading, events, reviews };
 };
+
+
