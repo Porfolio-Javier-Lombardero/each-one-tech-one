@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 import { devtools, persist } from "zustand/middleware";
-import { EventsSlice, NewsSlice, ReviewsSlice } from "./slices/types/d.slices.types";
+import { EventsSlice, NewsSlice, ReviewsSlice } from "./slices/interfaces/d.slices.types";
 import { createNewsSlice } from "./slices/newsSlice";
 import { createEventsSlice } from "./slices/eventsSlice";
 import { createReviewsSlice } from "./slices/reviewsSlice";

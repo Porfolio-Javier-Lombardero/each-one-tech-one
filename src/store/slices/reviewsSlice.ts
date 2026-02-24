@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
-import { ReviewsSlice } from "./types/d.slices.types";
-import { fetchReviews } from "@/services/api/setReviewsFetch";
+import { ReviewsSlice } from "./interfaces/d.slices.types";
+import { fetchReviews } from "@/services/reviews/setReviewsFetch";
 
 export const createReviewsSlice: StateCreator<ReviewsSlice, [], [], ReviewsSlice> = (set) => ({
     reviews: undefined,

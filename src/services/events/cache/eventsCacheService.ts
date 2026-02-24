@@ -1,5 +1,5 @@
-import { supabase } from './config/supabaseClient';
-import { CachedEvent } from '@/lib/types/d.events.types';
+import { CachedEvent } from '@/services/events/interfaces/d.events.types.ts';
+import { supabase } from '../api/config/supabaseClient.ts'
 
 /**
  * Parsear un evento del formato string al objeto separado

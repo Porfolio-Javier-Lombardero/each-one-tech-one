@@ -1,5 +1,11 @@
 
-import { EventProps } from './types/d.comp.types'
+export interface EventProps {
+    title:string| undefined;
+    location:string |undefined;
+    date:string | undefined;
+    url:string | undefined
+}
+
 
 export const EventCard = ({ title, location, date, url }: EventProps) => {
   return (

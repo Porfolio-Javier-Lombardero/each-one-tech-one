@@ -1,10 +1,10 @@
 
 import { StateCreator } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { NewsSlice } from "./types/d.slices.types";
-import { DateFilterType, SingleNew } from "@/lib/types/d.news.types";
-import { newsFetch as setNewsFetch } from "@/services/api/setNewsFetch";
-import { CategoryCache } from "@/lib/types/d.cache.types";
+import { NewsSlice } from "./interfaces/d.slices.types";
+import { DateFilterType, SingleNew } from "@/services/news/interfaces/d.news.types";
+import { newsFetch as setNewsFetch } from "@/services/news/setNewsFetch";
+import { CategoryCache } from "@/services/news/interfaces/d.cache.types";
 
 
 const isCategoryInCache = (

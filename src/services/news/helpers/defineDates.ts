@@ -1,4 +1,4 @@
-import { DateFilterType } from "@/lib/types/d.news.types";
+import { DateFilterType } from "@/services/news/interfaces/d.news.types";
 
 
 // Obtiene el momento actual (ahora)

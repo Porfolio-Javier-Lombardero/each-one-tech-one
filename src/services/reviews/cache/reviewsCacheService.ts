@@ -1,5 +1,5 @@
-import { supabase } from './config/supabaseClient';
-import { CachedReview, SearchResultItem } from '@/lib/types/d.reviews.types';
+import { supabase } from '../api/config/supabaseClient';
+import { CachedReview, SearchResultItem } from '@/services/reviews/interfaces/d.reviews.types';
 
 /**
  * Convertir review cacheado a formato SearchResultItem

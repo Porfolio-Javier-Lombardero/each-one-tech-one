@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { CardProps } from "./types/d.comp.types";
-import { Categories, Topics } from "@/lib/constants/topics";
+
+import { Categories, Topics } from "@/services/news/interfaces/topics";
 import React, { } from "react";
 import { useStore } from "@/store";
+import { SingleNew } from "@/services/news/interfaces/d.news.types";
 
-
+export interface CardProps {
+  noticia: SingleNew
+}
 
 export const OtherNewsCard = ({ noticia }: CardProps) => {
-  
+
   const defineSingleNew = useStore(state => state.defineSingleNew);
   const navigate = useNavigate();
 
@@ -30,15 +33,15 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
     const topic = e.currentTarget.textContent as string
     const categoryValue = Object.keys(Categories).find(key =>
       key.toLowerCase() === topic?.toLowerCase());
-    
+
     const categoryTitle = categoryValue ?
-    Categories[categoryValue as keyof typeof Categories] : undefined;
+      Categories[categoryValue as keyof typeof Categories] : undefined;
 
     if (categoryTitle === undefined) {
       navigate('/');
       return;
     }
-   navigate(`/${categoryTitle || ''}`);
+    navigate(`/${categoryTitle || ''}`);
   }
 
   return (

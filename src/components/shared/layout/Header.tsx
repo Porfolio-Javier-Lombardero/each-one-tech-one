@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { SearchIcon } from "../../../assets/icons/SearchIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
-import { Categories } from "@/lib/constants/topics";
+import { Categories } from "@/services/news/interfaces/topics";
 import { scrollToElement } from "@/utils/scrollToElement";
 import { useStore } from "@/store";
 
@@ -155,10 +155,10 @@ export const Header = () => {
             onSubmit={handleSubmit}
           >
             <button className="btn btn-sm m-0 text-primary" type="submit">
-              <SearchIcon/>
+              <SearchIcon />
             </button>
             <input
-              style={{fontSize:"1.1rem"}}
+              style={{ fontSize: "1.1rem" }}
               className="form-control bg-transparent p-0"
               type="search"
               placeholder="search today's news by terms"
@@ -171,7 +171,7 @@ export const Header = () => {
       <div className="container-sm w-75 w-md-25 rounded-4 bg-secondary position-absolute z-3 shadow-sm" style={dropdown ? { top: "2%", left: "12%" } : { top: "-120%" }}>
         <div className="row w-100 justify-content-end  pe-5  pt-4">
           <div className="col-1  ">
-            <button className="btn btn-md btn-outline-primary shadow-sm " style={{fontSize:"0.8rem"}} onClick={handleDropdown}>close</button></div>
+            <button className="btn btn-md btn-outline-primary shadow-sm " style={{ fontSize: "0.8rem" }} onClick={handleDropdown}>close</button></div>
         </div>
         <div className="row">
           <ul className="pb-3" style={{ listStyle: "none" }} >

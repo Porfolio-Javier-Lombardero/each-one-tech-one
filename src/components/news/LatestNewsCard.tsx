@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { CardProps } from "./types/d.comp.types";
-import { useStore } from "../../store/";
 
+import { useStore } from "../../store/";
+import { SingleNew } from "@/services/news/interfaces/d.news.types";
+
+export interface CardProps {
+  noticia: SingleNew
+}
 
 
 export const LatestNewsCard = ({ noticia }: CardProps) => {

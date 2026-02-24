@@ -1,5 +1,5 @@
-import { Topics } from '@/lib/constants/topics';
-import { DateFilterType } from '@/lib/types/d.news.types';
+import { Topics } from '@/services/news/interfaces/topics';
+import { DateFilterType } from '@/services/news/interfaces/d.news.types';
 import { useStore } from '@/store';
 
 export const useCategoryFilter = () => {

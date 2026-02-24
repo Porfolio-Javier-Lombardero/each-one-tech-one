@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getEventsFromCache, saveEventsToCache } from './eventsCacheService';
-import { mapEvents } from '@/services/utils/mapEvents';
+import { mapEvents } from '@/services/events/helpers/mapEvents';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);

@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
-import { EventsSlice } from "./types/d.slices.types";
-import { fetchEvents } from "@/services/api/setEventsFetch";
+import { EventsSlice } from "./interfaces/d.slices.types";
+import { fetchEvents } from "../../services/events/setEventsFetch";
 
 export const createEventsSlice: StateCreator<EventsSlice, [], [], EventsSlice> = (set, get) => ({
   events: undefined,

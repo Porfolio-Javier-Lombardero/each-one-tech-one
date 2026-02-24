@@ -1,6 +1,6 @@
-import { supabase } from './config/supabaseClient';
-import { CachedNews, SingleNew } from '@/lib/types/d.news.types';
-import { formatDate } from '@/utils/formatDates';
+import { supabase } from '../api/config/supabaseClient';
+import { CachedNews, SingleNew } from '@/services/news/interfaces/d.news.types';
+import { formatDate } from '@/services/news/helpers/formatDates';
 
 /**
  * Convierte un artículo de caché de Supabase al formato SingleNew usado en la app

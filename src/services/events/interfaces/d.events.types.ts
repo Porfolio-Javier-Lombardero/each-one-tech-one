@@ -1,6 +1,14 @@
+export interface EventProps {
+    title:string| undefined;
+    location:string |undefined;
+    date:string | undefined;
+    url:string | undefined
+}
+
+
 export type Events = string[]
 
-// Tipo para eventos cacheados en Supabase
+
 export interface CachedEvent {
     id: number;
     event_date: string;

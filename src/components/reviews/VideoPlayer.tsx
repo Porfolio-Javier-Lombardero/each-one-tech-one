@@ -1,4 +1,4 @@
-import { SearchResultItem } from "@/lib/types/d.reviews.types";
+import { SearchResultItem } from "@/services/reviews/interfaces/d.reviews.types";
 import React, { useState } from "react";
 
 interface Props {

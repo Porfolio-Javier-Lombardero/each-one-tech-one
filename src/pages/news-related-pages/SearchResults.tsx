@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
 
-import { LatestNewsCard } from "../../components/news/LatestNewsCard";
 
 // import { useParams } from "react-router-dom";
 // import { useFilterStore } from "../store/useFilterStore";
 // import useSearchStore from "../store/useSearchStore";
-import { OtherNewsCard } from "../../components/news/OtherNewsCard";
-import { Loader } from "@/components/shared/Loader";
+
+
 
 export const SearchResults = () => {
   // const { news, loading, SearchHeadlines } = useSearchStore();

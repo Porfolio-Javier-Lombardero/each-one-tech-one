@@ -1,5 +1,5 @@
-import { GuardianArticle, GuardianArticleArray } from '@/lib/types/d.news.types'
-import { formatDate } from '@/utils/formatDates'
+import { GuardianArticle, GuardianArticleArray } from '@/services/news/interfaces/d.news.types'
+import { formatDate } from '@/services/news/helpers/formatDates'
 
 export const mapNewsDos = (newsArrayDos: GuardianArticleArray) => {
 

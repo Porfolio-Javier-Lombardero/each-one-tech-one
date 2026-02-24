@@ -1,7 +1,7 @@
-import { CategoryCache } from "@/lib/types/d.cache.types";
+import { CategoryCache } from "@/services/news/interfaces/d.cache.types";
 
-import { DateFilterType, News, SingleNew } from "@/lib/types/d.news.types";
-import { SearchResultItem } from "@/lib/types/d.reviews.types";
+import { DateFilterType, News, SingleNew } from "@/services/news/interfaces/d.news.types";
+import { SearchResultItem } from "@/services/reviews/interfaces/d.reviews.types";
 
 
 

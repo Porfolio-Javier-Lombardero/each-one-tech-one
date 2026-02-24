@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import { Topics } from "@/lib/constants/topics";
+import { Topics } from "@/services/news/interfaces/topics";
 import { useStore } from "@/store";
-import { CardProps } from "./types/d.comp.types";
+import { CardProps } from "../../services/events/interfaces/d.events.types";
 
 export const TopicCard = ({ noticia }: CardProps) => {
   const defineSingleNew = useStore((state) => state.defineSingleNew);

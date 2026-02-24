@@ -1,10 +1,10 @@
-import { Topics2 } from "@/lib/constants/topics";
-import { News, DateFilterType, SingleNew, TechCrunchArticle } from "../../lib/types/d.news.types";
-import { getDateRangeByFilter } from "../utils/defineDates";
-import { formatDateForGuardian } from "../../utils/formatDates";
-import { mapNews } from "../utils/mapNews";
-import { mapNewsDos } from "../utils/mapNewsDos";
-import { getNewsFromCache, saveMultipleNewsToCache } from "./newsCacheService";
+import { Topics2 } from "@/services/news/interfaces/topics";
+import { News, DateFilterType, SingleNew, TechCrunchArticle } from "./interfaces/d.news.types";
+import { getDateRangeByFilter } from "./helpers/defineDates";
+import { formatDateForGuardian } from "./helpers/formatDates";
+import { mapNews } from "./helpers/mapNews";
+import { mapNewsDos } from "./helpers/mapNewsDos";
+import { getNewsFromCache, saveMultipleNewsToCache } from "./cache/newsCacheService"
 
 const CRUNCH_API_KEY = import.meta.env.VITE_TECHCRUNCH_API_KEY;
 const GUARDIAN_API_KEY = import.meta.env.VITE_THEGUARDIAN_API_KEY;

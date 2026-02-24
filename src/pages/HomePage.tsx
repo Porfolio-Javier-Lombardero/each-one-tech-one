@@ -3,22 +3,24 @@ import { LatestNewsCard } from "../components/news/LatestNewsCard";
 import { OtherNewsCard } from "../components/news/OtherNewsCard";
 import { LatestNewsSkeleton } from "../components/news/LatestNewsSkeleton";
 import { OtherNewsSkeleton } from "../components/news/OtherNewsSkeleton";
-import { useHomeNews } from "@/hooks/useHomeNews";
-import { EventCard } from "@/components/news/EventCard";
+
 import { TopicCard } from "@/components/news/TopicCard";
 import { VideoPlayer } from "@/components/reviews/VideoPlayer";
+import { EventCard } from "@/components/events/EventCard";
+import { useGetHeadlines } from "@/hooks/useGetHeadlines";
+import { useGetEvents } from "@/hooks/useGetEvents";
+import { useGetReviews } from "@/hooks/useGetReviews";
 
 export const HomePage = () => {
+  const [seeAll, setSeeAll] = useState(false);
 
-  const [seeAll, setSeeAll] = useState(false)
-
-  const { news, loading, events, reviews } = useHomeNews();
-
-
+  const { news, loadingNews } = useGetHeadlines();
+  const { events, loadingEvents } = useGetEvents();
+  const { reviews, loadingReviews } = useGetReviews();
 
   const handleSeeAll = () => {
-    setSeeAll(!seeAll)
-  }
+    setSeeAll(!seeAll);
+  };
 
   return (
     <div className="home">
@@ -33,7 +35,12 @@ export const HomePage = () => {
               Tech
               <span className="alt-font-thin"> One</span>
             </h1>
-            <h3 className="text-center" style={{ textShadow: "1px 1px 10px white" }}>Where tech Meets</h3>
+            <h3
+              className="text-center"
+              style={{ textShadow: "1px 1px 10px white" }}
+            >
+              Where tech Meets
+            </h3>
           </div>
         </div>
       </section>
@@ -47,7 +54,7 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="row align-items-end justify-content-between px-3 gx-2 gy-5">
-          {loading ? (
+          {loadingNews ? (
             <>
               <div className="col-12 col-lg-6">
                 <LatestNewsSkeleton />
@@ -70,7 +77,10 @@ export const HomePage = () => {
                     );
                   } else if (index < 10) {
                     return (
-                      <div className="col-12 col-md-4 col-lg-3" key={index * 99}>
+                      <div
+                        className="col-12 col-md-4 col-lg-3"
+                        key={index * 99}
+                      >
                         <OtherNewsCard key={noticia.id} noticia={noticia} />
                       </div>
                     );
@@ -86,14 +96,13 @@ export const HomePage = () => {
             </>
           )}
         </div>
-        <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>{seeAll ? "view less" : "view All"}</button>
+        <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>
+          {seeAll ? "view less" : "view All"}
+        </button>
         <div className="row p-4  g-2 px-6 align-items-end "></div>
       </section>
 
-      <section
-        className="container-fluid p-1 p-sm-4 pb-4 "
-        id="topics"
-      >
+      <section className="container-fluid p-1 p-sm-4 pb-4 " id="topics">
         <div className="row p-4 mb-3">
           <div className="col-12 py-2 border-top border-primary border-2">
             <h2 className="h2 display-3">TRENDY NOW</h2>
@@ -113,34 +122,33 @@ export const HomePage = () => {
         </div>
       </section>
 
-      <section
-        className="conteiner-fluid p-1 p-sm-4 pb-4 "
-        id="events"
-      >
+      <section className="conteiner-fluid p-1 p-sm-4 pb-4 " id="events">
         <div className="row p-4 mb-3">
           <div className="col-12 py-2 border-top border-primary border-2">
             <h2 className="h2 display-3">SAVE THE DATE</h2>
           </div>
         </div>
         <div className="row p-3 px-md-5 ">
-          {
-            events && events.map((event) => {
-              const desglosedEvent = event.split(",")
-              return <EventCard
-                date={desglosedEvent[0]}
-                title={desglosedEvent[1]}
-                location={desglosedEvent[2]}
-                url={desglosedEvent[3]} />
-
+          {loadingEvents ? (
+            <OtherNewsSkeleton />
+          ) : (
+            events &&
+            events.map((event) => {
+              const desglosedEvent = event.split(",");
+              return (
+                <EventCard
+                  date={desglosedEvent[0]}
+                  title={desglosedEvent[1]}
+                  location={desglosedEvent[2]}
+                  url={desglosedEvent[3]}
+                />
+              );
             })
-          }
+          )}
         </div>
       </section>
 
-      <section
-        className="container-fluid p-1 p-sm-4 "
-        id="reviews"
-      >
+      <section className="container-fluid p-1 p-sm-4 " id="reviews">
         <div className="row p-4 mb-3">
           <div className="col-12 py-2 border-top border-primary border-2">
             <h2 className="h2 display-3">REVIEWS & RELEASES</h2>
@@ -148,13 +156,18 @@ export const HomePage = () => {
         </div>
 
         <div className="row px-3 justify-content-center">
-          {reviews?.map((item) => (
+          { 
+          loadingReviews? 
+          (<OtherNewsSkeleton/>)
+           :
+           ( reviews?.map((item) => (
             <VideoPlayer
               key={item.id.videoId}
               video={item}
               showDetails={true}
             />
-          ))}
+          )))
+          }
         </div>
       </section>
     </div>

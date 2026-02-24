@@ -1,4 +1,4 @@
-import { getReviewsFromCache, saveReviewsToCache } from './reviewsCacheService';
+import { getReviewsFromCache, saveReviewsToCache } from './cache/reviewsCacheService';
 
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 

@@ -4,8 +4,9 @@ import { LatestNewsCard } from "../../components/news/LatestNewsCard";
 import { OtherNewsCard } from "../../components/news/OtherNewsCard";
 import { LatestNewsSkeleton } from "../../components/news/LatestNewsSkeleton";
 import { OtherNewsSkeleton } from "../../components/news/OtherNewsSkeleton";
-import { DateFilterType } from "@/lib/types/d.news.types";
+import { DateFilterType } from "@/services/news/interfaces/d.news.types";
 import { useTopicNews } from "@/hooks/useTopicNews";
+import { getEmptyMessage } from "./helpers/getEmpyMessage";
 
 export const TopicPage = () => {
   const { topic } = useParams();
@@ -18,27 +19,7 @@ export const TopicPage = () => {
     setSeeAll(!seeAll)
   }
 
-
-  // 3. HELPER para mensajes de UI
-  const getEmptyMessage = (dateFilter: string): string => {
-    if (topic === 'foundAtWeb') {
-      return 'No articles found matching your search';
-    }
-
-    switch (dateFilter) {
-      case 'today':
-        return 'No articles published today yet';
-      case 'yesterday':
-        return 'No articles published yesterday';
-      case 'lastWeek':
-        return 'No older articles found';
-      default:
-        return 'No articles found';
-    }
-  };
-
-
-  // Resetear filtro a 'today' cuando cambie el topic
+// Resetear filtro a 'today' cuando cambie el topic
   useEffect(() => {
     if (dateFilter !== 'today') {
       setDateFilter('today');
@@ -117,7 +98,7 @@ export const TopicPage = () => {
             </>
           ) : topicNews.length === 0 ? (
             <div className="col-12 text-center py-2">
-              <h3 className="text-muted">{getEmptyMessage(dateFilter)}</h3>
+              <h3 className="text-muted">{getEmptyMessage(dateFilter, topic)}</h3>
             </div>
           ) : (
             topicNews &&

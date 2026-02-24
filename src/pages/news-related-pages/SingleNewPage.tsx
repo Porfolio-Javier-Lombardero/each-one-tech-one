@@ -1,10 +1,11 @@
 
-import { Loader } from "@/components/shared/Loader";
 import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 import { useStore } from "@/store";
-import { cleanHTML } from "@/services/utils/useCleanHtml";
+import { cleanHTML } from "@/services/news/helpers/useCleanHtml";
+
+import { OtherNewsSkeleton } from "@/components/news/OtherNewsSkeleton";
 
 
 export const SingleNewPage = () => {
@@ -14,7 +15,7 @@ export const SingleNewPage = () => {
 
 
   if (!singleNew) {
-    return <Loader />;
+    return <OtherNewsSkeleton/>
   }
 
   return (
@@ -63,7 +64,7 @@ export const SingleNewPage = () => {
             <div className="lh-lg" dangerouslySetInnerHTML={{ __html: cleanHTML(singleNew.cont) }} />
           </div>
 
-        
+
           <div className="col-12 p-4">
             <p className="fs-5 px-3">Font:</p>
             <a className="px-4" href={singleNew.url}> {singleNew.url}</a>

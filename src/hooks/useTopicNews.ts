@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DateFilterType } from "@/lib/types/d.news.types";
+import { DateFilterType } from "@/services/news/interfaces/d.news.types";
 
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 import { useStore } from "@/store";
