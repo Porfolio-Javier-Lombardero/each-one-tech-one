@@ -10,13 +10,20 @@ import { EventCard } from "@/components/events/EventCard";
 import { useGetHeadlines } from "@/hooks/useGetHeadlines";
 import { useGetEvents } from "@/hooks/useGetEvents";
 import { useGetReviews } from "@/hooks/useGetReviews";
+import { SearchResultItem } from "@/services/reviews/interfaces/d.reviews.types";
+
 
 export const HomePage = () => {
   const [seeAll, setSeeAll] = useState(false);
 
-  const { news, loadingNews } = useGetHeadlines();
-  const { events, loadingEvents } = useGetEvents();
-  const { reviews, loadingReviews } = useGetReviews();
+  const { isLoading: loadingNews, news = [] } = useGetHeadlines({topic:0, dateFilter:"all"});
+
+  const { isLoading: loadingEvents, events } = useGetEvents();
+  
+  const { loadingReviews, reviews } = useGetReviews();
+
+
+
 
   const handleSeeAll = () => {
     setSeeAll(!seeAll);
@@ -160,7 +167,7 @@ export const HomePage = () => {
           loadingReviews? 
           (<OtherNewsSkeleton/>)
            :
-           ( reviews?.map((item) => (
+           ( reviews && reviews.map((item : SearchResultItem) => (
             <VideoPlayer
               key={item.id.videoId}
               video={item}

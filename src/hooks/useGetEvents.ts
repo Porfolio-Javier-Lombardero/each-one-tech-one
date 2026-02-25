@@ -1,20 +1,21 @@
-import { useStore } from "@/store";
-import { useEffect } from "react";
+import { fetchEventsWithCache } from "@/services/events/fetchEventsWithCache";
+import { useQuery } from "@tanstack/react-query";
+import { STALE_TIMES } from "@/services/consts/staletimes.";
 
 export const useGetEvents = () => {
-     const searchEvents = useStore((state) => state.searchTechEvents)
-      const events = useStore((state) => state.events)
-      const loadingEvents = useStore((state) => state.loadingEvents)
+    const { isLoading, isError, data: events } = useQuery({
+        queryKey: ["events"],
+        queryFn: fetchEventsWithCache,
+        gcTime: STALE_TIMES.EVENTS * 2,
+        staleTime: STALE_TIMES.EVENTS
+    })
 
-        useEffect(() => {
-      
-          searchEvents()
-            
-           }, [])
-        
-  return {
-     events,
-     loadingEvents
-  }
-   
+
+
+    return {
+        isLoading,
+        isError,
+        events
+    };
+
 }

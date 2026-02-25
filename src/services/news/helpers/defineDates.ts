@@ -60,16 +60,8 @@ export interface DateRange {
   before: string; // Ya no es opcional
 }
 
-export const getDateRangeByFilter = (
-  filter: DateFilterType,
-  topic?: number | string
-): DateRange => {
-  // Excepción para Smartphones: extender rango a 7 días
-  const isSmartphoneSearch = typeof topic === 'string' && (
-    topic.toLowerCase().includes('smartphone') ||
-    topic.toLowerCase().includes('iphone') ||
-    topic.toLowerCase().includes('android')
-  );
+export const getDateRangeByFilter = (filter: DateFilterType): DateRange => {
+ 
 
   switch (filter) {
     case "all":
@@ -78,14 +70,7 @@ export const getDateRangeByFilter = (
         before: todayEnd()
       };
     case 'yesterday':
-      // Si es Smartphones, usar rango de 7 días
-      if (isSmartphoneSearch) {
-        return {
-          after: sevenDaysAgoStart(),
-          before: todayEnd()
-        };
-      }
-      return {
+    return {
         after: yesterdayStart(),
         before: yesterdayEnd()
       };
@@ -96,14 +81,7 @@ export const getDateRangeByFilter = (
       };
     case 'today':
     default:
-      // Si es Smartphones, usar rango de 7 días
-      if (isSmartphoneSearch) {
-        return {
-          after: sevenDaysAgoStart(),
-          before: todayEnd()
-        };
-      }
-      return {
+    return {
         after: todayStart(),
         before: todayEnd()
       };

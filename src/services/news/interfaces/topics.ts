@@ -33,6 +33,8 @@ export const Topics2 = {
   577047203: "AI Chat-gpt Gemini Grok",
   449223024: "hardware",
   174: "space aerospacial",
+  0: ""
+  
 };
 
 export const Categories = {

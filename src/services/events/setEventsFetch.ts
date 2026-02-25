@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { getEventsFromCache, saveEventsToCache } from './eventsCacheService';
+
 import { mapEvents } from '@/services/events/helpers/mapEvents';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -12,12 +12,8 @@ const prompt = "List major tech events (conferences, fairs, trade shows) in Euro
  */
 export const fetchEvents = async () => {
   // 1️⃣ Intentar obtener del caché de Supabase
-  const cachedEvents = await getEventsFromCache(30); // 30 días
 
-  if (cachedEvents && cachedEvents.length > 0) {
-    console.log('✅ Eventos obtenidos del caché de Supabase');
-    return cachedEvents;
-  }
+
 
   console.log('📭 No hay caché, consultando Gemini API...');
 
@@ -35,8 +31,8 @@ export const fetchEvents = async () => {
       throw new Error('No se obtuvieron eventos');
     }
 
-    // 3️⃣ Guardar en caché para la próxima vez
-    await saveEventsToCache(mappedEvents);
+  
+ 
 
     return mappedEvents;
   } catch (error) {

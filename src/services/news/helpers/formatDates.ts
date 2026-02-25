@@ -7,6 +7,6 @@ export const formatDate = (param: string | Date): string => {
 }
 
 // Convierte fecha ISO 8601 a formato YYYY-MM-DD para Guardian API
-export const formatDateForGuardian = (isoDate: string): string => {
+export const formatDateForGuardian = (isoDate: string): string | undefined => {
   return isoDate.split('T')[0];
 };

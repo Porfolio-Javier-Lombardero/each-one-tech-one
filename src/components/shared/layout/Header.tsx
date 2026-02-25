@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SearchIcon } from "../../../assets/icons/SearchIcon";
 import { Link, useNavigate } from "react-router-dom";
-import { useCategoryFilter } from "@/hooks/useCategoryFilter";
+
 import { Categories } from "@/services/news/interfaces/topics";
 import { scrollToElement } from "@/utils/scrollToElement";
 import { useStore } from "@/store";
@@ -9,10 +9,8 @@ import { useStore } from "@/store";
 
 export const Header = () => {
   const navigate = useNavigate();
+ const [dropdown, setdropdown] = useState(false)
 
-  const [dropdown, setdropdown] = useState(false)
-
-  const { setCategory } = useCategoryFilter()
 
   // Cerrar el dropdown al cambiar el tamaño de pantalla
   useEffect(() => {
@@ -30,8 +28,8 @@ export const Header = () => {
     setdropdown(!dropdown)
   };
 
-  const handleClick = (topic: string) => {
-    setCategory(topic)
+  const handleClick = (topic: number | string) => {
+    
     navigate(`/${topic}`);
 
   };

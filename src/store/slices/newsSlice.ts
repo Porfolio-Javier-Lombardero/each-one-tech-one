@@ -4,7 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import { NewsSlice } from "./interfaces/d.slices.types";
 import { DateFilterType, SingleNew } from "@/services/news/interfaces/d.news.types";
 import { newsFetch as setNewsFetch } from "@/services/news/setNewsFetch";
-import { CategoryCache } from "@/services/news/interfaces/d.cache.types";
+import { CategoryCache } from "@/services/news/interfaces/d.news.cache.types";
 
 
 const isCategoryInCache = (

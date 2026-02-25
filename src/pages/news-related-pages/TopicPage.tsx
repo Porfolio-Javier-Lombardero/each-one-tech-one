@@ -5,13 +5,16 @@ import { OtherNewsCard } from "../../components/news/OtherNewsCard";
 import { LatestNewsSkeleton } from "../../components/news/LatestNewsSkeleton";
 import { OtherNewsSkeleton } from "../../components/news/OtherNewsSkeleton";
 import { DateFilterType } from "@/services/news/interfaces/d.news.types";
-import { useTopicNews } from "@/hooks/useTopicNews";
 import { getEmptyMessage } from "./helpers/getEmpyMessage";
+import { useGetHeadlines } from "@/hooks/useGetHeadlines";
 
 export const TopicPage = () => {
   const { topic } = useParams();
+
+  
   const [dateFilter, setDateFilter] = useState<DateFilterType>('today');
-  const { topicNews, loading } = useTopicNews(topic, dateFilter);
+  
+  const {isLoading, news } = useGetHeadlines({topic: topic || '', dateFilter: dateFilter})
 
   const [seeAll, setSeeAll] = useState(false)
 
@@ -19,19 +22,12 @@ export const TopicPage = () => {
     setSeeAll(!seeAll)
   }
 
-// Resetear filtro a 'today' cuando cambie el topic
   useEffect(() => {
-    if (dateFilter !== 'today') {
-      setDateFilter('today');
-    }
-    setSeeAll(false)
-  }, [topic]);
+  setDateFilter("today")
+  }, [topic])
+  
 
-  // Mostrar skeletons mientras carga o antes de que el caché se resuelva
-
-
-
-  return (
+ return (
     <>
       <div className="container-fluid m-0 pb-0 topic-page-gradient" id="hero">
         <div className="row  ps-4 pt-5 pb-0 m-0 gy-2 ">
@@ -85,7 +81,7 @@ export const TopicPage = () => {
 
       <section className="container-fluid  pt-3  px-5 d-flex flex-column  bg-secondary">
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
-          {(loading || !topicNews) ? (
+          {(isLoading || !news) ? (
             <>
               <div className="col-12 col-lg-6">
                 <LatestNewsSkeleton />
@@ -96,13 +92,13 @@ export const TopicPage = () => {
                 </div>
               ))}
             </>
-          ) : topicNews.length === 0 ? (
+          ) : news.length === 0 ? (
             <div className="col-12 text-center py-2">
               <h3 className="text-muted">{getEmptyMessage(dateFilter, topic)}</h3>
             </div>
           ) : (
-            topicNews &&
-            topicNews.map((noticia, index) => {
+            news &&
+            news.map((noticia, index) => {
               if (index === 0) {
                 return (
                   <div className="col-12 col-lg-6" key={index}>
@@ -119,7 +115,7 @@ export const TopicPage = () => {
               return null;
             }))}
           {seeAll &&
-            topicNews?.slice(10).map((noticia) => (
+            news?.slice(10).map((noticia) => (
               <div className="col-12 col-md-4 col-lg-3" key={noticia.id}>
                 <OtherNewsCard noticia={noticia} />
               </div>

@@ -1,20 +1,22 @@
-import  { useEffect } from 'react'
-import { useStore } from "@/store";
+
+import { useQuery } from '@tanstack/react-query';
+import { fetchReviewsWithCache } from '@/services/reviews/fetchReviewsWithCache';
+import { STALE_TIMES } from '@/services/consts/staletimes.';
 
 export const useGetReviews = () => {
-    const searchReviwes = useStore((state) => state.searchTechReviews)
-     const reviews = useStore((state) => state.reviews)
-     const loadingReviews = useStore((state) => state.loadingReviews)
+  const { isLoading: loadingReviews, data: reviews } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: fetchReviewsWithCache,
+    gcTime: STALE_TIMES.REVIEWS * 2,
+    staleTime: STALE_TIMES.REVIEWS
+  })
 
-     useEffect(() => {
 
-    searchReviwes()
-      
-     }, [])
-     
+
+
   return {
-   reviews,
-   loadingReviews
+    reviews,
+    loadingReviews
   }
-    
+
 }

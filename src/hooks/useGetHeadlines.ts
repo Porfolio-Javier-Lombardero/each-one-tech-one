@@ -1,19 +1,33 @@
-import { useEffect } from "react";
-import { useStore } from "@/store";
 
-export const useGetHeadlines = () => {
-    const searchHeadLines = useStore((state) => state.searchTopHeadLines);
-   
-    const news = useStore((state) => state.news);
-    const loadingNews = useStore((state) => state.loadingNews);
-   
-   useEffect(() => {
-        if (!news) {
-            searchHeadLines(0, undefined)}
-            
-    }, []);
 
-    return { news, loadingNews};
+import { DateFilterType } from "@/services/news/interfaces/d.news.types";
+import { fetchNewsWithCache } from "@/services/news/fetchNewsWithCache";
+import { useQuery } from "@tanstack/react-query";
+import { getTopicId } from "../services/news/helpers/setCategoryFilter";
+import { STALE_TIMES } from "@/services/consts/staletimes.";
+
+interface Props {
+    topic: number | string;
+    dateFilter: DateFilterType
+}
+
+export const useGetHeadlines = ({ topic, dateFilter }: Props) => {
+    const topicId = getTopicId(topic)
+
+    const { isLoading, data: news } = useQuery({
+        queryKey: ["top-headlines", topicId, dateFilter],
+        queryFn: () => fetchNewsWithCache(topicId, dateFilter),
+        gcTime: STALE_TIMES.NEWS * 2,
+        staleTime: STALE_TIMES.NEWS,
+
+    })
+
+
+
+    return {
+        isLoading,
+        news
+    };
 };
 
 
