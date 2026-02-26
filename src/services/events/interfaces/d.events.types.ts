@@ -1,10 +1,10 @@
+// Interfaz base para la aplicación
 export interface EventProps {
-    title:string| undefined;
-    location:string |undefined;
-    date:string | undefined;
-    url:string | undefined
+    title: string;
+    location: string;
+    date: string;
+    url: string;
 }
 
-
-export type Events = string[]
+export type Events = EventProps[];
 

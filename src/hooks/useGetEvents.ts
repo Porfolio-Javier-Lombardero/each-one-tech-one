@@ -1,4 +1,4 @@
-import { fetchEventsWithCache } from "@/services/events/fetchEventsWithCache";
+import { fetchEventsWithCache } from "@/services/events/cache/fetchEventsWithCache";
 import { useQuery } from "@tanstack/react-query";
 import { STALE_TIMES } from "@/services/consts/staletimes.";
 

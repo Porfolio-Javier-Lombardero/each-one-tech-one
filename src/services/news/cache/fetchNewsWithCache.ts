@@ -1,5 +1,5 @@
-import { DateFilterType, News, NewsCacheRow } from './interfaces/d.news.types';
-import { newsFetch } from './setNewsFetch';
+import { DateFilterType, News, NewsCacheRow } from '../interfaces/d.news.types';
+import { newsFetch } from '../setNewsFetch';
 import { supabase } from '@/services/api/config/supabaseClient';
 import { isCacheFresh } from '@/services/api/config/supaBaseConfig';
 import { STALE_TIMES } from '@/services/consts/staletimes.';

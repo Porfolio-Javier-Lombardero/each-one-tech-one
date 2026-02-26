@@ -15,7 +15,7 @@ export const mapEvents = (data: string) => {
     const matches = mappedEvents.matchAll(liRegex);
 
     const listItems = Array.from(matches)
-        .map(match => match[1].trim())
+        .map(match => match[1]?.trim() ?? "")
         .filter(item => {
             // Filtrar items vacíos, con solo espacios, o con texto explicativo
             if (!item || item.length < 10) return false;

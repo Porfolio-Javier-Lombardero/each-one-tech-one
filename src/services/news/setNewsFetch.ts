@@ -7,7 +7,6 @@ import {
   News,
   DateFilterType
 } from "./interfaces/d.news.types";
-import { Topics2 } from "./interfaces/topics";
 
 
 
@@ -22,7 +21,7 @@ const GUARDIAN_API_KEY = import.meta.env.VITE_THEGUARDIAN_API_KEY;
 export const newsFetch = async (
   topic: number | string,
   dateFilter: DateFilterType
-): Promise<News | void> => {
+): Promise<News> => {
   try {
     if (typeof topic !== "string") {
       const techCrunchOptions = {
@@ -72,9 +71,11 @@ export const newsFetch = async (
       const newsArrayDos = guardianData.response?.results || [];
 
       if (newsArrayDos.length > 0) {
-        const news = mapNewsDos(newsArrayDos);
-        return news;
+        return mapNewsDos(newsArrayDos);
       }
+
+      // Retornar array vacío si no hay resultados
+      return [];
     }
   } catch (error) {
     console.error("❌ Error fetching news:", error);

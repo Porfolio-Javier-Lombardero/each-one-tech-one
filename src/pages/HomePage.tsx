@@ -10,16 +10,16 @@ import { EventCard } from "@/components/events/EventCard";
 import { useGetHeadlines } from "@/hooks/useGetHeadlines";
 import { useGetEvents } from "@/hooks/useGetEvents";
 import { useGetReviews } from "@/hooks/useGetReviews";
-import { SearchResultItem } from "@/services/reviews/interfaces/d.reviews.types";
+import { Review } from "@/services/reviews/interfaces/d.reviews.types";
 
 
 export const HomePage = () => {
   const [seeAll, setSeeAll] = useState(false);
 
-  const { isLoading: loadingNews, news = [] } = useGetHeadlines({topic:0, dateFilter:"all"});
+  const { isLoading: loadingNews, news = [] } = useGetHeadlines({ topic: 0, dateFilter: "all" });
 
   const { isLoading: loadingEvents, events } = useGetEvents();
-  
+
   const { loadingReviews, reviews } = useGetReviews();
 
 
@@ -79,7 +79,7 @@ export const HomePage = () => {
                   if (index === 0) {
                     return (
                       <div className="col-12 col-lg-6" key={index}>
-                        <LatestNewsCard key={noticia.id} noticia={noticia} />
+                        <LatestNewsCard key={noticia.id_hash} noticia={noticia} />
                       </div>
                     );
                   } else if (index < 10) {
@@ -88,7 +88,7 @@ export const HomePage = () => {
                         className="col-12 col-md-4 col-lg-3"
                         key={index * 99}
                       >
-                        <OtherNewsCard key={noticia.id} noticia={noticia} />
+                        <OtherNewsCard key={noticia.id_hash} noticia={noticia} />
                       </div>
                     );
                   }
@@ -96,7 +96,7 @@ export const HomePage = () => {
                 })}
               {seeAll &&
                 news?.slice(10).map((noticia) => (
-                  <div className="col-12 col-md-4 col-lg-3" key={noticia.id}>
+                  <div className="col-12 col-md-4 col-lg-3" key={noticia.id_hash}>
                     <OtherNewsCard noticia={noticia} />
                   </div>
                 ))}
@@ -120,7 +120,7 @@ export const HomePage = () => {
             news
               .map((noticia) => {
                 return (
-                  <div className="col-12  col-md-6  col-lg-3" key={noticia.id}>
+                  <div className="col-12  col-md-6  col-lg-3" key={noticia.id_hash}>
                     <TopicCard noticia={noticia} />
                   </div>
                 );
@@ -140,17 +140,15 @@ export const HomePage = () => {
             <OtherNewsSkeleton />
           ) : (
             events &&
-            events.map((event) => {
-              const desglosedEvent = event.split(",");
-              return (
-                <EventCard
-                  date={desglosedEvent[0]}
-                  title={desglosedEvent[1]}
-                  location={desglosedEvent[2]}
-                  url={desglosedEvent[3]}
-                />
-              );
-            })
+            events.map((event) => (
+              <EventCard
+                key={event.url}
+                date={event.date}
+                title={event.title}
+                location={event.location}
+                url={event.url}
+              />
+            ))
           )}
         </div>
       </section>
@@ -163,17 +161,17 @@ export const HomePage = () => {
         </div>
 
         <div className="row px-3 justify-content-center">
-          { 
-          loadingReviews? 
-          (<OtherNewsSkeleton/>)
-           :
-           ( reviews && reviews.map((item : SearchResultItem) => (
-            <VideoPlayer
-              key={item.id.videoId}
-              video={item}
-              showDetails={true}
-            />
-          )))
+          {
+            loadingReviews ?
+              (<OtherNewsSkeleton />)
+              :
+              (reviews && reviews.map((item: Review) => (
+                <VideoPlayer
+                  key={item.video_id}
+                  video={item}
+                  showDetails={true}
+                />
+              )))
           }
         </div>
       </section>

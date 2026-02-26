@@ -1,8 +1,21 @@
-// types.ts
+// Formato simplificado y plano para app Y DB
+export interface Review {
+  video_id: string;
+  title: string;
+  description: string;
+  thumbnail_url: string;
+  channel_title: string;
+  published_at: string;
+  video_kind: string;
+}
+
+export type Reviews = Review[];
+
+// Tipo legacy para compatibilidad con YouTube API (solo interno)
 export interface SearchResultItem {
   id: {
     kind: string;
-    videoId: string; // <-- Aquí está el ID que necesitamos
+    videoId: string;
   };
   snippet: {
     title: string;

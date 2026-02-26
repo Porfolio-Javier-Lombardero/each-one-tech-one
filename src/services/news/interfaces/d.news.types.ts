@@ -1,36 +1,27 @@
 export type DateFilterType = "all" | 'today' | 'yesterday' | 'lastWeek';
 
+// Interfaz base para la aplicación (datos de negocio)
 export interface SingleNew {
-    id: `${string}-${string}-${string}-${string}-${string}`;
+    id_hash: string; // ID corto de 16 caracteres
     titulo: string;
-    description: string; // Antes: desc (ahora coincide con DB)
+    description: string;
     cont: string;
     categories: number[];
     fechaIso: string;
     fecha: string;
     url: string;
-    img?: any
+    img?: string | null;
 }
 
+export type News = SingleNew[];
 
-export type News = SingleNew[]
-
-// Tipos para los datos almacenados en Supabase
-export interface CachedNews {
-    id: number;
+// Interfaz extendida para la DB (incluye campos de caché)
+export interface NewsCacheRow extends SingleNew {
+    search_context: string; // Para filtrado: 'smartphones_lastWeek', 'cat_449_today'
     source: string;
-    techcrunch_id: number;
-    titulo: string;
-    description: string | null;
-    cont: string | null;
-    categories: number[] | null;
-    fecha_iso: string;
-    url: string;
-    img: string | null;
     created_at: string;
-    updated_at: string;
+    updated_at: string; // Para validar frescura del caché
     fetch_count: number;
-    search_context: string; // 'homepage', 'category_449', 'category_450', etc.
 }
 
 export interface TechCrunchArticle {

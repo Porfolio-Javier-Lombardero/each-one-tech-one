@@ -1,13 +1,9 @@
-export interface ReviewsCacheRow {
+import { Review } from './d.reviews.types';
+
+// Interfaz cache que extiende Review con metadatos
+export interface ReviewsCacheRow extends Review {
   id: number;
-  video_id: string;
-  title: string;
-  description: string | null;
-  thumbnail_url: string | null;
-  channel_title: string | null;
-  published_at: string;
-  source: string | null;
-  video_kind: string | null;
+  source: string;
   created_at: string;
   updated_at: string;
   fetch_count: number;
