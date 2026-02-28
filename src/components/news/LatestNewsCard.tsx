@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { useStore } from "../../store/";
+// import { useStore } from "../../store/";
 import { SingleNew } from "@/services/news/interfaces/d.news.types";
 
 export interface CardProps {
@@ -10,11 +10,11 @@ export interface CardProps {
 
 export const LatestNewsCard = ({ noticia }: CardProps) => {
 
-  const defineSingleNew = useStore(state => state.defineSingleNew);
+  // const defineSingleNew = useStore(state => state.defineSingleNew);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    defineSingleNew(noticia);
+    // defineSingleNew(noticia);
     navigate("/single", { state: { noticia } });
   };
 

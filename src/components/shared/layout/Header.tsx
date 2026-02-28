@@ -4,12 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Categories } from "@/services/news/interfaces/topics";
 import { scrollToElement } from "@/utils/scrollToElement";
-import { useStore } from "@/store";
+// import { useStore } from "@/store";
 
 
 export const Header = () => {
   const navigate = useNavigate();
- const [dropdown, setdropdown] = useState(false)
+  const [dropdown, setdropdown] = useState(false)
 
 
   // Cerrar el dropdown al cambiar el tamaño de pantalla
@@ -29,7 +29,7 @@ export const Header = () => {
   };
 
   const handleClick = (topic: number | string) => {
-    
+
     navigate(`/${topic}`);
 
   };

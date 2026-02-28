@@ -1,21 +1,23 @@
 
+import { useLocation } from "react-router-dom";
 import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
-import { useStore } from "@/store";
+
 import { cleanHTML } from "@/services/news/helpers/useCleanHtml";
 
 import { OtherNewsSkeleton } from "@/components/news/OtherNewsSkeleton";
 
 
 export const SingleNewPage = () => {
+  const { state } = useLocation();
+  const singleNew = state?.noticia;
 
-  const singleNew = useStore((state) => state.singleNew);
 
 
 
   if (!singleNew) {
-    return <OtherNewsSkeleton/>
+    return <OtherNewsSkeleton />
   }
 
   return (

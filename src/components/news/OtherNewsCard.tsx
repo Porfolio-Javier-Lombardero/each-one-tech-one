@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Categories, Topics } from "@/services/news/interfaces/topics";
 import React, { } from "react";
-import { useStore } from "@/store";
+// import { useStore } from "@/store";
 import { SingleNew } from "@/services/news/interfaces/d.news.types";
 
 export interface CardProps {
@@ -11,11 +11,11 @@ export interface CardProps {
 
 export const OtherNewsCard = ({ noticia }: CardProps) => {
 
-  const defineSingleNew = useStore(state => state.defineSingleNew);
+  // const defineSingleNew = useStore(state => state.defineSingleNew);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    defineSingleNew(noticia);
+    // defineSingleNew(noticia);
     navigate("/single", { state: { noticia } });
   };
 
