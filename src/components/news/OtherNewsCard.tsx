@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
+
 import { Categories, Topics } from "@/services/news/interfaces/topics";
 import React, { } from "react";
 // import { useStore } from "@/store";
@@ -70,8 +71,10 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
         </div>
         <div className="ratio ratio-4x3">
           <img className="card-img object-fit-cover " alt=""
-            src={noticia.img}
+          src={noticia.img}
           />
+
+       
         </div>
       </div>
     </article>

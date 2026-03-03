@@ -133,7 +133,7 @@ const mapNews = (newsArray: TechCrunchArticle[]): SingleNew[] => {
   if (!newsArray) return [];
 
   return newsArray.map((item: TechCrunchArticle): SingleNew => ({
-    id_hash: generateShortId(item.link),
+    id_hash: String(item.id),
     titulo: item.title.rendered,
     description: item.excerpt.rendered,
     cont: item.content.rendered,
@@ -147,7 +147,7 @@ const mapNews = (newsArray: TechCrunchArticle[]): SingleNew[] => {
 
 const mapNewsDos = (newsArray: GuardianArticle[]): SingleNew[] => {
   return newsArray.map((item: GuardianArticle): SingleNew => ({
-    id_hash: crypto.randomUUID(),
+    id_hash: (item.webUrl.split("/").pop() ?? "").substring(0, 16),
     titulo: item.webTitle,
     description: item.fields.trailText,
     cont: item.fields.bodyText,
@@ -164,6 +164,13 @@ const isCacheFresh = (updatedAt: string, staleTime: number): boolean => {
   const now = new Date().getTime();
   const cacheTime = new Date(updatedAt).getTime();
   return now - cacheTime < staleTime;
+};
+
+// Headers CORS
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey, x-client-info",
 };
 
 // Crear contexto de búsqueda
@@ -199,7 +206,7 @@ serve(async (req) => {
 
     const { topic, dateFilter } = await req.json();
 
-    if (!topic || !dateFilter) {
+    if (topic === null || topic === undefined || !dateFilter) {
       return new Response(
         JSON.stringify({ error: "Missing topic or dateFilter" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -279,6 +286,7 @@ serve(async (req) => {
       const techCrunchData = await techCrunchResponse.json();
       mappedNews = mapNews(techCrunchData.data || []);
     } else {
+      
       // The Guardian
       const guardianOptions = {
         method: "GET",

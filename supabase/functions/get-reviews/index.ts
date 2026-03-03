@@ -62,7 +62,7 @@ const mapReviews = (items: SearchResultItem[]): Review[] => {
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey, x-client-info",
 };
 
 serve(async (req) => {
