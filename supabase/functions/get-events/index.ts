@@ -70,12 +70,24 @@ const mapEvents = (data: string): string[] => {
   return listItems;
 };
 
+// Headers CORS
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 serve(async (req) => {
+  // Manejar preflight requests
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   try {
     if (req.method !== "POST" && req.method !== "GET") {
       return new Response(JSON.stringify({ error: "Method not allowed" }), {
         status: 405,
-        headers: { "Content-Type": "application/json" },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
@@ -103,7 +115,7 @@ serve(async (req) => {
         );
 
         return new Response(JSON.stringify(projectedEvents), {
-          headers: { "Content-Type": "application/json" },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
     }
@@ -139,14 +151,14 @@ serve(async (req) => {
     }
 
     return new Response(JSON.stringify(parsed), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("❌ Error in get-events:", error);
 
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

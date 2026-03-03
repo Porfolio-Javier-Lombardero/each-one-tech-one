@@ -184,11 +184,16 @@ const createSearchContext = (topic: number | string, dateFilter: string): string
 };
 
 serve(async (req) => {
+  // Manejar preflight requests
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   try {
     if (req.method !== "POST") {
       return new Response(JSON.stringify({ error: "Method not allowed" }), {
         status: 405,
-        headers: { "Content-Type": "application/json" },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
@@ -197,7 +202,7 @@ serve(async (req) => {
     if (!topic || !dateFilter) {
       return new Response(
         JSON.stringify({ error: "Missing topic or dateFilter" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -245,7 +250,7 @@ serve(async (req) => {
         );
 
         return new Response(JSON.stringify(projectedNews), {
-          headers: { "Content-Type": "application/json" },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
     }
@@ -314,14 +319,14 @@ serve(async (req) => {
     }
 
     return new Response(JSON.stringify(mappedNews), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("❌ Error in get-news:", error);
 
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });
