@@ -17,7 +17,6 @@ export const useGetHeadlines = ({ topic, dateFilter }: Props) => {
     const { isLoading, data: news } = useQuery({
         queryKey: ["top-headlines", topicId, dateFilter],
         queryFn: () => fetchNewsWithCache(topicId, dateFilter),
-        gcTime: STALE_TIMES.NEWS * 2,
         staleTime: STALE_TIMES.NEWS,
 
     })

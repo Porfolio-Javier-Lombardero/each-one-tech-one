@@ -5,7 +5,9 @@
  * @returns true si los datos están frescos, false si están obsoletos
  */
 export function isCacheFresh(updatedAt: string, staleTime: number): boolean {
+
   const lastUpdate = new Date(updatedAt).getTime();
+   
   const now = Date.now();
   const timeDiff = now - lastUpdate;
   
