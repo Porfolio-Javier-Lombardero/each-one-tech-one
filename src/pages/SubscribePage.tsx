@@ -1,5 +1,5 @@
 import { useSubscribeNL } from "@/hooks/useSubscribeNL";
-import { Newsub } from "@/services/newsletter/interfaces";
+import { Newsub } from "@/services/newsletter/d.newsub.types";
 import React from "react";
 
 export const SubscribePage = () => {
@@ -10,22 +10,21 @@ export const SubscribePage = () => {
     e.preventDefault();
 
     const form = e.currentTarget;
-    const privacyChecked = (form.elements.namedItem("privacy") as HTMLInputElement)?.checked;
-
+    const privacyChecked = (form.elements.namedItem("privacy"))?.checked;
     if (!privacyChecked) {
-      alert("Debes aceptar la política de privacidad");
+      alert("you have to accept privacy polities");
       return;
     }
 
     const formData = new FormData(form);
-    
+
     const body: Newsub = {
       email: String(formData.get("email") ?? ""),
       topics: String(formData.get("topic") ?? "") as Newsub["topics"],
       frecuency: String(formData.get("frecuency") ?? "") as Newsub["frecuency"],
     };
     saveNewSub(body);
-    form.reset(); 
+    form.reset();
   };
 
   return (

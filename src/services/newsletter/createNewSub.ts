@@ -1,4 +1,4 @@
-import { Newsub } from './interfaces'
+import { Newsub } from './d.newsub.types'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
