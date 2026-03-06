@@ -22,12 +22,20 @@ export const Routes: RouteObject[] = [
                 element: <HomePage />
             },
             {
-                path: '/:topic',
-                element: <TopicPage />
+                path: "/topic/:value",
+                element: <TopicPage />,
             },
             {
-                path: 'single',
+                path: "/topic/*",
+                element: <NotFound />
+            },
+            {
+                path: '/news/:title',
                 element: <SingleNewPage />
+            },
+            {
+                path: '/news/*',
+                element: <NotFound />
             },
             {
                 path: 'search',
@@ -41,11 +49,12 @@ export const Routes: RouteObject[] = [
                 path: 'subscribe',
                 element: <SubscribePage />
             },
-         
+
             {
                 path: '*',
                 element: <NotFound />
-            }
+            },
+
         ]
     }
 ];

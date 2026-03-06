@@ -16,8 +16,8 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // defineSingleNew(noticia);
-    navigate("/single", { state: { noticia } });
+    navigate(`/news/${noticia.titulo}`, 
+      { state: { new: noticia } });
   };
 
   const handleCategories = (noti: number | undefined) => {
@@ -71,10 +71,10 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
         </div>
         <div className="ratio ratio-4x3">
           <img className="card-img object-fit-cover " alt=""
-          src={noticia.img}
+            src={noticia.img}
           />
 
-       
+
         </div>
       </div>
     </article>

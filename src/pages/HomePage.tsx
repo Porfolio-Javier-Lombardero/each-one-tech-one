@@ -1,20 +1,19 @@
-import { useState } from "react";
-import { LatestNewsCard } from "../components/news/LatestNewsCard";
-import { OtherNewsCard } from "../components/news/OtherNewsCard";
-import { LatestNewsSkeleton } from "../components/news/LatestNewsSkeleton";
-import { OtherNewsSkeleton } from "../components/news/OtherNewsSkeleton";
 
-import { TopicCard } from "@/components/news/TopicCard";
+
+import { OtherNewsSkeleton } from "../components/news/cards/OtherNewsSkeleton";
+
+import { TopicCard } from "@/components/news/cards/TopicCard";
 import { VideoPlayer } from "@/components/reviews/VideoPlayer";
 import { EventCard } from "@/components/events/EventCard";
 import { useGetHeadlines } from "@/hooks/useGetHeadlines";
 import { useGetEvents } from "@/hooks/useGetEvents";
 import { useGetReviews } from "@/hooks/useGetReviews";
 import { Review } from "@/services/reviews/interfaces/d.reviews.types";
+import { Newslist } from "@/components/news/Newslist";
 
 
 export const HomePage = () => {
-  const [seeAll, setSeeAll] = useState(false);
+
 
   const { isLoading: loadingNews, news = [] } = useGetHeadlines({ topic: 0, dateFilter: "all" });
 
@@ -22,14 +21,7 @@ export const HomePage = () => {
 
   const { loadingReviews, reviews } = useGetReviews();
 
-
-
-
-  const handleSeeAll = () => {
-    setSeeAll(!seeAll);
-  };
-
-  return (
+ return (
     <div className="home">
       <section
         className="container-fluid d-flex justify-content-center align-items-center "
@@ -60,53 +52,7 @@ export const HomePage = () => {
             <h2 className="h2 display-3">LATEST NEWS</h2>
           </div>
         </div>
-        <div className="row align-items-end justify-content-between px-3 gx-2 gy-5">
-          {loadingNews ? (
-            <>
-              <div className="col-12 col-lg-6">
-                <LatestNewsSkeleton />
-              </div>
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div className="col-12 col-md-4 col-lg-3" key={`skeleton-${i}`}>
-                  <OtherNewsSkeleton />
-                </div>
-              ))}
-            </>
-          ) : (
-            <>
-              {news &&
-                news.map((noticia, index) => {
-                  if (index === 0) {
-                    return (
-                      <div className="col-12 col-lg-6" key={index}>
-                        <LatestNewsCard key={noticia.id_hash} noticia={noticia} />
-                      </div>
-                    );
-                  } else if (index < 10) {
-                    return (
-                      <div
-                        className="col-12 col-md-4 col-lg-3"
-                        key={index * 99}
-                      >
-                        <OtherNewsCard key={noticia.id_hash} noticia={noticia} />
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              {seeAll &&
-                news?.slice(10).map((noticia) => (
-                  <div className="col-12 col-md-4 col-lg-3" key={noticia.id_hash}>
-                    <OtherNewsCard noticia={noticia} />
-                  </div>
-                ))}
-            </>
-          )}
-        </div>
-        <button className="col-2 btn btn-primary m-3" onClick={handleSeeAll}>
-          {seeAll ? "view less" : "view All"}
-        </button>
-        <div className="row p-4  g-2 px-6 align-items-end "></div>
+      {<Newslist news={news} loadingNews={loadingNews}/>}
       </section>
 
       <section className="container-fluid p-1 p-sm-4 pb-4 " id="topics">

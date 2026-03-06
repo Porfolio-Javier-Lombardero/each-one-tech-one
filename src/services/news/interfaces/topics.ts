@@ -1,10 +1,10 @@
 export const Topics = {
   robotics: 577123751,
-  Policy: 577065682,
+  policy: 577065682,
   social: 577055593,
   gaming: 577052804,
-  Gadgets: 449223024,
-  App: 577051039,
+  gadgets: 449223024,
+  app: 577051039,
   AI: 577047203,
   biotech: 577030454,
   financialtech: 577030453,

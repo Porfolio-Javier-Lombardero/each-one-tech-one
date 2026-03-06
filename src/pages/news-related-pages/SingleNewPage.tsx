@@ -1,19 +1,19 @@
 
-import { useLocation } from "react-router-dom";
+
 import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 
 import { cleanHTML } from "@/services/news/helpers/useCleanHtml";
 
-import { OtherNewsSkeleton } from "@/components/news/OtherNewsSkeleton";
+import { OtherNewsSkeleton } from "@/components/news/cards/OtherNewsSkeleton";
+import { useLocation } from "react-router-dom";
+import { SingleNew } from "@/services/news/interfaces/d.news.types";
 
 
 export const SingleNewPage = () => {
   const { state } = useLocation();
-  const singleNew = state?.noticia;
-
-
+  const singleNew: SingleNew = state?.new;
 
 
   if (!singleNew) {

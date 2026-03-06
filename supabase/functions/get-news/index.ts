@@ -275,7 +275,7 @@ serve(async (req) => {
         },
       };
 
-      const techCrunchUrl = `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=1&per_page=25&after=${dateRange.after}&before=${dateRange.before}`;
+      const techCrunchUrl = `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=1&per_page=10&after=${dateRange.after}&before=${dateRange.before}`;
 
       const techCrunchResponse = await fetch(techCrunchUrl, techCrunchOptions);
 
@@ -296,7 +296,7 @@ serve(async (req) => {
       const fromDate = formatDateForGuardian(dateRange.after);
       const toDate = formatDateForGuardian(dateRange.before);
 
-      const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=20&order-by=newest&show-fields=all&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
+      const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=10&order-by=newest&show-fields=all&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
 
       const guardianResponse = await fetch(guardianUrl, guardianOptions);
 

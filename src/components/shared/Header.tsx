@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { SearchIcon } from "../../../assets/icons/SearchIcon";
-import { Link, useNavigate } from "react-router-dom";
+
+import {  NavLink, useNavigate } from "react-router-dom";
 
 import { Categories } from "@/services/news/interfaces/topics";
 import { scrollToElement } from "@/utils/scrollToElement";
+import { SearchIcon } from "@/assets/icons/SearchIcon";
 // import { useStore } from "@/store";
 
 
@@ -28,11 +29,7 @@ export const Header = () => {
     setdropdown(!dropdown)
   };
 
-  const handleClick = (topic: number | string) => {
 
-    navigate(`/${topic}`);
-
-  };
 
   const handleScrollToReviews = () => {
     // Si estamos en la homepage, hacer scroll directo
@@ -67,21 +64,14 @@ export const Header = () => {
     if (!find || find.trim() === '') return;
 
     // Separar por comas y espacios, hacer trim y filtrar vacíos
-    const keywords = find
-      .split(/[,\s]+/)
-      .map(word => word.trim())
-      .filter(word => word.length > 0);
+ 
 
-    if (keywords.length === 0) return;
-
-    // Disparar la búsqueda en el store
-    useStore.getState().searchByKeywords(keywords);
-
-    // Limpiar el formulario
+    if (find.length === 0) return;
+// Limpiar el formulario
     event.currentTarget.reset();
-
+       
     // Navegar a la página de resultados
-    navigate('/foundAtWeb');
+    navigate(`/topic/${find}`);
   };
 
   return (
@@ -100,14 +90,16 @@ export const Header = () => {
             <ul className="navbar-nav m-2 mb-2 mb-lg-0 bg-secondartransp  rounded-pill  align-items-center shadow-sm">
               <li className="nav-item">
                 <div className="nav-link active" aria-current="page">
-                  <Link to={"/"}>Home</Link>
+                  <NavLink to={"/"}>Home</NavLink>
                 </div>
               </li>
               {
                 Object.values(Categories).map(value => (
-                  <li key={value} className="nav-item mt-3" onClick={() => handleClick(value)}>
+                  <li key={value} className="nav-item mt-3">
                     <div className="nav-link " >
+                     <NavLink to={`/topic/${value}`} >
                       <p className="text-primary" style={{ cursor: "pointer" }}>{value}</p>
+                      </NavLink>
                     </div>
                   </li>
                 ))
@@ -136,12 +128,12 @@ export const Header = () => {
               </li>
               <li className="nav-item">
                 <div className="nav-link" >
-                  <Link to={"/subscribe"}>Newsletter</Link>
+                  <NavLink to={"/subscribe"}>Newsletter</NavLink>
                 </div>
               </li>
               <li className="nav-item">
                 <div className="nav-link" aria-disabled="true" >
-                  <Link to={"/Contact"}>Contact</Link>
+                  <NavLink to={"/Contact"}>Contact</NavLink>
                 </div>
               </li>
             </ul>
@@ -176,13 +168,15 @@ export const Header = () => {
 
             <li className="nav-item mobile-menu-item">
               <div onClick={handleDropdown} className="nav-link fs-6 py-3 ps-2 " >
-                <Link to={"/"}>Home</Link>
+                <NavLink to={"/"}>Home</NavLink>
               </div>
             </li>
             {Object.values(Categories).map(value => (
-              <li key={value} className="nav-item mobile-menu-item" onClick={() => handleClick(value)}>
+              <li key={value} className="nav-item mobile-menu-item" >
                 <div onClick={handleDropdown} className="nav-link fs-6 py-1 ps-2 " style={{ cursor: "pointer" }} >
+                  <NavLink  to={`/topic/${value}`}>
                   <p >{value}</p>
+                  </NavLink>
                 </div>
               </li>
             ))
@@ -211,12 +205,12 @@ export const Header = () => {
             </li>
             <li className="nav-item mobile-menu-item">
               <div onClick={handleDropdown} className="nav-link fs-6 py-2 ps-2" >
-                <Link to={"/subscribe"}>Newsletter</Link>
+                <NavLink to={"/subscribe"}>Newsletter</NavLink>
               </div>
             </li>
             <li className="nav-item mobile-menu-item">
               <div onClick={handleDropdown} className="nav-link fs-6 py-3 ps-2" aria-disabled="true" >
-                <Link to={"/Contact"}>Contact</Link>
+                <NavLink to={"/Contact"}>Contact</NavLink>
               </div>
             </li>
           </ul>
