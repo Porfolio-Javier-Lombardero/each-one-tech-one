@@ -286,7 +286,6 @@ serve(async (req) => {
       const techCrunchData = await techCrunchResponse.json();
       mappedNews = mapNews(techCrunchData.data || []);
     } else {
-      
       // The Guardian
       const guardianOptions = {
         method: "GET",
@@ -296,7 +295,7 @@ serve(async (req) => {
       const fromDate = formatDateForGuardian(dateRange.after);
       const toDate = formatDateForGuardian(dateRange.before);
 
-      const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=10&order-by=newest&show-fields=all&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
+      const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=10&page=1&order-by=newest&show-fields=all&q=smartphone%2C%20iphone%2C%20samsung%2C%20xiaomi%2C%20huawei&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
 
       const guardianResponse = await fetch(guardianUrl, guardianOptions);
 

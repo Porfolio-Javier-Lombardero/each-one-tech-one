@@ -27,8 +27,8 @@ export const TopicPage = () => {
   }
 
 
-useEffect(() => {
-    setDateFilter("today")
+  useEffect(() => {
+    setDateFilter(value === "Smartphones"? "all" : "today")
   }, [value])
 
 
@@ -41,8 +41,51 @@ useEffect(() => {
               {value === 'foundAtWeb' ? 'Search Results' : value}
             </h1>
           </div>
-          {value !== 'foundAtWeb' && (
+          {value === "Smartphones" ? (
             <div className="col-12 d-flex ps-2 pt-3 pb-0  mb-0">
+              <button
+                className={`btn btn-outline-primary d-none d-sm-inline ms-2 active text-secondary`}
+                onClick={() => setDateFilter('all')}
+              >
+                Last 14 days
+              </button>
+              <button
+                className={`btn btn-outline-primary d-none d-sm-inline ms-2`}
+                onClick={() => setDateFilter('yesterday')}
+                disabled
+              >
+                Yesterday
+              </button>
+              <button
+                className={`btn btn-outline-primary d-none d-sm-inline ms-2 `}
+                onClick={() => setDateFilter('lastWeek')}
+                disabled
+              >
+                Older
+              </button>
+              <button
+                className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 ${dateFilter === 'today' ? 'active text-secondary' : ''}`}
+                onClick={() => setDateFilter('today')}
+              >
+                Last 14 days
+              </button>
+              <button
+                className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2`}
+                onClick={() => setDateFilter('yesterday')}
+                disabled
+              >
+                Yesterday
+              </button>
+              <button
+                className={`btn btn-outline-primary btn-sm d-inline d-sm-none ms-2 `}
+                onClick={() => setDateFilter('lastWeek')}
+                disabled
+              >
+                Older
+              </button>
+            </div>)
+            :
+            (<div className="col-12 d-flex ps-2 pt-3 pb-0  mb-0">
               <button
                 className={`btn btn-outline-primary d-none d-sm-inline ms-2 ${dateFilter === 'today' ? 'active text-secondary' : ''}`}
                 onClick={() => setDateFilter('today')}
@@ -79,15 +122,16 @@ useEffect(() => {
               >
                 Older
               </button>
-            </div>
-          )}
+            </div>)
+
+          }
         </div>
       </div>
 
       <section className="container-fluid  pt-3  px-5 d-flex flex-column  bg-secondary">
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
-          { <Newslist news={noticias} loadingNews={isLoading}/>}
-        
+          {<Newslist news={noticias} loadingNews={isLoading} />}
+
         </div>
 
         <div className="separador"></div>
