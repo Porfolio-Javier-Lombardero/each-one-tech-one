@@ -29,7 +29,7 @@ export const SubscribePage = () => {
 
   return (
     <>
-      <section className="container-fluid px-0 px-sm-4" id="herOther">
+      <section className="container-fluid px-0 px-sm-4 topic-page-gradient" id="herOther">
         <div className="row p-1 p-sm-4 gy-4">
           <div className="col-12 p-2 p-sm-3 d-flex justify-content-center">
             <h1 className="h1 display-2 d-flex flex-column align-items-start p-2">

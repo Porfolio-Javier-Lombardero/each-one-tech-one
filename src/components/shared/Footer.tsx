@@ -9,9 +9,8 @@ export const Footer = () => {
         <p className="mb-0">
             Follow us on 
             <a href="https://facebook.com" className="text-white mx-2">Facebook</a> | 
-            <a href="https://x.com" className="text-white mx-2">X</a> | 
-            <a href="https://instagram.com" className="text-white mx-2">Instagram</a>
-        </p>
+            <a href="https://x.com/EachTechNews" className="text-white mx-2">X</a> | 
+            <a href="https://www.instagram.com/eachonetechone/" className="text-white mx-2">Instagram</a>    </p>
     </div>
 </footer>
  

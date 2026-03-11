@@ -1,7 +1,86 @@
-
-
 @import "./Custom/_variables";
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-@import "./Custom/_overrides"
+@import "./Custom/_overrides";
+
+// Estilos para el contenido de noticias renderizado
+.news-content {
+    width: 100%;
+    overflow-x: hidden;
+
+    // Asegurar que todos los párrafos sean responsivos
+    p {
+        overflow-x: hidden;
+        word-break: break-word;
+    }
+
+    // Estilos para figuras de imágenes
+    figure {
+        width: 100%;
+        max-width: 100%;
+        margin: 1.5rem auto;
+        padding: 0;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            width: auto;
+        }
+
+        &.aligncenter {
+            text-align: center;
+        }
+
+        figcaption {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.5rem;
+            padding: 0 1rem;
+            width: 100%;
+        }
+    }
+
+    // Estilos para imágenes individuales
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    // Bloque de párrafos de WordPress
+    .wp-block-paragraph {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+
+    // Contenedor general responsivo
+    >* {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    @media (max-width: 576px) {
+        figure {
+            margin: 1rem auto;
+        }
+
+        .wp-block-paragraph {
+            font-size: 0.95rem;
+        }
+    }
+}

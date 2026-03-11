@@ -174,20 +174,15 @@ const corsHeaders = {
 };
 
 // Crear contexto de búsqueda
-const createSearchContext = (topic: number | string, dateFilter: string): string => {
-  let topicStr: string;
+const createSearchContext = (topic: number | string, dateFilter: string, page: number): string => {
+  
 
-  if (typeof topic === "number") {
-    topicStr = `cat_${topic}`;
-  } else {
-    const topicMap: Record<string, string> = {
-      "smartphone iPhone Android mobile Samsung Pixel foldable": "smartphones",
-    };
+    const  topicStr = `cat_${topic}`;
 
-    topicStr = topicMap[topic] || topic.toLowerCase().replace(/\s+/g, "_").substring(0, 20);
-  }
+    // topicStr = topicMap[topic] || topic.toLowerCase().replace(/\s+/g, "_").substring(0, 20);
+  
 
-  return `${topicStr}_${dateFilter}`;
+  return `${topicStr}_${dateFilter}_p${page}`;
 };
 
 serve(async (req) => {
@@ -204,7 +199,7 @@ serve(async (req) => {
       });
     }
 
-    const { topic, dateFilter } = await req.json();
+   const { topic, dateFilter, page = 1 } = await req.json();
 
     if (topic === null || topic === undefined || !dateFilter) {
       return new Response(
@@ -213,7 +208,7 @@ serve(async (req) => {
       );
     }
 
-    const searchContext = createSearchContext(topic, dateFilter);
+    const searchContext = createSearchContext(topic, dateFilter, page);
     const dateRange = getDateRangeByFilter(dateFilter);
 
     // 1. Verificar caché
@@ -275,7 +270,7 @@ serve(async (req) => {
         },
       };
 
-      const techCrunchUrl = `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=1&per_page=10&after=${dateRange.after}&before=${dateRange.before}`;
+      const techCrunchUrl = `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=${page}&per_page=10&after=${dateRange.after}&before=${dateRange.before}`;
 
       const techCrunchResponse = await fetch(techCrunchUrl, techCrunchOptions);
 
@@ -295,7 +290,7 @@ serve(async (req) => {
       const fromDate = formatDateForGuardian(dateRange.after);
       const toDate = formatDateForGuardian(dateRange.before);
 
-      const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=10&page=1&order-by=newest&show-fields=all&q=smartphone%2C%20iphone%2C%20samsung%2C%20xiaomi%2C%20huawei&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
+      const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=10&page=${page}&order-by=newest&show-fields=all&q=smartphone%2C%20iphone%2C%20samsung%2C%20xiaomi%2C%20huawei&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
 
       const guardianResponse = await fetch(guardianUrl, guardianOptions);
 

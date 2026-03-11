@@ -1,61 +1,11 @@
-// Fuentes personalizadas
-@font-face {
-  font-family: "Neue-Light";
-  src: url("/public/Fonts/NeueMontreal-Light.woff2") format("woff2");
-  font-weight: normal;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Neue-Medium";
-  src: url("/Fonts/NeueMontreal-Medium.woff2") format("woff2");
-  font-weight: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Neue-Regular";
-  src: url("/Fonts/NeueMontreal-Regular.woff2") format("woff2");
-  font-weight: normal;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Neue-Bold";
-  src: url("/Fonts/NeueMontreal-Bold.woff2") format("woff2");
-  font-weight: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Eiko";
-  src: url("/Fonts/PPEiko-Medium.woff2") format("woff2");
-  font-weight: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Eiko-Heavy";
-  src: url("/Fonts/PPEiko-Heavy.woff2") format("woff2");
-  font-weight: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Eiko-Thin";
-  src: url("/Fonts/PPEiko-Thin.woff2") format("woff2");
-  font-weight: bold;
-  font-display: swap;
-}
+@import "./fonts.scss";
 
 // colores globales
 $primary: #0A287E;
 $secondary: #f3f3e9;
-$secondartransp:#f3f3e9bd;
+$secondartransp: #f3f3e9bd;
 $white: #dadacdb1;
-$info: rgb(159, 157, 157) ;
+$info: rgb(159, 157, 157);
 $border-radius: 1rem;
 
 //global Fonts
@@ -106,15 +56,15 @@ $btn-hover-border-color: $white;
 $btn-hover-shadow: none;
 $btn-padding-y-sm: 0.7px;
 $btn-padding-x-sm: 7px;
-$bs-hover-color:$secondary;
+$bs-hover-color: $secondary;
 $btn-font-size-sm: 0.8rem;
 $btn-border-radius-sm: 20px;
 $btn-border-width-sm: 0px;
-$btn-active-box-shadow:none ;
-$btn-focus-box-shadow:none;
+$btn-active-box-shadow: none;
+$btn-focus-box-shadow: none;
 $btn-box-shadow: none;
-$btn-active-border-shade-amount:  0%;
-$btn-active-border-tint-amount:   0%;
+$btn-active-border-shade-amount: 0%;
+$btn-active-border-tint-amount: 0%;
 
 
 $gradient: linear-gradient(180deg, rgba(transparent, 0) 66%, rgba($secondary, .99));
@@ -127,7 +77,7 @@ $input-padding-y: 0.61rem;
 $input-border-radius: 30px;
 $input-border-color: none;
 $input-focus-box-shadow: none;
-$form-text-font-size: 0.5rem ;
+$form-text-font-size: 0.5rem;
 $input-placeholder-color: gray;
 
 // main Navbar

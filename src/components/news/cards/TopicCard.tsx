@@ -11,7 +11,7 @@ export const TopicCard = ({ noticia }: CardProps) => {
 
   const handleClick = () => {
    
-    navigate("/single", { state: { noticia } });
+    navigate(`/news/${noticia.titulo}`, { state: { new: noticia } });
   };
 
   const handleCategories = (noti: number | undefined) => {

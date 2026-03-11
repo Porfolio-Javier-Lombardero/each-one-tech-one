@@ -1,7 +1,5 @@
 
-
 import { OtherNewsSkeleton } from "../components/news/cards/OtherNewsSkeleton";
-
 import { TopicCard } from "@/components/news/cards/TopicCard";
 import { VideoPlayer } from "@/components/reviews/VideoPlayer";
 import { EventCard } from "@/components/events/EventCard";
@@ -10,19 +8,21 @@ import { useGetEvents } from "@/hooks/useGetEvents";
 import { useGetReviews } from "@/hooks/useGetReviews";
 import { Review } from "@/services/reviews/interfaces/d.reviews.types";
 import { Newslist } from "@/components/news/Newslist";
+import { SingleNew } from "@/services/news/interfaces/d.news.types";
 
 
 export const HomePage = () => {
 
 
-  const { isLoading: loadingNews, news = [] } = useGetHeadlines({ topic: 0, dateFilter: "all" });
+  const { isLoading: loadingNews, news: newsData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetHeadlines({ topic: 0, dateFilter: "all" });
+  const news = newsData?.pages.flatMap((page: SingleNew[]) => page) || [];
 
   const { isLoading: loadingEvents, events } = useGetEvents();
 
   const { loadingReviews, reviews } = useGetReviews();
 
- return (
-    <div className="home">
+  return (
+    <div className="home home-page-gradient">
       <section
         className="container-fluid d-flex justify-content-center align-items-center "
         id="hero"
@@ -52,7 +52,7 @@ export const HomePage = () => {
             <h2 className="h2 display-3">LATEST NEWS</h2>
           </div>
         </div>
-      {<Newslist news={news} loadingNews={loadingNews}/>}
+        {<Newslist news={news} loadingNews={loadingNews} fetchNext={fetchNextPage} hasNext={hasNextPage} isFetching={isFetchingNextPage} />}
       </section>
 
       <section className="container-fluid p-1 p-sm-4 pb-4 " id="topics">

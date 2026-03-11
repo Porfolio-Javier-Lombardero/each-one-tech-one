@@ -1,40 +1,39 @@
-
-
-import fondoContact from '@/assets/images/fondoContact.png'
-import { Facebook } from '@/assets/icons/Facebook'
-import { Share } from '@/assets/icons/Share'
-import { Tweeter } from '@/assets/icons/Tweeter'
-
+import fondoContact from "@/assets/images/fondoContact.png";
+import { Facebook } from "@/assets/icons/Facebook";
+import { Share } from "@/assets/icons/Share";
+import { Tweeter } from "@/assets/icons/Tweeter";
 
 export const ContactPage = () => {
   return (
     <>
-      <section className='container-fluid mb-0 pb-3 ' id='herOther'>
+      <section className="container-fluid mb-0 pb-3 topic-page-gradient " id="herOther">
         <div className="row justify-content-center mb-0">
-          <div className="col-12 p-2 mt-3 ps-3 ms-5">
-            <h1 className='h1 display-1 fw-bolder text-primary'>Contact Us</h1>
+          <div className="col-12 p-1 mt-3 ps-3 ms-5">
+            <h1 className="h1 display-1 fw-bolder text-primary">Contact Us</h1>
           </div>
-          <div className="col-12 d-flex justify-content-center  p-4 ">
-
-            <img className="img-fluid  rounded-4 p-5 m-5" src={fondoContact} />
-
-          </div>
-          <div className="col-6"></div>
+            <div className="col-12 d-flex justify-content-center opacity-75">
+            <img className="img-fluid rounded-4 p-5 m-2" src={fondoContact} />
+            </div>
+         <div className="col-6"></div>
           <div className="col-12 col-md-6 d-flex flex-column align-items-center">
-            <p className='text fs-4 fw-bold'>
-              eachonetechone@gmail.com
-            </p>
+            <p className="text fs-4 fw-bold">eachonetechone@gmail.com</p>
             <p>Denver, CO</p>
             <strong>Follow us: </strong>
-            <div className='d-flex justify-content-around w-25 mt-4 mb-0 pb-3'>
-              <Tweeter />
-              <Facebook />
+            <div className="d-flex justify-content-around w-25 mt-4 mb-0 pb-3">
+              <a href="https://x.com/EachTechNews">
+              
+                <Tweeter />
+              </a>
+              <a href="https://www.instagram.com/eachonetechone/">
+              
+                <Facebook />
+              </a>
+
               <Share />
             </div>
           </div>
         </div>
-
       </section>
     </>
-  )
-}
+  );
+};

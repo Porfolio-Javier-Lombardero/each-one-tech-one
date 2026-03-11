@@ -42,7 +42,7 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
       navigate('/');
       return;
     }
-    navigate(`/${categoryTitle || ''}`);
+    navigate(`/topic/${categoryTitle || ''}`);
   }
 
   return (

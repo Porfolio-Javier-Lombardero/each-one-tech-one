@@ -1,9 +1,7 @@
 
   // 3. HELPER para mensajes de UI
-  export const getEmptyMessage = (dateFilter: string, topic?:string): string => {
-    if (topic === 'foundAtWeb') {
-      return 'No articles found matching your search';
-    }
+  export const getEmptyMessage = (dateFilter: string): string => {
+
 
     switch (dateFilter) {
       case 'today':
