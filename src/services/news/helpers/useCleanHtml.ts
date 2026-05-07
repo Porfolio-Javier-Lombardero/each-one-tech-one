@@ -12,17 +12,17 @@ export const cleanHTML = (html: string): string => {
   images.forEach(img => {
     const width = img.getAttribute('width');
     const height = img.getAttribute('height');
-    
+
     // Si la imagen tiene dimensiones, calcular aspect-ratio
     if (width && height) {
       const aspectRatio = parseFloat(height) / parseFloat(width);
       img.style.aspectRatio = `${width} / ${height}`;
     }
-    
+
     // Remover anchura y altura fijos
     img.removeAttribute('width');
     img.removeAttribute('height');
-    
+
     // Aplicar estilos responsivos
     img.style.maxWidth = '100%';
     img.style.height = 'auto';
@@ -37,4 +37,10 @@ export const cleanHTML = (html: string): string => {
   });
 
   return doc.body.innerHTML;
+};
+
+export const stripHTML = (html: string): string => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  return doc.body.textContent || '';
 };

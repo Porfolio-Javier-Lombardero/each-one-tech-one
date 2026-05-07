@@ -2,7 +2,7 @@ import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 
-import { cleanHTML } from "@/services/news/helpers/useCleanHtml";
+import { cleanHTML, stripHTML } from "@/services/news/helpers/useCleanHtml";
 
 import { OtherNewsSkeleton } from "@/components/news/cards/OtherNewsSkeleton";
 import { useLocation } from "react-router-dom";
@@ -35,7 +35,7 @@ export const SingleNewPage = () => {
             <Share />
           </div>
           <div className=" col-12  p-3  p-md-0 p-md-3  ">
-            <h1> {singleNew.titulo.replace(/[#&;]|82\d*/g, " ")}</h1>
+            <h1> {stripHTML(singleNew.titulo)}</h1>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@ export const SingleNewPage = () => {
         </div>
         <div className="row g-0 g-md-5">
           <div className="col-12 d-flex justify-content-center py-4 px-4">
-            <h3> {singleNew.description.replace(/<\/?p>|[#&;]|82\d*/g, "")}</h3>
+            <h3> {stripHTML(singleNew.description)}</h3>
           </div>
           <div className="col-12 pt-2  d-flex align-self-start justify-content-center p-5">
             {singleNew.img && (

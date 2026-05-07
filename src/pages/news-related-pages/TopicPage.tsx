@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import { getEmptyMessage } from "./helpers/getEmpyMessage";
 import { useGetHeadlines } from "@/hooks/useGetHeadlines";
 import { Categories } from "@/services/news/interfaces/topics";
 import { Newslist } from "@/components/news/Newslist";
@@ -27,17 +27,18 @@ export const TopicPage = () => {
   let noticias = news;
 
   if (value && !Object.values(Categories).includes(value)) {
-    const keywords = value.toLocaleLowerCase().split(/[,\s.]+/);
-
+    const keywords = value.split(/[,\s.]+/);
+ console.log(keywords)
     const searchByKeyword =
       noticias?.filter((noticia: SingleNew) => {
         return keywords.some((kw) =>
-          noticia.titulo.toLocaleLowerCase().split(" ").includes(kw),
+          noticia.titulo.split(" ").includes(kw),
+     
         );
       }) || [];
     noticias = searchByKeyword;
   }
-
+  
   useEffect(() => {
     setDateFilter(value === "Smartphones" ? "all" : "today");
   }, [value]);
@@ -50,6 +51,7 @@ export const TopicPage = () => {
             <h1 className="h1 display-2 text-center text-sm-start">{value}</h1>
           </div>
           {
+         
             <Datefilter
               setDateFilter={setDateFilter}
               dateFilter={dateFilter}
@@ -62,7 +64,7 @@ export const TopicPage = () => {
       <section className="container-fluid  pt-3  px-5 d-flex flex-column  bg-secondary">
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
           {
-            <Newslist
+              noticias.length  > 1  ? (<Newslist
               news={noticias}
               loadingNews={loadingNews}
               fetchNext={fetchNextPage}
@@ -70,7 +72,9 @@ export const TopicPage = () => {
               isFetching={isFetchingNextPage}
               dateFilter={dateFilter}
       
-            />
+            />)
+            :
+            (<p>{getEmptyMessage(dateFilter)}</p>)
           }
         </div>
 
