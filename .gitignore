@@ -13,6 +13,16 @@ dist-ssr
 *.local
 # Environment files
 .env
+.env.local
+.env.development
+.env.production
+.env*.local
+*.env
+
+# Credenciales de Supabase
+SUPABASE CREDENTIALS.TXT
+supabase-credentials.txt
+supabase-creds.txt
 
 # Editor directories and files
 .vscode/*

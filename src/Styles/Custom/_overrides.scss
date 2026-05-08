@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: "Neue-Regular";
   src: url("/Fonts/NeueMontreal-Regular.woff2") format("woff2");
@@ -8,6 +7,12 @@
 }
 
 
+// Evitar scroll horizontal global
+html,
+body {
+  overflow-x: hidden;
+}
+
 @font-face {
   font-family: "Neue-Light";
   src: url("/Fonts/NeueMontreal-Light.woff2") format("woff2");
@@ -16,41 +21,52 @@
   font-display: swap;
 }
 
-.display-1{
-  font-size:$display-font-size-1;
+.display-1 {
+  font-size: $display-font-size-1;
   font-weight: $display-font-weight-1
 }
-.display-2{
+
+.display-2 {
   font-size: $display-font-size-2;
   font-weight: $display-font-weight-2
 }
-.display-3{
+
+.display-3 {
   font-size: $display-font-size-3;
   font-weight: $display-font-weight-3
 }
-.card-title{
+
+.card-title {
   font-family: "Neue-Regular";
   font-weight: $h3-font-weight;
-  
+
 }
-.card-subtitle{
+
+.card-subtitle {
   font-family: "Neue-Light";
 
 }
+
 .truncate-after-second-line {
   display: -webkit-box;
-  -webkit-box-orient: vertical; /* Necesario para los elementos de tipo bloque */
-  -webkit-line-clamp: 2;  /* Mostrar hasta la segunda línea */
-  overflow: hidden;       /* Ocultar todo el contenido fuera de la segunda línea */
-  word-wrap: break-word;  /* Permitir que las palabras largas se rompan */
+  -webkit-box-orient: vertical;
+  /* Necesario para los elementos de tipo bloque */
+  -webkit-line-clamp: 2;
+  /* Mostrar hasta la segunda línea */
+  overflow: hidden;
+  /* Ocultar todo el contenido fuera de la segunda línea */
+  word-wrap: break-word;
+  /* Permitir que las palabras largas se rompan */
 }
 
 .alt-font {
   font-family: $alt-font, sans-serif;
 }
+
 .alt-font-bold {
   font-family: $alt-font-bold, sans-serif;
 }
+
 .alt-font-thin {
   font-family: $alt-font-thin, sans-serif;
 }
@@ -58,93 +74,194 @@
 
 
 body {
-  background-color: $secondary;
-  background-image:url("../assets/img/fondoFinal.webp");
-  background-size: contain;
+  // background-color: $secondary;
+  background-image: url("/src/assets/images/fondoFinal.webp");
+  background-size: cover;
+  background-attachment: fixed;
   background-repeat: no-repeat;
 }
+
 section {
   min-height: 80vh;
-  
-}
-
-#hero{
- background-image: linear-gradient(to top, $secondary 4%, transparent);
 
 }
 
-#herOther{
-  background-image: linear-gradient(to top, $secondary 35%, transparent);
-}
+
+// #hero {
+//   background-image: linear-gradient(to top, $secondary 0%, transparent);
+
+// }
+
+// #herOther {
+//   background-image: linear-gradient(to top, $secondary 35%, transparent);
+// }
 
 .swiper {
+  max-width: 100%;
   width: 600px;
   height: 300px;
 }
 
+// Permitir que los elementos del navbar hagan wrap y no desborden
 
 
+.bg-secondartransp {
+  background-color: $secondartransp !important;
+}
 
-@media screen and (max-width: 1500px) {
+// Fondo específico para skeletons de cards de noticias
+.skeleton-card-bg {
+  background-color: darken($secondary, 6%) !important;
+}
+
+.topic-page-gradient {
+  background: linear-gradient(to bottom, transparent 0%, transparent 55%, $secondary 100%);
+}
+
+.home-page-gradient {
+  background: linear-gradient(to bottom, transparent 10%, $secondary 20%);
+}
+
+// Efecto hover para el menú móvil
+.mobile-menu-item {
+  position: relative;
+  font-weight: normal !important;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    width: 0;
+    border-top: 2px solid $primary;
+    transition: width 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 25%;
+  }
+}
+
+
+@media screen and (max-width: 1540px) {
+  .nav-item .nav-link {
+    font-size: 1rem;
+    padding: 0.3rem 0.5rem;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .nav-item .nav-link {
+    font-size: 0.95rem;
+    padding: 0.3rem 0.4rem;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .nav-item .nav-link {
+    font-size: 1rem;
+    padding: 0.3rem 0.4rem;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1260px) {
   .nav-item .nav-link {
     font-size: 0.9rem;
-    padding: 3;
+    padding: 0.2rem 0.3rem;
     text-wrap: nowrap;
   }
 }
-@media screen and (max-width: 1200px) {
-  .nav-item .nav-link {
-    font-size: 0.89rem;
-    text-wrap: nowrap;
-  }
-}
-@media screen and (max-width: 1120px) {
-  .nav-item .nav-link {
-    font-size: 0.78rem;
-    text-wrap: nowrap;
-  }
-}
-@media screen and (max-width: 1100px) {
-  .nav-item .nav-link {
-   
-    text-wrap: nowrap;
-  }
 
+@media screen and (max-width: 1179px) {
+  .nav-item .nav-link {
+    font-size: 0.85rem;
+    padding: 0.2rem 0.2rem;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .nav-item .nav-link :not .mobile-menu-item {
+    font-size: 0.76rem;
+    padding: 0.15rem 0.2rem;
+    font-weight: bold;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1138px) {
+  .nav-item .nav-link {
+    font-size: 0.74rem;
+    padding: 0.15rem 0.15rem;
+    text-wrap: nowrap;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .nav-item .nav-link {
+    font-size: 0.68rem;
+    text-wrap: nowrap;
+  }
 }
 
 @media screen and (max-width: 600px) {
 
-  .display-1{
-    font-size:4rem;
+  .display-1 {
+    font-size: 4rem;
     font-weight: $display-font-weight-1
   }
-  .display-2{
+
+  .display-2 {
     font-size: 3.4rem;
     font-weight: $display-font-weight-2
   }
-  .display-3{
+
+  .display-3 {
     font-size: 2rem;
     font-weight: $display-font-weight-3
   }
-  .display-4{
+
+  .display-4 {
     font-size: 1.7rem;
   }
-  h1{
+
+  h1 {
     font-size: 2.8rem;
   }
-  h3{
+
+  h3 {
     font-size: 1.2rem;
   }
-  #herOther{
-    background-image: linear-gradient(to top, $secondary 70%, transparent);
-  }
-  .home #hero{
-    background-image: linear-gradient(to top, $secondary 77%, transparent);
-    max-height: 500px;
-
-   }
-
-
-
 }
 
+// Utilidades de ancho responsive
+@media (min-width: 992px) {
+  .w-lg-25 {
+    width: 25% !important;
+    max-width: 25% !important;
+  }
+
+  .w-lg-50 {
+    width: 50% !important;
+    max-width: 50% !important;
+  }
+
+  .w-lg-75 {
+    width: 75% !important;
+    max-width: 75% !important;
+  }
+
+  .w-lg-100 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+// Placeholder styling for skeletons (Bootstrap placeholder)
+.placeholder {
+  border-radius: .5rem;
+  background-color: rgba(255, 255, 255, 0.2);
+}
