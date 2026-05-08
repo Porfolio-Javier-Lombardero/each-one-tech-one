@@ -10,8 +10,6 @@ interface InfiniteCache {
 export const useSearchAllCategories = () => {
   const queryClient = useQueryClient();
 
-  // Mismas queryKeys que useGetHeadlines: aprovechamos lo que ya esté cacheado
-  // (incluyendo todas las páginas que el infinite query haya traído).
   const sources: Array<{ topicId: number | string; dateFilter: "all" | "today" }> = [
     { topicId: 0, dateFilter: "all" },
     ...Object.values(Categories).map((cat) => ({
@@ -30,21 +28,8 @@ export const useSearchAllCategories = () => {
       topicId,
       dateFilter,
     ]);
-    const items = cached?.pages?.flat() ?? [];
-    console.log(
-      `[keyword-search] cache [top-headlines, ${topicId}, ${dateFilter}]:`,
-      items.length,
-      "items"
-    );
-    return items;
+    return cached?.pages?.flat() ?? [];
   });
-
-  // Volcado completo del cache de tanstack para diagnosticar
-  const allQueries = queryClient.getQueryCache().getAll();
-  console.log(
-    "[keyword-search] ALL cached queryKeys:",
-    allQueries.map((q) => q.queryKey)
-  );
 
   const seen = new Set<string>();
   const uniqueNews = news.filter((n) => {

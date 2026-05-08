@@ -46,43 +46,14 @@ export const TopicPage = () => {
       .map((k) => k.trim())
       .filter(Boolean);
 
-    console.log("[keyword-search] value:", value, "keywords:", keywords);
-    console.log("[keyword-search] keywordPool size:", keywordPool.length);
-    console.log(
-      "[keyword-search] sample titles:",
-      keywordPool.slice(0, 10).map((n) => n?.titulo)
-    );
-    // Buscar específicamente entradas con "tesla" para ver su forma
-    const teslaCandidates = keywordPool.filter((n) => {
-      const blob = JSON.stringify(n ?? {}).toLowerCase();
-      return blob.includes("tesla");
-    });
-    console.log(
-      "[keyword-search] entries containing 'tesla' anywhere:",
-      teslaCandidates.length,
-      teslaCandidates.slice(0, 3)
-    );
-
     noticias = keywords.length
       ? keywordPool.filter((noticia) => {
           if (!noticia?.titulo) return false;
           const title = noticia.titulo.toLowerCase();
-          const matched = keywords.some((kw) => title.includes(kw));
-          if (title.includes("tesla")) {
-            console.log(
-              "[keyword-search] tesla title found, matched=",
-              matched,
-              "keywords=",
-              keywords,
-              "title=",
-              title
-            );
-          }
-          return matched;
+          return keywords.some((kw) => title.includes(kw));
         })
       : [];
 
-    console.log("[keyword-search] matched count:", noticias.length);
     loadingNews = loadingKeywordNews;
   } else {
     noticias =
