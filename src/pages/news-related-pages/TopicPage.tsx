@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getEmptyMessage } from "./helpers/getEmpyMessage";
 import { useGetHeadlines } from "@/hooks/useGetHeadlines";
+import { useSearchAllCategories } from "@/hooks/useSearchAllCategories";
 import { Categories } from "@/services/news/interfaces/topics";
 import { Newslist } from "@/components/news/Newslist";
 import {
@@ -15,30 +16,83 @@ export const TopicPage = () => {
 
   const [dateFilter, setDateFilter] = useState<DateFilterType>("today");
 
+  const isKnownCategory = !!value && Object.values(Categories).includes(value);
+  const isKeywordSearch = !!value && !isKnownCategory;
+
   const {
-    isLoading: loadingNews,
-    news: newsData,
+    isLoading: loadingCategoryNews,
+    news: categoryNewsData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetHeadlines({ topic: value || "", dateFilter: dateFilter });
-  const news = newsData?.pages.flatMap((page: SingleNew[]) => page) || [];
+  } = useGetHeadlines({
+    topic: isKnownCategory ? value ?? "" : "",
+    dateFilter: dateFilter,
+  });
 
-  let noticias = news;
+  const { isLoading: loadingKeywordNews, news: keywordPool } =
+    useSearchAllCategories();
 
-  if (value && !Object.values(Categories).includes(value)) {
-    const keywords = value.split(/[,\s.]+/);
- console.log(keywords)
-    const searchByKeyword =
-      noticias?.filter((noticia: SingleNew) => {
-        return keywords.some((kw) =>
-          noticia.titulo.split(" ").includes(kw),
-     
-        );
-      }) || [];
-    noticias = searchByKeyword;
+  let noticias: SingleNew[] = [];
+  let loadingNews = false;
+  let fetchNext: () => void = () => {};
+  let hasNext = false;
+  let isFetching = false;
+
+  if (isKeywordSearch && value) {
+    const keywords = value
+      .toLowerCase()
+      .split(/[,\s.]+/)
+      .map((k) => k.trim())
+      .filter(Boolean);
+
+    console.log("[keyword-search] value:", value, "keywords:", keywords);
+    console.log("[keyword-search] keywordPool size:", keywordPool.length);
+    console.log(
+      "[keyword-search] sample titles:",
+      keywordPool.slice(0, 10).map((n) => n?.titulo)
+    );
+    // Buscar específicamente entradas con "tesla" para ver su forma
+    const teslaCandidates = keywordPool.filter((n) => {
+      const blob = JSON.stringify(n ?? {}).toLowerCase();
+      return blob.includes("tesla");
+    });
+    console.log(
+      "[keyword-search] entries containing 'tesla' anywhere:",
+      teslaCandidates.length,
+      teslaCandidates.slice(0, 3)
+    );
+
+    noticias = keywords.length
+      ? keywordPool.filter((noticia) => {
+          if (!noticia?.titulo) return false;
+          const title = noticia.titulo.toLowerCase();
+          const matched = keywords.some((kw) => title.includes(kw));
+          if (title.includes("tesla")) {
+            console.log(
+              "[keyword-search] tesla title found, matched=",
+              matched,
+              "keywords=",
+              keywords,
+              "title=",
+              title
+            );
+          }
+          return matched;
+        })
+      : [];
+
+    console.log("[keyword-search] matched count:", noticias.length);
+    loadingNews = loadingKeywordNews;
+  } else {
+    noticias =
+      categoryNewsData?.pages.flatMap((page: SingleNew[]) => page) || [];
+    loadingNews = loadingCategoryNews;
+    fetchNext = fetchNextPage;
+    hasNext = !!hasNextPage;
+    isFetching = isFetchingNextPage;
   }
-  
+
   useEffect(() => {
     setDateFilter(value === "Smartphones" ? "all" : "today");
   }, [value]);
@@ -51,7 +105,7 @@ export const TopicPage = () => {
             <h1 className="h1 display-2 text-center text-sm-start">{value}</h1>
           </div>
           {
-         
+
             <Datefilter
               setDateFilter={setDateFilter}
               dateFilter={dateFilter}
@@ -67,11 +121,11 @@ export const TopicPage = () => {
               noticias.length  > 1  ? (<Newslist
               news={noticias}
               loadingNews={loadingNews}
-              fetchNext={fetchNextPage}
-              hasNext={hasNextPage}
-              isFetching={isFetchingNextPage}
+              fetchNext={fetchNext}
+              hasNext={hasNext}
+              isFetching={isFetching}
               dateFilter={dateFilter}
-      
+
             />)
             :
             (<p>{getEmptyMessage(dateFilter)}</p>)
