@@ -71,7 +71,7 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
         </div>
         <div className="ratio ratio-4x3">
           <img className="card-img object-fit-cover " alt=""
-            src={noticia.img}
+            src={noticia.img ?? undefined}
           />
 
 

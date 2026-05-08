@@ -42,7 +42,7 @@ export const LatestNewsCard = ({ noticia }: CardProps) => {
           <div className="ratio ratio-21x9 rounded ">
             <img
               className="img-fluid  h-75 object-fit-cover  pb-md-3 rounded-5 "
-              src={noticia.img}
+              src={noticia.img ?? undefined}
               alt=""
 
             />

@@ -15,7 +15,6 @@ export const cleanHTML = (html: string): string => {
 
     // Si la imagen tiene dimensiones, calcular aspect-ratio
     if (width && height) {
-      const aspectRatio = parseFloat(height) / parseFloat(width);
       img.style.aspectRatio = `${width} / ${height}`;
     }
 

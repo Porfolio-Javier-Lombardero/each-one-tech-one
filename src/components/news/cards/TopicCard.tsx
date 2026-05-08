@@ -34,7 +34,7 @@ export const TopicCard = ({ noticia }: CardProps) => {
         style={{ minHeight: "500px" }}
       >
         <img
-          src={noticia.img}
+          src={noticia.img ?? undefined}
           className="img-fluid position-absolute h-100 object-fit-cover rounded "
           alt=""
         />

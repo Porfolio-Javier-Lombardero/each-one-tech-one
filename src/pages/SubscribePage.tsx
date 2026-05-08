@@ -10,7 +10,7 @@ export const SubscribePage = () => {
     e.preventDefault();
 
     const form = e.currentTarget;
-    const privacyChecked = (form.elements.namedItem("privacy"))?.checked;
+    const privacyChecked = (form.elements.namedItem("privacy") as HTMLInputElement)?.checked;
     if (!privacyChecked) {
       alert("you have to accept privacy polities");
       return;
