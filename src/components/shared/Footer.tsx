@@ -8,9 +8,9 @@ export const Footer = () => {
         <p className="mb-0">© 2026 Each-one-Tech-one. All rights reserved.</p>
         <p className="mb-0">
             Follow us on 
-            <a href="https://instagram.com/eachonetechone" className="text-white mx-2">Instagram</a> | 
+            <a href="https://instagram.com/eachonetechone/" className="text-white mx-2">Instagram</a> | 
             <a href="https://x.com/EachTechNews" className="text-white mx-2">X</a> | 
-            <a href="https://www.instagram.com/eachonetechone/" className="text-white mx-2">Instagram</a>    </p>
+              </p>
     </div>
 </footer>
  
