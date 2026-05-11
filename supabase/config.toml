@@ -389,7 +389,7 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 
 [functions.get-news]
 enabled = true
-verify_jwt = true
+verify_jwt = false
 import_map = "./functions/get-news/deno.json"
 # Uncomment to specify a custom file path to the entrypoint.
 # Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
@@ -400,7 +400,7 @@ entrypoint = "./functions/get-news/index.ts"
 
 [functions.get-events]
 enabled = true
-verify_jwt = true
+verify_jwt = false
 import_map = "./functions/get-events/deno.json"
 # Uncomment to specify a custom file path to the entrypoint.
 # Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
@@ -411,7 +411,7 @@ entrypoint = "./functions/get-events/index.ts"
 
 [functions.get-reviews]
 enabled = true
-verify_jwt = true
+verify_jwt = false
 import_map = "./functions/get-reviews/deno.json"
 # Uncomment to specify a custom file path to the entrypoint.
 # Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
