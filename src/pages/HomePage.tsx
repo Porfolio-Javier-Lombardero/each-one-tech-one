@@ -8,14 +8,14 @@ import { useGetEvents } from "@/hooks/useGetEvents";
 import { useGetReviews } from "@/hooks/useGetReviews";
 import { Review } from "@/services/reviews/interfaces/d.reviews.types";
 import { Newslist } from "@/components/news/Newslist";
-import { SingleNew } from "@/services/news/interfaces/d.news.types";
+
 
 
 export const HomePage = () => {
 
 
-  const { isLoading: loadingNews, news: newsData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetHeadlines({ topic: 0, dateFilter: "all" });
-  const news = newsData?.pages.flatMap((page: SingleNew[]) => page) || [];
+  const { isLoading: loadingNews, news, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetHeadlines({ topic: 0, dateFilter: "all" });
+ 
 
   const { isLoading: loadingEvents, events } = useGetEvents();
 
@@ -23,10 +23,7 @@ export const HomePage = () => {
 
   return (
     <div className="home home-page-gradient">
-      <section
-        className="container-fluid d-flex justify-content-center align-items-center "
-        id="hero"
-      >
+      <section id="hero" className="container-fluid d-flex justify-content-center align-items-center" >
         <div className="row p-2">
           <div className="col-12">
             <h1 className="h1 display-1">
@@ -43,10 +40,7 @@ export const HomePage = () => {
           </div>
         </div>
       </section>
-      <section
-        className="container-fluid pb-4 p-1 p-sm-4    pb-4"
-        id="latest-news"
-      >
+      <section className="container-fluid pb-4 p-1 p-sm-4  pb-4" id="latest-news">
         <div className="row p-4 mb-3">
           <div className="col-12 py-2 border-top border-primary border-2">
             <h2 className="h2 display-3">LATEST NEWS</h2>

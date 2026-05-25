@@ -4,7 +4,7 @@ import { DateFilterType } from "@/services/news/interfaces/d.news.types";
 import { fetchNewsWithCache } from "@/services/news/cache/fetchNewsWithCache";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getTopicId } from "../services/news/helpers/setCategoryFilter";
-import { STALE_TIMES } from "@/services/consts/staletimes.";
+import { STALE_TIMES } from "@/services/consts/staletimes";
 
 interface Props {
     topic: number | string;
@@ -24,11 +24,11 @@ export const useGetHeadlines = ({ topic, dateFilter }: Props) => {
     staleTime: STALE_TIMES.NEWS,
 });
 
-
+ const flatNews = news?.pages.flatMap((page: SingleNew[]) => page) || [];
 
     return {
         isLoading,
-        news,
+        news:flatNews,
         fetchNextPage,
         hasNextPage,
         isFetching,

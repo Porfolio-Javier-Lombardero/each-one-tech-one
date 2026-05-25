@@ -9,7 +9,7 @@ import { ContactPage } from '../../pages/ContactPage'
 import { SubscribePage } from '../../pages/SubscribePage'
 
 import { NotFound } from '../../pages/error/NotFound'
-import { MainLayOut } from '@/layout/MainLayOut'
+import { MainLayOut } from '@/layout/Mainlayout'
 
 
 export const Routes: RouteObject[] = [
