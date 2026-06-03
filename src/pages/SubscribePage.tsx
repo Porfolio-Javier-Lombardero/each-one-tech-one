@@ -1,5 +1,5 @@
-import { useSubscribeNL } from "@/hooks/useSubscribeNL";
-import { Newsub } from "@/services/newsletter/d.newsub.types";
+import { useSubscribeNL } from "@/features/newsletter/hooks/useSubscribeNL";
+import { Subscriber } from "@/domain/Subscriber";
 import React from "react";
 
 export const SubscribePage = () => {
@@ -18,10 +18,10 @@ export const SubscribePage = () => {
 
     const formData = new FormData(form);
 
-    const body: Newsub = {
+    const body: Subscriber = {
       email: String(formData.get("email") ?? ""),
-      topics: String(formData.get("topic") ?? "") as Newsub["topics"],
-      frecuency: String(formData.get("frecuency") ?? "") as Newsub["frecuency"],
+      topics: String(formData.get("topic") ?? "") as Subscriber["topics"],
+      frecuency: String(formData.get("frecuency") ?? "") as Subscriber["frecuency"],
     };
     saveNewSub(body);
     form.reset();

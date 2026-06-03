@@ -9,13 +9,13 @@ import { ContactPage } from '../../pages/ContactPage'
 import { SubscribePage } from '../../pages/SubscribePage'
 
 import { NotFound } from '../../pages/error/NotFound'
-import { MainLayOut } from '@/layout/Mainlayout'
+import { MainLayout } from '@/shared/layout/MainLayout'
 
 
 export const Routes: RouteObject[] = [
     {
         path: '/',
-        element: <MainLayOut />,
+        element: <MainLayout />,
         children: [
             {
                 index: true,

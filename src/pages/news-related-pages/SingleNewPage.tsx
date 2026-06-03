@@ -2,15 +2,15 @@ import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 
-import { cleanHTML, stripHTML } from "@/services/news/helpers/useCleanHtml";
+import { cleanHTML, stripHTML } from "@/features/news/services/helpers/useCleanHtml";
 
-import { OtherNewsSkeleton } from "@/components/news/cards/OtherNewsSkeleton";
+import { OtherNewsSkeleton } from "@/features/news/components/cards/OtherNewsSkeleton";
 import { useLocation } from "react-router-dom";
-import { SingleNew } from "@/services/news/interfaces/d.news.types";
+import { Article } from "@/domain/Article";
 
 export const SingleNewPage = () => {
   const { state } = useLocation();
-  const singleNew: SingleNew = state?.new;
+  const singleNew: Article = state?.new;
 
   if (!singleNew) {
     return <OtherNewsSkeleton />;

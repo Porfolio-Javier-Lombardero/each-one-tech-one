@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getEmptyMessage } from "./helpers/getEmpyMessage";
-import { useGetHeadlines } from "@/hooks/useGetHeadlines";
-import { useSearchAllCategories } from "@/hooks/useSearchAllCategories";
-import { Categories } from "@/services/news/interfaces/topics";
-import { Newslist } from "@/components/news/Newslist";
-import {
-  DateFilterType,
-  SingleNew,
-} from "@/services/news/interfaces/d.news.types";
-import { Datefilter } from "@/components/news/Datefilter";
+import { getEmptyMessage } from "@/features/news/utils/getEmptyMessage";
+import { useGetHeadlines } from "@/features/news/hooks/useGetHeadlines";
+import { useSearchAllCategories } from "@/features/news/hooks/useSearchAllCategories";
+import { Categories } from "@/domain/Topic"
+import { NewsList } from "@/features/news/components/NewsList";
+import { Article, DateFilterType } from "@/domain/Article";
+import { Datefilter } from "@/features/news/components/Datefilter";
 
 export const TopicPage = () => {
   const { value } = useParams();
@@ -21,7 +18,7 @@ export const TopicPage = () => {
 
   const {
     isLoading: loadingCategoryNews,
-    news: categoryNewsData,
+    news,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -33,7 +30,7 @@ export const TopicPage = () => {
   const { isLoading: loadingKeywordNews, news: keywordPool } =
     useSearchAllCategories();
 
-  let noticias: SingleNew[] = [];
+  let noticias: Article[] = [];
   let loadingNews = false;
   let fetchNext: () => void = () => {};
   let hasNext = false;
@@ -56,8 +53,8 @@ export const TopicPage = () => {
 
     loadingNews = loadingKeywordNews;
   } else {
-    noticias =
-      categoryNewsData?.pages.flatMap((page: SingleNew[]) => page) || [];
+    noticias = news
+     
     loadingNews = loadingCategoryNews;
     fetchNext = fetchNextPage;
     hasNext = !!hasNextPage;
@@ -89,7 +86,7 @@ export const TopicPage = () => {
       <section className="container-fluid  pt-3  px-5 d-flex flex-column  bg-secondary">
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
           {
-              noticias.length  > 1  ? (<Newslist
+              noticias.length  > 0  ? (<NewsList
               news={noticias}
               loadingNews={loadingNews}
               fetchNext={fetchNext}

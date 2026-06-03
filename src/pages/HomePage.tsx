@@ -1,29 +1,26 @@
 
-import { OtherNewsSkeleton } from "../components/news/cards/OtherNewsSkeleton";
-import { TopicCard } from "@/components/news/cards/TopicCard";
-import { VideoPlayer } from "@/components/reviews/VideoPlayer";
-import { EventCard } from "@/components/events/EventCard";
-import { useGetHeadlines } from "@/hooks/useGetHeadlines";
-import { useGetEvents } from "@/hooks/useGetEvents";
-import { useGetReviews } from "@/hooks/useGetReviews";
-import { Review } from "@/services/reviews/interfaces/d.reviews.types";
-import { Newslist } from "@/components/news/Newslist";
+import { NewsSections } from "@/features/news/components/NewsSections";
+import { EventSection } from "@/features/events/components/EventSection";
+import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
 
 
 
 export const HomePage = () => {
 
 
-  const { isLoading: loadingNews, news, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetHeadlines({ topic: 0, dateFilter: "all" });
+
  
 
-  const { isLoading: loadingEvents, events } = useGetEvents();
 
-  const { loadingReviews, reviews } = useGetReviews();
+
+
 
   return (
-    <div className="home home-page-gradient">
-      <section id="hero" className="container-fluid d-flex justify-content-center align-items-center" >
+
+
+        
+      <div className="home home-page-gradient">
+            <section id="hero" className="container-fluid d-flex justify-content-center align-items-center" >
         <div className="row p-2">
           <div className="col-12">
             <h1 className="h1 display-1">
@@ -40,81 +37,14 @@ export const HomePage = () => {
           </div>
         </div>
       </section>
-      <section className="container-fluid pb-4 p-1 p-sm-4  pb-4" id="latest-news">
-        <div className="row p-4 mb-3">
-          <div className="col-12 py-2 border-top border-primary border-2">
-            <h2 className="h2 display-3">LATEST NEWS</h2>
-          </div>
-        </div>
-        {<Newslist news={news} loadingNews={loadingNews} fetchNext={fetchNextPage} hasNext={hasNextPage} isFetching={isFetchingNextPage} />}
-      </section>
+      <NewsSections/>
+      <EventSection/>  
+      <ReviewsSection/>
+      </div>
+     
 
-      <section className="container-fluid p-1 p-sm-4 pb-4 " id="topics">
-        <div className="row p-4 mb-3">
-          <div className="col-12 py-2 border-top border-primary border-2">
-            <h2 className="h2 display-3">TRENDY NOW</h2>
-          </div>
-        </div>
-        <div className="row px-1 d-flex">
-          {news &&
-            news
-              .map((noticia) => {
-                return (
-                  <div className="col-12  col-md-6  col-lg-3" key={noticia.id_hash}>
-                    <TopicCard noticia={noticia} />
-                  </div>
-                );
-              })
-              .splice(0, 4)}
-        </div>
-      </section>
+   
 
-      <section className="conteiner-fluid p-1 p-sm-4 pb-4 " id="events">
-        <div className="row p-4 mb-3">
-          <div className="col-12 py-2 border-top border-primary border-2">
-            <h2 className="h2 display-3">SAVE THE DATE</h2>
-          </div>
-        </div>
-        <div className="row p-3 px-md-5 ">
-          {loadingEvents ? (
-            <OtherNewsSkeleton />
-          ) : (
-            events &&
-            events.map((event) => (
-              <EventCard
-                key={event.url}
-                date={event.date}
-                title={event.title}
-                location={event.location}
-                url={event.url}
-              />
-            ))
-          )}
-        </div>
-      </section>
-
-      <section className="container-fluid p-1 p-sm-4 " id="reviews">
-        <div className="row p-4 mb-3">
-          <div className="col-12 py-2 border-top border-primary border-2">
-            <h2 className="h2 display-3">REVIEWS & RELEASES</h2>
-          </div>
-        </div>
-
-        <div className="row px-3 justify-content-center">
-          {
-            loadingReviews ?
-              (<OtherNewsSkeleton />)
-              :
-              (reviews && reviews.map((item: Review) => (
-                <VideoPlayer
-                  key={item.video_id}
-                  video={item}
-                  showDetails={true}
-                />
-              )))
-          }
-        </div>
-      </section>
-    </div>
+  
   );
 };
