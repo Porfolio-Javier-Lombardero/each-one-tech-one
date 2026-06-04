@@ -1,39 +1,38 @@
-
-
 import { Article, DateFilterType } from "@/domain/Article";
-import { fetchNews } from "@/features/news/services/queries/fetchNews";
+import { TopicId } from "@/domain/Topic";
+import { ArticleRepository } from "@/domain/ports/ArticleRepository";
+import { supabaseArticleRepository } from "@/features/news/services/SupabaseArticleRepository";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getTopicId } from "@/features/news/hooks/setCategoryFilter";
 import { STALE_TIMES } from "@/shared/lib/staletimes";
 
 interface Props {
-    topic: number | string;
-    dateFilter: DateFilterType
-
+    topic: TopicId;
+    dateFilter: DateFilterType;
 }
 
-export const useGetHeadlines = ({ topic, dateFilter }: Props) => {
-    const topicId = getTopicId(topic)
+export const useGetHeadlines = (
+    { topic, dateFilter }: Props,
+    repo: ArticleRepository = supabaseArticleRepository
+) => {
+    const { isLoading, data: news, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+        useInfiniteQuery({
+            queryKey: ["top-headlines", topic, dateFilter],
+            queryFn: ({ pageParam }) =>
+                repo.getHeadlines({ topic, dateFilter, page: pageParam as number }),
+            initialPageParam: 1,
+            getNextPageParam: (lastPage, _pages) =>
+                lastPage.length === 10 ? _pages.length + 1 : undefined,
+            staleTime: STALE_TIMES.NEWS,
+        });
 
-  const { isLoading, data: news, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["top-headlines", topicId, dateFilter],
-    queryFn: ({ pageParam }) => fetchNews({ topic: topicId, dateFilter, page: pageParam as number }),
-    initialPageParam: 1,                                          // ← obligatorio en v5
-    getNextPageParam: (lastPage, _pages) =>
-        lastPage.length === 10 ? _pages.length + 1 : undefined,   // ← basado en el tipo real
-    staleTime: STALE_TIMES.NEWS,
-});
-
- const flatNews = news?.pages.flatMap((page: Article[]) => page) || [];
+    const flatNews = news?.pages.flatMap((page: Article[]) => page) || [];
 
     return {
         isLoading,
-        news:flatNews,
+        news: flatNews,
         fetchNextPage,
         hasNextPage,
         isFetching,
-        isFetchingNextPage
+        isFetchingNextPage,
     };
 };
-
-

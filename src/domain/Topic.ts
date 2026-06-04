@@ -1,8 +1,4 @@
 
-// Identificador de tema que circula por la app: ids numéricos de categoría
-// (ver Topics) o claves string como "smartphone".
-export type TopicId = number | string;
-
 export const Topics = {
   robotics: 577123751,
   policy: 577065682,
@@ -29,11 +25,26 @@ export const Topics = {
   security: 21587494,
   startups: 20429,
   techone: 17396,
-};
-export  const Categories = {
-    App: "App's & Software",
-    Smartphones: "Smartphones",
-    Gadgets: "Hardware & Gadgets",
-    AI: "A.I.",
-    Policy: "Policy & Regulation",
-  };
+} as const;
+
+export const Categories = {
+  App: "App's & Software",
+  Smartphones: "Smartphones",
+  Gadgets: "Hardware & Gadgets",
+  AI: "A.I.",
+  Policy: "Policy & Regulation",
+} as const;
+
+export type TopicId = typeof Categories[keyof typeof Categories] | 0;
+export type ApiTopicId = typeof Topics[keyof typeof Topics] | "smartphone" | 0;
+
+export function getTopicId(topic: TopicId): ApiTopicId {
+  switch (topic) {
+    case "App's & Software":  return Topics.app;
+    case "Smartphones":       return "smartphone";
+    case "Hardware & Gadgets": return Topics.gadgets;
+    case "A.I.":              return Topics.AI;
+    case "Policy & Regulation": return Topics.policy;
+    default:                  return 0;
+  }
+}
