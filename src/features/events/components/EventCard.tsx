@@ -1,7 +1,12 @@
 
-import { Event } from '@/domain/Event';
+interface EventCardProps {
+  title: string;
+  location: string;
+  date: string;
+  url: string;
+}
 
-export const EventCard = ({ title, location, date, url }: Event) => {
+export const EventCard = ({ title, location, date, url }: EventCardProps) => {
   return (
     <article className="row rounded-2 mb-3 p-3 bg-dark-subtle w-sm-100 shadow-sm">
       <div className="col-12 col-md-2 mb-2 mb-md-0">
