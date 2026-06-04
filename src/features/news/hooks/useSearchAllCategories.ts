@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {  Categories } from "@/domain/Topic";
-import { getTopicId } from "@/features/news/services/helpers/setCategoryFilter";
+import { getTopicId } from "@/features/news/hooks/setCategoryFilter";
 import { Article } from "@/domain/Article";
 
 interface InfiniteCache {

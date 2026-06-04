@@ -1,6 +1,6 @@
 
 import { useGetReviews } from '../hooks/useGetReviews';
-import { OtherNewsSkeleton } from '@/features/news/components/cards/OtherNewsSkeleton';
+import { OtherNewsSkeleton } from '@/shared/components/OtherNewsSkeleton';
 import { VideoPlayer } from './VideoPlayer';
 import { Review } from "@/domain/Review";
 

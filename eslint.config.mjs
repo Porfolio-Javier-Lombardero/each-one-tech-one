@@ -6,8 +6,8 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
 export default [
-  { 
-    ignores: ['dist', 'node_modules', '*. config. ts', '*.config.js'] 
+  {
+    ignores: ['dist', 'node_modules', '*. config. ts', '*.config.js', 'supabase/**']
   },
   
   // JavaScript files

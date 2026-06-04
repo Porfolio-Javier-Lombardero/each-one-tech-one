@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 
-import { scrollToElement } from "@/shared/Utils/scrollToElement";
+import { scrollToElement } from "@/shared/utils/scrollToElement";
 import { SearchIcon } from "@/assets/icons/SearchIcon";
 // import { useStore } from "@/store";
 import { Categories} from "@/domain/Topic";

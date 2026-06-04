@@ -1,3 +1,1 @@
-export {EventCard} from "./components/EventCard"
-
-export {useGetEvents} from "./hooks/useGetEvents"
+export { EventSection } from "./components/EventSection";

@@ -1,26 +1,14 @@
-
-import { NewsSections } from "@/features/news/components/NewsSections";
-import { EventSection } from "@/features/events/components/EventSection";
-import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
-
-
+import { NewsSections } from "@/features/news";
+import { EventSection } from "@/features/events";
+import { ReviewsSection } from "@/features/reviews";
 
 export const HomePage = () => {
-
-
-
- 
-
-
-
-
-
   return (
-
-
-        
-      <div className="home home-page-gradient">
-            <section id="hero" className="container-fluid d-flex justify-content-center align-items-center" >
+    <div className="home home-page-gradient">
+      <section
+        id="hero"
+        className="container-fluid d-flex justify-content-center align-items-center"
+      >
         <div className="row p-2">
           <div className="col-12">
             <h1 className="h1 display-1">
@@ -37,14 +25,9 @@ export const HomePage = () => {
           </div>
         </div>
       </section>
-      <NewsSections/>
-      <EventSection/>  
-      <ReviewsSection/>
-      </div>
-     
-
-   
-
-  
+      <NewsSections />
+      <EventSection />
+      <ReviewsSection />
+    </div>
   );
 };

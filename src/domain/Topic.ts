@@ -1,4 +1,8 @@
 
+// Identificador de tema que circula por la app: ids numéricos de categoría
+// (ver Topics) o claves string como "smartphone".
+export type TopicId = number | string;
+
 export const Topics = {
   robotics: 577123751,
   policy: 577065682,

@@ -1,1 +1,1 @@
-export {useSubscribeNL} from "./hooks/useSubscribeNL.ts"
+export { useSubscribeNL } from "./hooks/useSubscribeNL";

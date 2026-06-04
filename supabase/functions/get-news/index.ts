@@ -3,64 +3,19 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-
 const TECHCRUNCH_API_KEY = Deno.env.get("TECHCRUNCH_API_KEY");
 const GUARDIAN_API_KEY = Deno.env.get("GUARDIAN_API_KEY");
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-const STALE_TIMES = {
-  NEWS: 5 * 60 * 60 * 1000,
-} as const;
+const STALE_MS = 5 * 60 * 60 * 1000;
 
-// Tipos
-interface DateFilterType {
-  type: "all" | "today" | "yesterday" | "lastWeek";
-}
-
-interface SingleNew {
-  id_hash: string;
-  titulo: string;
-  description: string;
-  cont: string;
-  categories: number[];
-  fechaIso: string;
-  fecha: string;
-  url: string;
-  img?: string | null;
-}
-
-interface TechCrunchArticle {
-  id: number;
-  date: string;
-  title: { rendered: string };
-  excerpt: { rendered: string };
-  content: { rendered: string };
-  categories: number[];
-  link: string;
-  yoast_head_json: {
-    og_image?: Array<{ url: string }>;
-  };
-}
-
-interface GuardianArticle {
-  webTitle: string;
-  fields: {
-    trailText: string;
-    bodyText: string;
-    thumbnail: string;
-  };
-  webPublicationDate: string;
-  webUrl: string;
-}
-
-// Funciones de fecha
+// Date range helpers — tied to external API param formats, stay server-side
 const todayEnd = (): string => new Date().toISOString();
 
 const todayStart = (): string => {
   const date = new Date();
-  const hours = date.getUTCHours();
-  date.setUTCHours(hours - 26);
+  date.setUTCHours(date.getUTCHours() - 26);
   return date.toISOString();
 };
 
@@ -92,12 +47,7 @@ const lastWeekEnd = (): string => {
   return date.toISOString();
 };
 
-interface DateRange {
-  after: string;
-  before: string;
-}
-
-const getDateRangeByFilter = (filter: string): DateRange => {
+const getDateRange = (filter: string): { after: string; before: string } => {
   switch (filter) {
     case "all":
       return { after: lastWeekStart(), before: todayEnd() };
@@ -111,82 +61,18 @@ const getDateRangeByFilter = (filter: string): DateRange => {
   }
 };
 
-// Funciones de formateo
-const formatDate = (param: string | Date): string => {
-  const date = new Date(param);
-  const month = date.toLocaleDateString("en-US", { month: "short" }).toLowerCase();
-  const day = date.getDate();
-  const year = date.getFullYear();
-  return `${month}, ${day}, ${year}`;
-};
+const toYYYYMMDD = (iso: string): string => iso.split("T")[0];
 
-const formatDateForGuardian = (isoDate: string): string => {
-  return isoDate.split("T")[0];
-};
+const createSearchContext = (topic: number | string, dateFilter: string, page: number): string =>
+  `cat_${topic}_${dateFilter}_p${page}`;
 
-// Funciones de mapeo
-const generateShortId = (link: string): string => {
-  return link.substring(0, 16);
-};
-
-const mapNews = (newsArray: TechCrunchArticle[]): SingleNew[] => {
-  if (!newsArray) return [];
-
-  return newsArray.map((item: TechCrunchArticle): SingleNew => ({
-    id_hash: String(item.id),
-    titulo: item.title.rendered,
-    description: item.excerpt.rendered,
-    cont: item.content.rendered,
-    categories: item.categories,
-    fechaIso: item.date,
-    fecha: formatDate(item.date),
-    url: item.link,
-    img: item.yoast_head_json.og_image?.splice(-1)[0]?.url || null,
-  }));
-};
-
-const mapNewsDos = (newsArray: GuardianArticle[]): SingleNew[] => {
-  return newsArray.map((item: GuardianArticle): SingleNew => ({
-    id_hash: (item.webUrl.split("/").pop() ?? "").substring(0, 16),
-    titulo: item.webTitle,
-    description: item.fields.trailText,
-    cont: item.fields.bodyText,
-    categories: [],
-    fechaIso: item.webPublicationDate,
-    fecha: formatDate(item.webPublicationDate),
-    url: item.webUrl,
-    img: item.fields.thumbnail,
-  }));
-};
-
-// Validar frescura del caché
-const isCacheFresh = (updatedAt: string, staleTime: number): boolean => {
-  const now = new Date().getTime();
-  const cacheTime = new Date(updatedAt).getTime();
-  return now - cacheTime < staleTime;
-};
-
-// Headers CORS
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey, x-client-info",
 };
 
-// Crear contexto de búsqueda
-const createSearchContext = (topic: number | string, dateFilter: string, page: number): string => {
-  
-
-    const  topicStr = `cat_${topic}`;
-
-    // topicStr = topicMap[topic] || topic.toLowerCase().replace(/\s+/g, "_").substring(0, 20);
-  
-
-  return `${topicStr}_${dateFilter}_p${page}`;
-};
-
 serve(async (req) => {
-  // Manejar preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -199,7 +85,7 @@ serve(async (req) => {
       });
     }
 
-   const { topic, dateFilter, page = 1 } = await req.json();
+    const { topic, dateFilter, page = 1 } = await req.json();
 
     if (topic === null || topic === undefined || !dateFilter) {
       return new Response(
@@ -208,124 +94,76 @@ serve(async (req) => {
       );
     }
 
+    const source = typeof topic === "number" ? "techcrunch" : "guardian";
     const searchContext = createSearchContext(topic, dateFilter, page);
-    const dateRange = getDateRangeByFilter(dateFilter);
+    const dateRange = getDateRange(dateFilter);
 
-    // 1. Verificar caché
-    const { data: cachedRows, error: cacheError } = await supabase
+    // 1. Check cache
+    const { data: cached, error: cacheError } = await supabase
       .from("news_cache")
-      .select("*")
+      .select("raw_data, source, created_at")
       .eq("search_context", searchContext)
-      .order("updated_at", { ascending: false })
-      .limit(50);
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
     if (cacheError) throw cacheError;
 
-    if (cachedRows && cachedRows.length > 0) {
-      const mostRecent = cachedRows[0];
-
-      if (isCacheFresh(mostRecent.updated_at, STALE_TIMES.NEWS)) {
-        console.log("📦 News from cache");
-
-        const projectedNews = cachedRows.map(
-          ({
-            id_hash,
-            titulo,
-            description,
-            cont,
-            categories,
-            fechaIso,
-            fecha,
-            url,
-            img,
-          }: any) => ({
-            id_hash,
-            titulo,
-            description,
-            cont,
-            categories,
-            fechaIso,
-            fecha,
-            url,
-            img,
-          })
+    if (cached) {
+      const age = Date.now() - new Date(cached.created_at).getTime();
+      if (age < STALE_MS) {
+        console.log("📦 News from cache (raw):", searchContext);
+        return new Response(
+          JSON.stringify({ source: cached.source, data: cached.raw_data }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
-
-        return new Response(JSON.stringify(projectedNews), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
       }
     }
 
-    // 2. Fetch from APIs
-    let mappedNews: SingleNew[] = [];
+    // 2. Fetch raw articles from external API
+    let rawArticles: unknown[] = [];
 
-    if (typeof topic === "number") {
-      // TechCrunch
-      const techCrunchOptions = {
-        method: "GET",
+    if (source === "techcrunch") {
+      const url = `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=${page}&per_page=10&after=${dateRange.after}&before=${dateRange.before}`;
+      const res = await fetch(url, {
         headers: {
           "x-rapidapi-key": TECHCRUNCH_API_KEY,
           "x-rapidapi-host": "techcrunch1.p.rapidapi.com",
         },
-      };
-
-      const techCrunchUrl = `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=${page}&per_page=10&after=${dateRange.after}&before=${dateRange.before}`;
-
-      const techCrunchResponse = await fetch(techCrunchUrl, techCrunchOptions);
-
-      if (!techCrunchResponse.ok) {
-        throw new Error(`TechCrunch API error: ${techCrunchResponse.status}`);
-      }
-
-      const techCrunchData = await techCrunchResponse.json();
-      mappedNews = mapNews(techCrunchData.data || []);
+      });
+      if (!res.ok) throw new Error(`TechCrunch API error: ${res.status}`);
+      const json = await res.json();
+      rawArticles = json.data ?? [];
     } else {
-      // The Guardian
-      const guardianOptions = {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      };
-
-      const fromDate = formatDateForGuardian(dateRange.after);
-      const toDate = formatDateForGuardian(dateRange.before);
-
-      const guardianUrl = `https://content.guardianapis.com/search?section=technology&page-size=10&page=${page}&order-by=newest&show-fields=all&q=smartphone%2C%20iphone%2C%20samsung%2C%20xiaomi%2C%20huawei&from-date=${fromDate}&to-date=${toDate}&api-key=${GUARDIAN_API_KEY}`;
-
-      const guardianResponse = await fetch(guardianUrl, guardianOptions);
-
-      if (!guardianResponse.ok) {
-        throw new Error(`Guardian API error: ${guardianResponse.status}`);
-      }
-
-      const guardianData = await guardianResponse.json();
-      mappedNews = mapNewsDos(guardianData.response.results || []);
+      const from = toYYYYMMDD(dateRange.after);
+      const to = toYYYYMMDD(dateRange.before);
+      const url = `https://content.guardianapis.com/search?section=technology&page-size=10&page=${page}&order-by=newest&show-fields=all&q=smartphone%2C%20iphone%2C%20samsung%2C%20xiaomi%2C%20huawei&from-date=${from}&to-date=${to}&api-key=${GUARDIAN_API_KEY}`;
+      const res = await fetch(url, { headers: { "Content-Type": "application/json" } });
+      if (!res.ok) throw new Error(`Guardian API error: ${res.status}`);
+      const json = await res.json();
+      rawArticles = json.response?.results ?? [];
     }
 
-    // 3. Save to cache
-    if (mappedNews && mappedNews.length > 0) {
-      const newsToCache = mappedNews.map((item) => ({
-        ...item,
-        search_context: searchContext,
-        source: typeof topic === "number" ? "techcrunch" : "guardian",
-        fetch_count: 1,
-      }));
-
+    // 3. Cache raw articles (replace previous entry for same context)
+    if (rawArticles.length > 0) {
       await supabase.from("news_cache").delete().eq("search_context", searchContext);
 
-      const { error: insertError } = await supabase.from("news_cache").insert(newsToCache);
+      const { error: insertError } = await supabase.from("news_cache").insert({
+        search_context: searchContext,
+        source,
+        raw_data: rawArticles,
+      });
 
       if (insertError) throw insertError;
-
-      console.log("✅ News saved to cache");
+      console.log("✅ News cached (raw):", searchContext);
     }
 
-    return new Response(JSON.stringify(mappedNews), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ source, data: rawArticles }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   } catch (error) {
     console.error("❌ Error in get-news:", error);
-
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

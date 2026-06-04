@@ -2,9 +2,9 @@ import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 
-import { cleanHTML, stripHTML } from "@/features/news/services/helpers/useCleanHtml";
+import { cleanHTML, stripHTML } from "@/shared/utils/htmlUtils";
 
-import { OtherNewsSkeleton } from "@/features/news/components/cards/OtherNewsSkeleton";
+import { OtherNewsSkeleton } from "@/shared/components/OtherNewsSkeleton";
 import { useLocation } from "react-router-dom";
 import { Article } from "@/domain/Article";
 

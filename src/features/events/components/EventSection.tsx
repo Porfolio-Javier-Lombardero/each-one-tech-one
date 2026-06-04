@@ -1,5 +1,5 @@
 
-import { OtherNewsSkeleton } from "@/features/news/components/cards/OtherNewsSkeleton";
+import { OtherNewsSkeleton } from "@/shared/components/OtherNewsSkeleton";
 import { useGetEvents } from '../hooks/useGetEvents';
 import { EventCard } from "./EventCard";
 

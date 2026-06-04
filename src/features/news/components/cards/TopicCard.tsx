@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { Topics } from "@/features/news/services/interfaces/topics";
+import { Topics } from "@/domain/Topic";
 import { CardProps } from "./LatestNewsCard";
 
 

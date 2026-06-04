@@ -1,2 +1,1 @@
-export {VideoPlayer} from "./components/VideoPlayer"
-export {useGetReviews} from "./hooks/useGetReviews"
+export { ReviewsSection } from "./components/ReviewsSection";

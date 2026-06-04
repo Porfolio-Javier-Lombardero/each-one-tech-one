@@ -7,58 +7,8 @@ const YOUTUBE_API_KEY = Deno.env.get("YOUTUBE_API_KEY");
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-const STALE_TIMES = {
-  REVIEWS: 24 * 60 * 60 * 1000,
-} as const;
+const STALE_MS = 24 * 60 * 60 * 1000;
 
-// Tipos
-interface Review {
-  video_id: string;
-  title: string;
-  description: string;
-  thumbnail_url: string;
-  channel_title: string;
-  published_at: string;
-  video_kind: string;
-}
-
-interface SearchResultItem {
-  id: {
-    kind: string;
-    videoId: string;
-  };
-  snippet: {
-    title: string;
-    description: string;
-    thumbnails: {
-      high: { url: string };
-    };
-    channelTitle: string;
-    publishedAt: string;
-  };
-}
-
-// Validar frescura del caché
-const isCacheFresh = (updatedAt: string, staleTime: number): boolean => {
-  const now = new Date().getTime();
-  const cacheTime = new Date(updatedAt).getTime();
-  return now - cacheTime < staleTime;
-};
-
-// Mapear resultado de YouTube a Review
-const mapReviews = (items: SearchResultItem[]): Review[] => {
-  return items.map((item: SearchResultItem): Review => ({
-    video_id: item.id.videoId,
-    title: item.snippet.title,
-    description: item.snippet.description || "",
-    thumbnail_url: item.snippet.thumbnails.high.url || "",
-    channel_title: item.snippet.channelTitle || "",
-    published_at: item.snippet.publishedAt,
-    video_kind: item.id.kind || "youtube#video",
-  }));
-};
-
-// Headers CORS
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -66,7 +16,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Manejar preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -79,88 +28,56 @@ serve(async (req) => {
       });
     }
 
-    // 1. Verificar caché
-    const { data: cachedRows, error: cacheError } = await supabase
+    // 1. Check cache
+    const { data: cached, error: cacheError } = await supabase
       .from("reviews_cache")
-      .select("*")
-      .order("updated_at", { ascending: false });
+      .select("raw_data, created_at")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
     if (cacheError) throw cacheError;
 
-    if (cachedRows && cachedRows.length > 0) {
-      const mostRecent = cachedRows[0];
-
-      if (isCacheFresh(mostRecent.updated_at, STALE_TIMES.REVIEWS)) {
-        console.log("📦 Reviews from cache");
-
-        const projectedReviews = cachedRows.map(
-          ({
-            video_id,
-            title,
-            description,
-            thumbnail_url,
-            channel_title,
-            published_at,
-            video_kind,
-          }: any) => ({
-            video_id,
-            title,
-            description,
-            thumbnail_url,
-            channel_title,
-            published_at,
-            video_kind,
-          })
-        );
-
-        return new Response(JSON.stringify(projectedReviews), {
+    if (cached) {
+      const age = Date.now() - new Date(cached.created_at).getTime();
+      if (age < STALE_MS) {
+        console.log("📦 Reviews from cache (raw)");
+        return new Response(JSON.stringify(cached.raw_data), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
     }
 
-    // 2. Fetch from YouTube API
+    // 2. Fetch raw items from YouTube API
     console.log("🌐 Fetching reviews from YouTube API");
+    const query = encodeURIComponent('tech gadget +"review" unboxing 2026 -shorts');
+    const youtubeUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=video&videoEmbeddable=true&order=relevance&relevanceLanguage=en&regionCode=US&maxResults=6&key=${YOUTUBE_API_KEY}`;
 
-    const query = encodeURIComponent(
-      'tech gadget +"review" unboxing 2026 -shorts'
-    );
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=video&videoEmbeddable=true&order=relevance&relevanceLanguage=en&regionCode=US&maxResults=6&key=${YOUTUBE_API_KEY}`;
-
-    const res = await fetch(url);
+    const res = await fetch(youtubeUrl);
     const data = await res.json();
 
     if (!data.items || data.items.length === 0) {
       throw new Error("No reviews obtained from YouTube");
     }
 
-    const mappedReviews = mapReviews(data.items);
+    const rawItems = data.items;
 
-    // 3. Save to cache
-    if (mappedReviews && mappedReviews.length > 0) {
-      const reviewsToCache = mappedReviews.map((review) => ({
-        ...review,
-        source: "youtube",
-        fetch_count: 1,
-      }));
+    // 3. Cache raw items (replace previous row)
+    await supabase.from("reviews_cache").delete().gt("id", 0);
 
-      await supabase.from("reviews_cache").delete().neq("id", 0);
+    const { error: insertError } = await supabase
+      .from("reviews_cache")
+      .insert({ raw_data: rawItems });
 
-      const { error: insertError } = await supabase
-        .from("reviews_cache")
-        .insert(reviewsToCache);
+    if (insertError) throw insertError;
 
-      if (insertError) throw insertError;
+    console.log("✅ Reviews cached (raw)");
 
-      console.log("✅ Reviews saved to cache");
-    }
-
-    return new Response(JSON.stringify(mappedReviews), {
+    return new Response(JSON.stringify(rawItems), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("❌ Error in get-reviews:", error);
-
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

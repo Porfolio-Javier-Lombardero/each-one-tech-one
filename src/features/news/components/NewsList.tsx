@@ -1,6 +1,6 @@
 import { News } from '@/domain/Article';
-import { LatestNewsSkeleton } from './cards/LatestNewsSkeleton';
-import { OtherNewsSkeleton } from './cards/OtherNewsSkeleton';
+import { LatestNewsSkeleton } from '@/shared/components/LatestNewsSkeleton';
+import { OtherNewsSkeleton } from '@/shared/components/OtherNewsSkeleton';
 import { LatestNewsCard } from './cards/LatestNewsCard';
 import { OtherNewsCard } from './cards/OtherNewsCard';
 import { getEmptyMessage } from '@/features/news/utils/getEmptyMessage';

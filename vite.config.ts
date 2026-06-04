@@ -31,7 +31,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['zustand', '@tanstack/react-query'],
+          'ui-vendor': ['@tanstack/react-query'],
         },
       },
     },

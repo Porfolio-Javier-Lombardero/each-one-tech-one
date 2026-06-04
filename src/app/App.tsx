@@ -1,5 +1,5 @@
 import { useRoutes } from 'react-router-dom'
-import ScrollToTop from "../shared/Hooks/scrollToTop";
+import ScrollToTop from "@/shared/hooks/useScrollToTop";
 import { Routes } from './router';
 
 function App() {
