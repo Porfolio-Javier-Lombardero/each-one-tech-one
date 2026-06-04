@@ -33,28 +33,17 @@ export const Header = () => {
 
 
 
-  const handleScrollToReviews = () => {
-    // Si estamos en la homepage, hacer scroll directo
+  const SCROLL_SECTIONS = [
+    { id: 'events', label: 'Tech Agenda' },
+    { id: 'reviews', label: 'R&R' },
+  ] as const;
+
+  const handleScrollToSection = (sectionId: string) => {
     if (window.location.pathname === '/') {
-      scrollToElement('reviews', 100); // 100px offset para el header
+      scrollToElement(sectionId, 100);
     } else {
-      // Si estamos en otra página, navegar al home y luego hacer scroll
       navigate('/');
-      setTimeout(() => {
-        scrollToElement('reviews', 100);
-      }, 100);
-    }
-  };
-  const handleScrollToEvents = () => {
-    // Si estamos en la homepage, hacer scroll directo
-    if (window.location.pathname === '/') {
-      scrollToElement('events', 100); // 100px offset para el header
-    } else {
-      // Si estamos en otra página, navegar al home y luego hacer scroll
-      navigate('/');
-      setTimeout(() => {
-        scrollToElement('events', 100);
-      }, 100);
+      setTimeout(() => scrollToElement(sectionId, 100), 100);
     }
   };
 
@@ -106,28 +95,19 @@ export const Header = () => {
                   </li>
                 ))
               }
-              <li className="nav-item">
-                <div className="nav-link" >
-                  <a
-                    className="text-primary text-decoration-none p-0 "
-                    onClick={handleScrollToEvents}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Tech Agenda
-                  </a>
-                </div>
-              </li>
-              <li className="nav-item">
-                <div className="nav-link" >
-                  <a
-                    className="text-primary text-decoration-none p-0 "
-                    onClick={handleScrollToReviews}
-                    style={{ cursor: "pointer" }}
-                  >
-                    R&R
-                  </a>
-                </div>
-              </li>
+              {SCROLL_SECTIONS.map(({ id, label }) => (
+                <li key={id} className="nav-item">
+                  <div className="nav-link">
+                    <a
+                      className="text-primary text-decoration-none p-0"
+                      onClick={() => handleScrollToSection(id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {label}
+                    </a>
+                  </div>
+                </li>
+              ))}
               <li className="nav-item">
                 <div className="nav-link" >
                   <NavLink to={"/subscribe"}>Newsletter</NavLink>
@@ -183,28 +163,19 @@ export const Header = () => {
               </li>
             ))
             }
-            <li className="nav-item mobile-menu-item">
-              <div onClick={handleDropdown} className="nav-link fs-6 py-2 ps-2" >
-                <a
-                  className="text-primary text-decoration-none "
-                  onClick={handleScrollToEvents}
-                  style={{ cursor: "pointer" }}
-                >
-                  Tech Agenda
-                </a>
-              </div>
-            </li>
-            <li className="nav-item mobile-menu-item">
-              <div onClick={handleDropdown} className="nav-link fs-6 py-1 ps-2" >
-                <a
-                  className="text-primary text-decoration-none "
-                  onClick={handleScrollToReviews}
-                  style={{ cursor: "pointer" }}
-                >
-                  R&R
-                </a>
-              </div>
-            </li>
+            {SCROLL_SECTIONS.map(({ id, label }) => (
+              <li key={id} className="nav-item mobile-menu-item">
+                <div onClick={handleDropdown} className="nav-link fs-6 py-2 ps-2">
+                  <a
+                    className="text-primary text-decoration-none"
+                    onClick={() => handleScrollToSection(id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {label}
+                  </a>
+                </div>
+              </li>
+            ))}
             <li className="nav-item mobile-menu-item">
               <div onClick={handleDropdown} className="nav-link fs-6 py-2 ps-2" >
                 <NavLink to={"/subscribe"}>Newsletter</NavLink>
