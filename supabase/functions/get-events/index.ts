@@ -1,13 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.24.0";
+import { GoogleGenAI } from "https://esm.sh/@google/genai@latest";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 const STALE_MS = 15 * 24 * 60 * 60 * 1000;
 
@@ -55,9 +55,11 @@ serve(async (req) => {
 
     // 2. Fetch raw text from Gemini API
     console.log("🌐 Fetching events from Gemini API");
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent(prompt);
-    const rawText = result.response.text();
+    const result = await ai.models.generateContent({
+      model: "gemini-3.5-flash",
+      contents: prompt,
+    });
+    const rawText = result.text;
 
     // 3. Cache raw text
     await supabase.from("events_cache").delete().gt("id", 0);
