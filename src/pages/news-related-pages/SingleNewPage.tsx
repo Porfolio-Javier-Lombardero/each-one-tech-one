@@ -2,7 +2,7 @@ import { Facebook } from "@/assets/icons/Facebook";
 import { Share } from "@/assets/icons/Share";
 import { Tweeter } from "@/assets/icons/Tweeter";
 
-import { cleanHTML, stripHTML } from "@/shared/utils/htmlUtils";
+import { cleanHTML, stripHTML } from "@/features/news/utils/techcrunchHtmlParser";
 
 import { OtherNewsSkeleton } from "@/shared/components/OtherNewsSkeleton";
 import { useLocation } from "react-router-dom";
