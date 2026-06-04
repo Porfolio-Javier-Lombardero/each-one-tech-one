@@ -1,11 +1,12 @@
 import { Review } from "@/domain/Review";
 import React, { useState } from "react";
 
+const YT_EMBED_BASE = 'https://www.youtube.com/embed';
+const YT_PARAMS = 'autoplay=1&rel=0';
+
 interface Props {
     video: Review;
-    showDetails?: boolean;
 }
-
 
 export const VideoPlayer: React.FC<Props> = ({ video }) => {
 
@@ -45,7 +46,7 @@ export const VideoPlayer: React.FC<Props> = ({ video }) => {
                     /* REPRODUCTOR REAL (Se monta solo al hacer click) */
                     <iframe
                         className="w-100 h-100 rounded-top border-0"
-                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+                        src={`${YT_EMBED_BASE}/${videoId}?${YT_PARAMS}`}
                         title={title}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen

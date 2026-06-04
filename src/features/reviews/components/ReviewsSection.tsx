@@ -6,7 +6,7 @@ import { Review } from "@/domain/Review";
 
 export const ReviewsSection = () => {
 
-      const { loadingReviews, reviews } = useGetReviews();
+      const { isLoading, reviews } = useGetReviews();
   return (
     
       <section className="container-fluid p-1 p-sm-4 " id="reviews">
@@ -18,14 +18,13 @@ export const ReviewsSection = () => {
 
         <div className="row px-3 justify-content-center">
           {
-            loadingReviews ?
+            isLoading ?
               (<OtherNewsSkeleton />)
               :
               (reviews && reviews.map((item: Review) => (
                 <VideoPlayer
                   key={item.video_id}
                   video={item}
-                  showDetails={true}
                 />
               )))
           }

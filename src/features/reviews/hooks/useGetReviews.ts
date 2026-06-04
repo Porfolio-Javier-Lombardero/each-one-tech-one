@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { STALE_TIMES } from "@/shared/lib/staletimes";
 
 export const useGetReviews = (repo: ReviewRepository = supabaseReviewRepository) => {
-    const { isLoading: loadingReviews, data: reviews } = useQuery({
+    const { isLoading, data: reviews } = useQuery({
         queryKey: ["reviews"],
         queryFn: () => repo.getAll(),
         staleTime: STALE_TIMES.REVIEWS,
@@ -12,6 +12,6 @@ export const useGetReviews = (repo: ReviewRepository = supabaseReviewRepository)
 
     return {
         reviews,
-        loadingReviews,
+        isLoading,
     };
 };

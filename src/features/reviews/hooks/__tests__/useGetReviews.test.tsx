@@ -18,7 +18,7 @@ it('returns reviews from the repository', async () => {
         { wrapper: createWrapper() }
     );
 
-    await waitFor(() => expect(result.current.loadingReviews).toBe(false));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.reviews).toHaveLength(2);
     expect(result.current.reviews![0].video_id).toBe('vid_001');
 });
