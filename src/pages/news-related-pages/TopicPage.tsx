@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getEmptyMessage } from "@/features/news/utils/getEmptyMessage";
 import { useGetHeadlines } from "@/features/news/hooks/useGetHeadlines";
 import { useSearchAllCategories } from "@/features/news/hooks/useSearchAllCategories";
-import { Categories } from "@/domain/Topic"
+import { Categories, TopicId } from "@/domain/Topics"
 import { NewsList } from "@/features/news/components/NewsList";
 import { Article, DateFilterType } from "@/domain/Article";
 import { Datefilter } from "@/features/news/components/Datefilter";
@@ -13,7 +13,7 @@ export const TopicPage = () => {
 
   const [dateFilter, setDateFilter] = useState<DateFilterType>("today");
 
-  const isKnownCategory = !!value && Object.values(Categories).includes(value);
+  const isKnownCategory = !!value && (Object.values(Categories) as string[]).includes(value);
   const isKeywordSearch = !!value && !isKnownCategory;
 
   const {
@@ -23,7 +23,7 @@ export const TopicPage = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useGetHeadlines({
-    topic: isKnownCategory ? value ?? "" : "",
+    topic: isKnownCategory ? (value as TopicId) : 0,
     dateFilter: dateFilter,
   });
 
@@ -32,7 +32,7 @@ export const TopicPage = () => {
 
   let noticias: Article[] = [];
   let loadingNews = false;
-  let fetchNext: () => void = () => {};
+  let fetchNext: () => void = () => { };
   let hasNext = false;
   let isFetching = false;
 
@@ -45,16 +45,16 @@ export const TopicPage = () => {
 
     noticias = keywords.length
       ? keywordPool.filter((noticia) => {
-          if (!noticia?.titulo) return false;
-          const title = noticia.titulo.toLowerCase();
-          return keywords.some((kw) => title.includes(kw));
-        })
+        if (!noticia?.titulo) return false;
+        const title = noticia.titulo.toLowerCase();
+        return keywords.some((kw) => title.includes(kw));
+      })
       : [];
 
     loadingNews = loadingKeywordNews;
   } else {
     noticias = news
-     
+
     loadingNews = loadingCategoryNews;
     fetchNext = fetchNextPage;
     hasNext = !!hasNextPage;
@@ -86,7 +86,7 @@ export const TopicPage = () => {
       <section className="container-fluid  pt-3  px-5 d-flex flex-column  bg-secondary">
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
           {
-              noticias.length  > 0  ? (<NewsList
+            noticias.length > 0 ? (<NewsList
               news={noticias}
               loadingNews={loadingNews}
               fetchNext={fetchNext}
@@ -95,8 +95,8 @@ export const TopicPage = () => {
               dateFilter={dateFilter}
 
             />)
-            :
-            (<p>{getEmptyMessage(dateFilter)}</p>)
+              :
+              (<p>{getEmptyMessage(dateFilter)}</p>)
           }
         </div>
 
