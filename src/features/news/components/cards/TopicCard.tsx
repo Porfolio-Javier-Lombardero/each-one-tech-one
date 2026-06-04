@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { Topics } from "@/domain/Topic";
+import { Topics } from "@/domain/Topics";
 import { CardProps } from "./LatestNewsCard";
 
 
@@ -10,7 +10,7 @@ export const TopicCard = ({ noticia }: CardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-   
+
     navigate(`/news/${noticia.titulo}`, { state: { new: noticia } });
   };
 

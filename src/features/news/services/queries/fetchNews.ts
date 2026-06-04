@@ -1,4 +1,5 @@
 import { DateFilterType, News } from '@/domain/Article';
+import { ApiTopicId } from '@/domain/Topics';
 import { supabase } from '@/shared/lib/supabaseClient';
 import { parseList } from '@/shared/lib/parseList';
 import { ArticleSchema } from '@/features/news/services/article.schema';
@@ -6,7 +7,7 @@ import { mapTechCrunchToArticle } from '@/features/news/services/mappers/mapTech
 import { mapGuardianToArticle } from '@/features/news/services/mappers/mapGuardianToArticle';
 
 interface Props {
-    topic: number | string;
+    topic: ApiTopicId;
     dateFilter: DateFilterType;
     page: number;
 }

@@ -1,5 +1,5 @@
 import { Article, DateFilterType } from "@/domain/Article";
-import { TopicId } from "@/domain/Topic";
+import { TopicId } from "@/domain/Topics";
 import { ArticleRepository } from "@/domain/ports/ArticleRepository";
 import { supabaseArticleRepository } from "@/features/news/services/SupabaseArticleRepository";
 import { useInfiniteQuery } from "@tanstack/react-query";

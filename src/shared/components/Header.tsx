@@ -6,11 +6,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { scrollToElement } from "@/shared/utils/scrollToElement";
 import { SearchIcon } from "@/assets/icons/SearchIcon";
 // import { useStore } from "@/store";
-import { Categories} from "@/domain/Topic";
+import { Categories } from "@/domain/Topics";
 
 export const Header = () => {
 
-  
+
   const navigate = useNavigate();
   const [dropdown, setdropdown] = useState(false)
 

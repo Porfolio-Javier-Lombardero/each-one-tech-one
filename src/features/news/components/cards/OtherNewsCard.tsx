@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 
-import {  Categories, Topics } from "@/domain/Topic";
+import { Categories, Topics } from "@/domain/Topics";
 import React, { } from "react";
 // import { useStore } from "@/store";
 import { Article } from "@/domain/Article";
@@ -16,7 +16,7 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/news/${noticia.titulo}`, 
+    navigate(`/news/${noticia.titulo}`,
       { state: { new: noticia } });
   };
 

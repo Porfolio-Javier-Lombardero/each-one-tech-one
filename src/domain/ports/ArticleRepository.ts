@@ -1,5 +1,5 @@
 import { Article, DateFilterType } from '../Article';
-import { TopicId } from '../Topic';
+import { TopicId } from '../Topics';
 
 export interface ArticleRepository {
     getHeadlines(params: {

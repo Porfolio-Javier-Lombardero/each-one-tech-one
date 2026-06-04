@@ -1,5 +1,5 @@
 import { ArticleRepository } from '@/domain/ports/ArticleRepository';
-import { getTopicId } from '@/domain/Topic';
+import { getTopicId } from '@/domain/Topics';
 import { fetchNews } from './queries/fetchNews';
 
 export const supabaseArticleRepository: ArticleRepository = {

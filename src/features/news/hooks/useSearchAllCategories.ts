@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { TopicId, Categories } from "@/domain/Topic";
+import { TopicId, Categories } from "@/domain/Topics";
 import { Article } from "@/domain/Article";
 
 interface InfiniteCache {
