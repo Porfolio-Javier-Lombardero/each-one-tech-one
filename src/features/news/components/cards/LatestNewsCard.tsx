@@ -1,25 +1,13 @@
-import { useNavigate } from "react-router-dom";
-
-
 import { Article } from "@/domain/Article";
+import { useArticleNavigation } from "@/features/news/hooks/useArticleNavigation";
 
 export interface CardProps {
-  noticia: Article
+  noticia: Article;
 }
 
-
 export const LatestNewsCard = ({ noticia }: CardProps) => {
-
-
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(`/news/${noticia.titulo}`, {
-      state: {
-        new: noticia
-      }
-    });
-  };
+  const navigateToArticle = useArticleNavigation();
+  const handleClick = () => navigateToArticle(noticia);
 
 
   return (

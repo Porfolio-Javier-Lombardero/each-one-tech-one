@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { TopicId, Categories } from "@/domain/Topics";
 import { Article } from "@/domain/Article";
+import { newsKeys } from "@/features/news/services/queryKeys";
 
 interface InfiniteCache {
     pages?: Article[][];
@@ -22,11 +23,9 @@ export const useSearchAllCategories = () => {
     ];
 
     const news: Article[] = sources.flatMap(({ topicId, dateFilter }) => {
-        const cached = queryClient.getQueryData<InfiniteCache>([
-            "top-headlines",
-            topicId,
-            dateFilter,
-        ]);
+        const cached = queryClient.getQueryData<InfiniteCache>(
+            newsKeys.headlines(topicId, dateFilter)
+        );
         return cached?.pages?.flat() ?? [];
     });
 

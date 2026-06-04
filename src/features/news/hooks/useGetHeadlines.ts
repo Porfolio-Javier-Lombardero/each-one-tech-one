@@ -2,6 +2,7 @@ import { Article, DateFilterType } from "@/domain/Article";
 import { TopicId } from "@/domain/Topics";
 import { ArticleRepository } from "@/domain/ports/ArticleRepository";
 import { supabaseArticleRepository } from "@/features/news/services/SupabaseArticleRepository";
+import { newsKeys } from "@/features/news/services/queryKeys";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { STALE_TIMES } from "@/shared/lib/staletimes";
 
@@ -16,7 +17,7 @@ export const useGetHeadlines = (
 ) => {
     const { isLoading, data: news, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
         useInfiniteQuery({
-            queryKey: ["top-headlines", topic, dateFilter],
+            queryKey: newsKeys.headlines(topic, dateFilter),
             queryFn: ({ pageParam }) =>
                 repo.getHeadlines({ topic, dateFilter, page: pageParam as number }),
             initialPageParam: 1,

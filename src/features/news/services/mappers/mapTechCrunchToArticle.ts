@@ -1,12 +1,7 @@
 import type { TechCrunchArticle } from '../dtos/d.news.types';
 import type { Article } from '@/domain/Article';
 import { generateShortId } from './generateShortId';
-
-const formatDate = (param: string): string => {
-  const date = new Date(param);
-  const month = date.toLocaleDateString('en-US', { month: 'short' }).toLowerCase();
-  return `${month}, ${date.getDate()}, ${date.getFullYear()}`;
-};
+import { formatDate } from './formatDate';
 
 export function mapTechCrunchToArticle(articles: TechCrunchArticle[]): Article[] {
   return articles.map((item) => ({

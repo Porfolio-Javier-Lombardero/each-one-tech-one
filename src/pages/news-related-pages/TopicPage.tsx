@@ -6,7 +6,7 @@ import { useSearchAllCategories } from "@/features/news/hooks/useSearchAllCatego
 import { Categories, TopicId } from "@/domain/Topics"
 import { NewsList } from "@/features/news/components/NewsList";
 import { Article, DateFilterType } from "@/domain/Article";
-import { Datefilter } from "@/features/news/components/Datefilter";
+import { Datefilter, DateFilterMode } from "@/features/news/components/Datefilter";
 
 export const TopicPage = () => {
   const { value } = useParams();
@@ -61,6 +61,8 @@ export const TopicPage = () => {
     isFetching = isFetchingNextPage;
   }
 
+  const dateFilterMode: DateFilterMode = value === 'Smartphones' ? 'smartphones' : 'standard';
+
   useEffect(() => {
     setDateFilter(value === "Smartphones" ? "all" : "today");
   }, [value]);
@@ -77,7 +79,7 @@ export const TopicPage = () => {
             <Datefilter
               setDateFilter={setDateFilter}
               dateFilter={dateFilter}
-              value={value}
+              mode={dateFilterMode}
             />
           }
         </div>
@@ -85,19 +87,18 @@ export const TopicPage = () => {
 
       <section className="container-fluid  pt-3  px-5 d-flex flex-column  bg-secondary">
         <div className="row mt-1 p-2 py-4  gy-3  border-top border-primary border-2 align-items-end ">
-          {
-            noticias.length > 0 ? (<NewsList
+          {noticias.length > 0 ? (
+            <NewsList
               news={noticias}
               loadingNews={loadingNews}
               fetchNext={fetchNext}
               hasNext={hasNext}
               isFetching={isFetching}
-              dateFilter={dateFilter}
-
-            />)
-              :
-              (<p>{getEmptyMessage(dateFilter)}</p>)
-          }
+              emptyMessage={getEmptyMessage(dateFilter)}
+            />
+          ) : (
+            <p>{getEmptyMessage(dateFilter)}</p>
+          )}
         </div>
 
         <div className="separador"></div>

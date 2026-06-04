@@ -1,27 +1,10 @@
-import { useNavigate } from "react-router-dom";
-
-import { Topics } from "@/domain/Topics";
 import { CardProps } from "./LatestNewsCard";
-
-
+import { useArticleNavigation } from "@/features/news/hooks/useArticleNavigation";
+import { getTopicName } from "@/features/news/utils/topicUtils";
 
 export const TopicCard = ({ noticia }: CardProps) => {
-
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-
-    navigate(`/news/${noticia.titulo}`, { state: { new: noticia } });
-  };
-
-  const handleCategories = (noti: number | undefined) => {
-    if (noti === undefined) {
-      return "smartphones";
-    }
-    return Object.keys(Topics).find(
-      (key) => Topics[key as keyof typeof Topics] === noti,
-    );
-  };
+  const navigateToArticle = useArticleNavigation();
+  const handleClick = () => navigateToArticle(noticia);
 
   return (
     <article
@@ -46,22 +29,12 @@ export const TopicCard = ({ noticia }: CardProps) => {
         >
           <div className="col-6 d-flex pb-2">
             <button className="btn btn-sm btn-primary me-2 mt-2 mb-2 text-secondary">
-              {handleCategories(
-                noticia.categories != undefined
-                  ? noticia.categories[0]
-                  : undefined,
-              )}
+              {getTopicName(noticia.categories?.[0])}
             </button>
-            {noticia.categories?.length > 1 ? (
+            {noticia.categories?.length > 1 && (
               <button className="btn btn-sm btn-outline-secondary mt-2 mb-2 lh-1">
-                {handleCategories(
-                  noticia.categories != undefined
-                    ? noticia.categories[1]
-                    : undefined,
-                )}
+                {getTopicName(noticia.categories?.[1])}
               </button>
-            ) : (
-              ""
             )}
           </div>
 
