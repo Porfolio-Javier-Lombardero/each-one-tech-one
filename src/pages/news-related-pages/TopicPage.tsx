@@ -3,17 +3,23 @@ import { useParams } from "react-router-dom";
 import { getEmptyMessage } from "@/features/news/utils/getEmptyMessage";
 import { useGetHeadlines } from "@/features/news/hooks/useGetHeadlines";
 import { useSearchAllCategories } from "@/features/news/hooks/useSearchAllCategories";
-import { Categories, TopicId } from "@/domain/Topics"
+import { Categories, TopicId } from "@/domain/Topics";
 import { NewsList } from "@/features/news/components/NewsList";
 import { Article, DateFilterType } from "@/domain/Article";
-import { Datefilter, DateFilterMode } from "@/features/news/components/Datefilter";
+import {
+  Datefilter,
+  DateFilterMode,
+} from "@/features/news/components/Datefilter";
+import { LatestNewsSkeleton } from "@/shared/components/LatestNewsSkeleton";
+import { OtherNewsSkeleton } from "@/shared/components/OtherNewsSkeleton";
 
 export const TopicPage = () => {
   const { value } = useParams();
 
   const [dateFilter, setDateFilter] = useState<DateFilterType>("today");
 
-  const isKnownCategory = !!value && (Object.values(Categories) as string[]).includes(value);
+  const isKnownCategory =
+    !!value && (Object.values(Categories) as string[]).includes(value);
   const isKeywordSearch = !!value && !isKnownCategory;
 
   const {
@@ -27,12 +33,11 @@ export const TopicPage = () => {
     dateFilter: dateFilter,
   });
 
-  const { isLoading: loadingKeywordNews, news: keywordPool } =
-    useSearchAllCategories();
+  const { isLoading: loadingKeywordNews, news: keywordPool } = useSearchAllCategories();
 
   let noticias: Article[] = [];
   let loadingNews = false;
-  let fetchNext: () => void = () => { };
+  let fetchNext: () => void = () => {};
   let hasNext = false;
   let isFetching = false;
 
@@ -45,15 +50,15 @@ export const TopicPage = () => {
 
     noticias = keywords.length
       ? keywordPool.filter((noticia) => {
-        if (!noticia?.titulo) return false;
-        const title = noticia.titulo.toLowerCase();
-        return keywords.some((kw) => title.includes(kw));
-      })
+          if (!noticia?.titulo) return false;
+          const title = noticia.titulo.toLowerCase();
+          return keywords.some((kw) => title.includes(kw));
+        })
       : [];
 
     loadingNews = loadingKeywordNews;
   } else {
-    noticias = news
+    noticias = news;
 
     loadingNews = loadingCategoryNews;
     fetchNext = fetchNextPage;
@@ -61,7 +66,8 @@ export const TopicPage = () => {
     isFetching = isFetchingNextPage;
   }
 
-  const dateFilterMode: DateFilterMode = value === 'Smartphones' ? 'smartphones' : 'standard';
+  const dateFilterMode: DateFilterMode =
+    value === "Smartphones" ? "smartphones" : "standard";
 
   useEffect(() => {
     setDateFilter(value === "Smartphones" ? "all" : "today");
@@ -75,7 +81,6 @@ export const TopicPage = () => {
             <h1 className="h1 display-2 text-center text-sm-start">{value}</h1>
           </div>
           {
-
             <Datefilter
               setDateFilter={setDateFilter}
               dateFilter={dateFilter}
@@ -96,6 +101,17 @@ export const TopicPage = () => {
               isFetching={isFetching}
               emptyMessage={getEmptyMessage(dateFilter)}
             />
+          ) : loadingNews ? (
+            <>
+              <div className="col-12 col-lg-6">
+                <LatestNewsSkeleton />
+              </div>
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div className="col-12 col-md-4 col-lg-3" key={`skeleton-${i}`}>
+                  <OtherNewsSkeleton />
+                </div>
+              ))}
+            </>
           ) : (
             <p>{getEmptyMessage(dateFilter)}</p>
           )}

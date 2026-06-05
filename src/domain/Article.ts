@@ -3,7 +3,7 @@ export interface Article {
     titulo: string;
     description: string;
     cont: string;
-    categories: number[];
+    categories: number[] ;
     fechaIso: string;
     fecha: string;
     url: string;

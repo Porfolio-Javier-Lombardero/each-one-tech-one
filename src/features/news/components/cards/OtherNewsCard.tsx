@@ -11,6 +11,7 @@ export interface CardProps {
 
 export const OtherNewsCard = ({ noticia }: CardProps) => {
   const navigate = useNavigate();
+  
   const navigateToArticle = useArticleNavigation();
 
   const handleClick = () => navigateToArticle(noticia);

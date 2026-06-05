@@ -7,33 +7,39 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { STALE_TIMES } from "@/shared/lib/staletimes";
 
 interface Props {
-    topic: TopicId;
-    dateFilter: DateFilterType;
+  topic: TopicId;
+  dateFilter: DateFilterType;
 }
 
 export const useGetHeadlines = (
-    { topic, dateFilter }: Props,
-    repo: ArticleRepository = supabaseArticleRepository
+  { topic, dateFilter }: Props,
+  repo: ArticleRepository = supabaseArticleRepository,
 ) => {
-    const { isLoading, data: news, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-        useInfiniteQuery({
-            queryKey: newsKeys.headlines(topic, dateFilter),
-            queryFn: ({ pageParam }) =>
-                repo.getHeadlines({ topic, dateFilter, page: pageParam as number }),
-            initialPageParam: 1,
-            getNextPageParam: (lastPage, _pages) =>
-                lastPage.length === 10 ? _pages.length + 1 : undefined,
-            staleTime: STALE_TIMES.NEWS,
-        });
+  const {
+    isLoading,
+    data: news,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: newsKeys.headlines(topic, dateFilter),
+    queryFn: ({ pageParam }) =>
+      repo.getHeadlines({ topic, dateFilter, page: pageParam as number }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _pages) =>
+      lastPage.length === 10 ? _pages.length + 1 : undefined,
+    staleTime: STALE_TIMES.NEWS,
+  });
 
-    const flatNews = news?.pages.flatMap((page: Article[]) => page) || [];
+  const flatNews = news?.pages.flatMap((page: Article[]) => page) || [];
 
-    return {
-        isLoading,
-        news: flatNews,
-        fetchNextPage,
-        hasNextPage,
-        isFetching,
-        isFetchingNextPage,
-    };
+  return {
+    isLoading,
+    news: flatNews,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  };
 };
