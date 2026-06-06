@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { LazyImage } from "@/shared/components/LazyImage";
 
 const YT_EMBED_BASE = 'https://www.youtube.com/embed';
 const YT_PARAMS = 'autoplay=1&rel=0';
@@ -26,11 +27,11 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, thumbn
                         onClick={() => setIsPlaying(true)}
                         aria-label="Reproducir video"
                     >
-                        <img
+                        <LazyImage
                             src={thumbnailUrl}
                             alt={title}
-                            className="img-fluid w-100 h-100 object-fit-cover rounded-top"
-                            style={{ objectFit: "cover" }}
+                            className="w-100 h-100 object-fit-cover rounded-top"
+                            wrapperProps={{ style: { display: "block", width: "100%", height: "100%" } }}
                         />
                         <span
                             className="position-absolute top-50 start-50 translate-middle bg-danger text-white rounded-circle d-flex align-items-center justify-content-center"

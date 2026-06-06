@@ -1,6 +1,7 @@
 import { CardProps } from "./LatestNewsCard";
 import { useArticleNavigation } from "@/features/news/hooks/useArticleNavigation";
 import { getTopicName } from "@/features/news/utils/topicUtils";
+import { LazyImage } from "@/shared/components/LazyImage";
 
 export const TopicCard = ({ noticia }: CardProps) => {
   const navigateToArticle = useArticleNavigation();
@@ -16,10 +17,11 @@ export const TopicCard = ({ noticia }: CardProps) => {
         className="card position-relative rounded "
         style={{ minHeight: "500px" }}
       >
-        <img
+        <LazyImage
           src={noticia.img ?? undefined}
-          className="img-fluid position-absolute h-100 object-fit-cover rounded "
           alt=""
+          className="img-fluid h-100 w-100 object-fit-cover"
+          wrapperProps={{ style: { position: "absolute", top: 0, left: 0, width: "100%", height: "100%" } }}
         />
         <div
           className="card-img-overlay  d-flex flex-column justify-content-end rounded "

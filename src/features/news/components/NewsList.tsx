@@ -71,13 +71,13 @@ export const NewsList = ({
         )}
       </div>
       <button
-        className="col-2 btn btn-primary m-3"
+        className="col-md-2 btn btn-primary m-3"
         onClick={handleFetchMore}
         disabled={!news || news.length < 10 || !hasNext}
       >
         <span className="text-secondary">view more</span>
       </button>
-      <div className="row p-4  g-2 px-6 align-items-end "></div>
+      <div className="row p-0  g-2 px-6 align-items-end "></div>
     </>
   );
 };

@@ -4,6 +4,7 @@ import React from "react";
 import { Article } from "@/domain/Article";
 import { useArticleNavigation } from "@/features/news/hooks/useArticleNavigation";
 import { getTopicName } from "@/features/news/utils/topicUtils";
+import { LazyImage } from "@/shared/components/LazyImage";
 
 export interface CardProps {
   noticia: Article;
@@ -57,11 +58,12 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
           </p>
         </div>
         <div className="ratio ratio-4x3">
-          <img className="card-img object-fit-cover " alt=""
+          <LazyImage
             src={noticia.img ?? undefined}
+            alt=""
+            className="object-fit-cover w-100 h-100"
+            wrapperProps={{ style: { display: "block", width: "100%", height: "100%" } }}
           />
-
-
         </div>
       </div>
     </article>

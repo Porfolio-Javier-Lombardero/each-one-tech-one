@@ -1,5 +1,6 @@
 import { Article } from "@/domain/Article";
 import { useArticleNavigation } from "@/features/news/hooks/useArticleNavigation";
+import { LazyImage } from "@/shared/components/LazyImage";
 
 export interface CardProps {
   noticia: Article;
@@ -28,11 +29,11 @@ export const LatestNewsCard = ({ noticia }: CardProps) => {
           </h3>
           <p className="lead card-subtitle mb-4">{noticia.fecha}</p>
           <div className="ratio ratio-21x9 rounded ">
-            <img
-              className="img-fluid  h-75 object-fit-cover  pb-md-3 rounded-5 "
+            <LazyImage
               src={noticia.img ?? undefined}
               alt=""
-
+              className="img-fluid h-75 object-fit-cover pb-md-3 rounded-5 w-100"
+              wrapperProps={{ style: { display: "block", width: "100%", height: "100%" } }}
             />
           </div>
         </div>
