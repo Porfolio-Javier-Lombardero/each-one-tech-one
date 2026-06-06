@@ -18,6 +18,8 @@ export const OtherNewsCard = ({ noticia }: CardProps) => {
   const handleClick = () => navigateToArticle(noticia);
 
 
+  // Reads the button's text content to find the matching key in Categories and navigate to that topic page.
+  // Articles don't carry a category ID, so the display name is the only available signal.
   const navigateToTopicPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     const topic = e.currentTarget.textContent as string

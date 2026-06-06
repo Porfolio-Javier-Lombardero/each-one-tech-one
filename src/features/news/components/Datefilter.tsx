@@ -27,6 +27,7 @@ const DateFilterButton = ({ label, filter, active, disabled = false, onClick }: 
     </>
 );
 
+// 'smartphones' replaces the Today/Yesterday buttons with a wider "Last 14 days" window. Smartphone articles from Guardian are sparse in short time ranges, so a narrower filter would return no results.
 export type DateFilterMode = 'standard' | 'smartphones';
 
 interface Props {

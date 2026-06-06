@@ -20,11 +20,13 @@ export async function fetchNews({ topic, dateFilter, page }: Props): Promise<New
 
         if (error) throw error;
 
+        // The edge function returns { source, data } where source is 'techcrunch' or 'guardian'. Source determines which mapper to apply because each API returns a different DTO shape.
         const { source, data: raw } = data;
         const mapped = source === 'techcrunch'
             ? mapTechCrunchToArticle(raw)
             : mapGuardianToArticle(raw);
 
+        // parseList validates each item against ArticleSchema individually. Invalid items are discarded with a warning instead of failing the whole response.
         return parseList(ArticleSchema, mapped, 'get-news');
     } catch (error) {
         console.error('❌ Error en fetchNews:', error);

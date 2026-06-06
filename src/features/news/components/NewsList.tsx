@@ -47,6 +47,8 @@ export const NewsList = ({
           </div>
         ) : (
           <>
+            {/* The first article renders as a wide LatestNewsCard; the rest render as smaller OtherNewsCards.
+                The visual hierarchy comes from array position, not from a field on the article. */}
             {news?.[0] && (
               <div className="col-12 col-lg-6" key={news[0].id_hash}>
                 <LatestNewsCard key={news[0].id_hash} noticia={news[0]} />

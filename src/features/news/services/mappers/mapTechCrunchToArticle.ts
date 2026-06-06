@@ -13,6 +13,6 @@ export function mapTechCrunchToArticle(articles: TechCrunchArticle[]): Article[]
     fechaIso: item.date,
     fecha: formatDate(item.date),
     url: item.link,
-    img: item.yoast_head_json?.og_image?.[0]?.url ?? null,
+    img: item.yoast_head_json?.og_image?.[0]?.url ?? null, // og_image is nested inside yoast_head_json and may be absent. The full optional chain handles both missing yoast data and articles without an image.
   }));
 }

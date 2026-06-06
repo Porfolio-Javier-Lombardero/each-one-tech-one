@@ -9,6 +9,7 @@ export const useSearchNews = (
   keyword: string,
   repo: ArticleRepository = supabaseArticleRepository,
 ) => {
+  // Trimmed here so the queryKey (used for caching) and the value sent to the repo are always identical.
   const term = keyword.trim();
 
   const {
@@ -26,7 +27,7 @@ export const useSearchNews = (
     getNextPageParam: (lastPage, _pages) =>
       lastPage.length === 10 ? _pages.length + 1 : undefined,
     staleTime: STALE_TIMES.NEWS,
-    enabled: term.length > 0,
+    enabled: term.length > 0, // TopicPage always mounts both hooks (headlines and search). This guard prevents search from firing when the user is on a category page and keyword is empty.
   });
 
   const flatNews = news?.pages.flatMap((page: Article[]) => page) || [];

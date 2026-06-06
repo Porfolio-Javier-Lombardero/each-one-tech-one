@@ -13,7 +13,7 @@ interface Props {
 
 export const useGetHeadlines = (
   { topic, dateFilter }: Props,
-  repo: ArticleRepository = supabaseArticleRepository,
+  repo: ArticleRepository = supabaseArticleRepository, // Defaults to the real Supabase implementation. Accepting a repo param allows tests to inject a MockArticleRepository without wrapping the hook.
 ) => {
   const {
     isLoading,
@@ -27,11 +27,13 @@ export const useGetHeadlines = (
     queryFn: ({ pageParam }) =>
       repo.getHeadlines({ topic, dateFilter, page: pageParam as number }),
     initialPageParam: 1,
+    // The edge function returns at most 10 items per page. If the last page has fewer than 10, there are no more pages.
     getNextPageParam: (lastPage, _pages) =>
       lastPage.length === 10 ? _pages.length + 1 : undefined,
     staleTime: STALE_TIMES.NEWS,
   });
 
+  // Flattens the paginated structure (pages of arrays) into a single array so components don't need to know about pagination internals.
   const flatNews = news?.pages.flatMap((page: Article[]) => page) || [];
 
   return {

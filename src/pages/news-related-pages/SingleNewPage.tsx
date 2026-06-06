@@ -10,6 +10,9 @@ import { Article } from "@/domain/Article";
 
 export const SingleNewPage = () => {
   const { state } = useLocation();
+  // Article data comes from router state set by useArticleNavigation, not from an API call.
+  // If state is absent (e.g. direct URL access or page refresh), state?.new is undefined
+  // and we render a skeleton as a graceful fallback.
   const singleNew: Article = state?.new;
 
   if (!singleNew) {
@@ -35,7 +38,7 @@ export const SingleNewPage = () => {
             <Share />
           </div>
           <div className=" col-12  p-3  p-md-0 p-md-3  ">
-            <h1> {stripHTML(singleNew.titulo)}</h1>
+            <h1> {stripHTML(singleNew.titulo)}</h1>{/* stripHTML removes HTML tags and entities that TechCrunch includes in title and excerpt fields. */}
           </div>
         </div>
       </div>
@@ -63,6 +66,7 @@ export const SingleNewPage = () => {
           </div>
 
           <div className="col-12  px-4 px-md-5  d-flex justify-content-center align-items-stretch ">
+            {/* cleanHTML sanitizes TechCrunch's WordPress output: removes CTA blocks, fixes inline image dimensions, and normalizes figure elements before injecting into the DOM. */}
             <div
               className="lh-lg news-content"
               dangerouslySetInnerHTML={{ __html: cleanHTML(singleNew.cont) }}

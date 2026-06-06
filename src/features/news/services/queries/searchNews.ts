@@ -10,6 +10,7 @@ interface Props {
     page: number;
 }
 
+// Sends a free-text keyword query to the edge function. Unlike fetchNews, there is no topic or dateFilter because keyword search spans the full article index. The edge function always uses TechCrunch for search because Guardian does not expose free-text search.
 export async function searchNews({ keyword, page }: Props): Promise<News> {
     try {
         const { data, error } = await supabase.functions.invoke('get-news', {

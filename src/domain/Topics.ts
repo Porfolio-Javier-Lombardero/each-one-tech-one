@@ -1,4 +1,5 @@
 
+// Maps human-readable category keys to TechCrunch's internal numeric tag IDs. Not sequential — these are TechCrunch's own identifiers.
 export const Topics = {
   robotics: 577123751,
   policy: 577065682,
@@ -27,6 +28,7 @@ export const Topics = {
   techone: 17396,
 } as const;
 
+// UI-facing category labels used in the nav and URLs. These are the values users see and that travel as route params.
 export const Categories = {
   App: "App's & Software",
   Smartphones: "Smartphones",
@@ -35,9 +37,13 @@ export const Categories = {
   Policy: "Policy & Regulation",
 } as const;
 
+// 0 means "all categories" — used on the homepage to fetch a mixed feed without filtering by topic.
 export type TopicId = typeof Categories[keyof typeof Categories] | 0;
+// "smartphone" is a Guardian API string slug, not a TechCrunch numeric ID. It is the only non-numeric API identifier.
 export type ApiTopicId = typeof Topics[keyof typeof Topics] | "smartphone" | 0;
 
+// Converts a UI category label (TopicId) into the identifier the API expects (ApiTopicId).
+// Smartphones maps to the Guardian slug "smartphone" instead of a TechCrunch number because Guardian is the source for that category.
 export function getTopicId(topic: TopicId): ApiTopicId {
   switch (topic) {
     case "App's & Software":  return Topics.app;

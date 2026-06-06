@@ -18,9 +18,14 @@ export const TopicPage = () => {
 
   const [dateFilter, setDateFilter] = useState<DateFilterType>("today");
 
+  // TopicPage handles two distinct modes via the same /topic/:value route:
+  // - Category mode: value matches one of the Categories display strings (e.g. "A.I.")
+  // - Keyword mode: value is any other string typed in the search form
+  // Both hooks are always mounted; React does not allow conditional hooks.
+  // The inactive one is kept idle via enabled:false (search) or topic:0 (headlines).
   const isKnownCategory =
     !!value && (Object.values(Categories) as string[]).includes(value);
-  
+
     const isKeywordSearch = !!value && !isKnownCategory;
 
   const {
@@ -63,10 +68,12 @@ export const TopicPage = () => {
     isFetching = isFetchingNextPage;
   }
 
+  // Smartphones uses a wider date mode ("Last 14 days") because its articles come from Guardian and are sparse in short windows.
   const dateFilterMode: DateFilterMode =
     value === "Smartphones" ? "smartphones" : "standard";
 
   useEffect(() => {
+    // Resets the date filter when the user navigates to a different topic. Smartphones defaults to "all" because Guardian has enough historical data; other categories default to "today".
     setDateFilter(value === "Smartphones" ? "all" : "today");
   }, [value]);
 
