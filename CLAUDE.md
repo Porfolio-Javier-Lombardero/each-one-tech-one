@@ -1,87 +1,76 @@
-# each-one-tech-one — Contexto del proyecto
+# each-one-tech-one — Referencia para Claude
+
+Documento de referencia para mantener, escalar y ampliar el proyecto. Este archivo describe cómo es el proyecto **hoy** y las reglas a respetar al tocarlo.
+
+Documentación complementaria:
+- [README.md](README.md) — instalación, scripts, estructura.
+- [docs/architecture.md](docs/architecture.md) — las decisiones de arquitectura y su *por qué*.
+- [docs/components.md](docs/components.md) — catálogo de componentes y hooks.
+- [docs/setup.md](docs/setup.md) — entorno detallado, Edge Functions, troubleshooting.
 
 ## Qué es este proyecto
-App de noticias tech. Stack: React 19 + TypeScript + Vite + React Query v5 (`@tanstack/react-query`) + Supabase + Bootstrap 5.
-Proyecto de un solo desarrollador. Sirve además como proyecto integrador final de un curso de arquitectura front-end.
+App de noticias tech (titulares, eventos, reviews en vídeo, newsletter). Proyecto de un solo desarrollador.
+Stack: React 19 + TypeScript + Vite 6 + React Query v5 (`@tanstack/react-query`) + Supabase (cliente + Edge Functions Deno) + Bootstrap 5 + Sass + Zod 4. Tests con Vitest + Testing Library.
 
 ## Perfil del desarrollador
 - Front-end en formación, nivel intermedio subiendo a avanzado.
-- Prefiere entender el "por qué" detrás de cada decisión, no solo recetas. Explica el razonamiento, no solo el código.
-- Está aplicando conceptos de arquitectura aprendidos: SOLID, MVVM, Feature-Based, Clean Architecture, gestión de estado por capas, puertos y adaptadores.
+- Prefiere entender el "por qué" detrás de cada decisión, no solo recetas. **Explica el razonamiento, no solo el código.**
+- Aplica conceptos de arquitectura: SOLID, Feature-Based, Clean Architecture (puertos y adaptadores), gestión de estado por capas.
 
-## Objetivo actual: refactorización en curso
-Migrar de una **arquitectura en capas** (componentes / hooks / services horizontales) a **Feature-Based**, con patrones de **Clean Architecture aplicados SOLO en la capa de servicios** (donde el dominio lo justifica).
+## Arquitectura actual (estado real, ya migrado)
+Feature-Based con Clean Architecture aplicada **solo en la capa de servicios** (donde hay frontera natural con el exterior). Detalle y razonamiento en [docs/architecture.md](docs/architecture.md).
 
-No es una reescritura. Se hace de forma **progresiva, sin romper lo que funciona en producción** (estrategias: strangler fig / modularización progresiva).
-
-## Estructura objetivo
 ```
 src/
-  domain/                  # TS puro, SIN imports de React/Supabase/libs externas
-    Article.ts             # interface de entidad
-    Event.ts
-    Topic.ts               # value objects / TopicId = 0|1|2|3|4|5
-    ports/
-      ArticleRepository.ts # interface (contrato), NO implementación
+  app/                     # bootstrap: main.tsx (QueryClient, providers), App.tsx, router/
+  domain/                  # TS puro, SIN React/Supabase/libs externas
+    Article.ts Event.ts Review.ts Subscriber.ts
+    Topics.ts              # TopicId / ApiTopicId (unions de literales) + getTopicId()
+    ports/                 # interfaces (contratos): ArticleRepository, EventRepository, ...
   features/
-    news/
-      components/          # HeadlineCard, NewsList, TopicFilter
-      hooks/               # useGetHeadlines, useInfiniteNews
-      services/            # SupabaseArticleRepository implements ArticleRepository
-      index.ts             # API pública: solo lo exportado es consumible desde fuera
-    events/
-    reviews/
-    newsletter/
+    news/  events/  reviews/  newsletter/
+      components/ hooks/ services/ index.ts
+      services/            # SupabaseXxxRepository (implements port), schemas Zod, dtos/, mappers/, queries/, queryKeys
   shared/
-    components/            # Header, Footer, Pagination, ErrorBoundary
-    hooks/                 # useWindowWidth, useDebounce
-    lib/
-      supabaseClient.ts
-      queryConfig.ts       # STALE_TIMES aquí (NO en services/)
-  pages/                   # orquestadores, sin lógica de negocio
-  router/
+    components/ hooks/ layout/ lib/ mocks/
+    lib/supabaseClient.ts  # valida env vars al arrancar
+    lib/staletimes.ts      # STALE_TIMES (NEWS 5h, EVENTS 15d, REVIEWS 24h)
+    mocks/                 # Mock*Repository (implementan los ports) + fixtures/
+  pages/                   # orquestadores de ruta, SIN lógica de negocio
+supabase/functions/        # get-news, get-events, get-reviews (Deno): fetch APIs externas + cache en news_cache
 ```
 
-## Plan por fases (seguir en orden, NO saltar fases)
-1. **Fase 1 — Contratos y tipos (sin mover archivos):** crear `domain/` con entidades e interfaces, mover los tipos de dominio desde `services/` a `domain/`, crear `domain/ports/`, estandarizar nomenclatura.
-2. **Fase 2 — Estructura de features:** crear `features/<dominio>/` con components/hooks/services, mover archivos, crear `index.ts` por feature.
-3. **Fase 3 — Limpiar acoplamientos:** verificar que ninguna feature importa de otra, mover lo común a `shared/`, arreglar el SRP de HomePage, unificar la capa de servicios.
-4. **Fase 4 (opcional, solo si se va a testear):** adaptadores que implementen los ports, hooks que reciban el repositorio como dependencia, mock adapters para tests.
+## Reglas al mantener / ampliar (NO romper estos invariantes)
+- **`domain/` es TS puro.** Si un archivo de `domain/` necesita importar React, Supabase o cualquier lib externa, está en el lugar equivocado. Los tipos de dominio son la fuente de verdad.
+- **Ports vs. implementaciones.** Los ports son `interface` en `domain/ports/`. Las implementaciones (`SupabaseArticleRepository`) van en `features/<x>/services/` con `implements`/`satisfies`. Los DTOs crudos de la API viven en `services/dtos/`, NUNCA en `domain/`.
+- **Las features NO se importan entre sí.** Se comunican vía `shared/` o se componen en `pages/`. Si dos features necesitan algo común, va a `shared/`.
+- **API pública por `index.ts`.** Cada feature solo expone lo de su `index.ts`. Repositorios, query keys, mappers y schemas son internos: no importarlos desde fuera de la feature.
+- **Validar en la frontera con Zod.** Todo servicio que recibe datos del servidor valida con su schema (atado al tipo de dominio vía `satisfies`) antes de devolver. Nada de `data || []` para enmascarar respuestas malformadas; usar `parseList`.
+- **React Query = sincronización servidor-cliente, NO la capa de servicios.** La lógica (invoke + map + validar) vive en `services/`; el hook solo la envuelve en `useQuery`/`useInfiniteQuery`. El `staleTime` por dominio sale de `STALE_TIMES`, no se hardcodea en el hook.
+- **Inyección de dependencias en hooks de fetching.** Los hooks reciben el repositorio como argumento con default real (`= supabaseArticleRepository`). Mantener este patrón para poder inyectar `Mock*Repository` en tests.
+- **Secretos.** La anon key de Supabase es pública por diseño (la seguridad viene de las RLS policies); NO tratarla como secreto. En cambio `SERVICE_ROLE_KEY` y las keys de APIs externas (TechCrunch/Guardian/YouTube) son secretos del servidor: viven solo en los secrets de las Edge Functions, nunca en el cliente ni en el repo.
+- **Estado cliente compartido = React Context** (Zustand fue desinstalado). No reintroducir una librería de store global sin justificación.
 
-## Convenciones
-- Componentes: PascalCase. Hooks: camelCase con prefijo `use`.
-- Arreglar nomenclatura existente: `MainLayOut` → `MainLayout`, `Newslist` → `NewsList`, `staletimes..ts` → `queryConfig.ts`.
-- `domain/` es TS puro. Si un archivo de domain necesita importar React, Supabase o cualquier lib externa, está en el lugar equivocado.
-- Los ports son `interface` en `domain/ports/`. Las implementaciones (`SupabaseArticleRepository`) van en `features/<x>/services/` y usan `implements`.
-- Las features NO se importan entre sí. Se comunican vía `shared/` o `pages/`.
-- Cada feature expone su API pública mediante `index.ts`. Lo no exportado es interno (incluidos los repositorios y las query keys).
-- Tipos de dominio = fuente de verdad. Los DTOs de Supabase (response crudo) viven en `services/`, no en `domain/`.
-
-## Problemas conocidos a resolver (diagnóstico del curso)
-- `HomePage` viola SRP: orquesta 3 dominios y renderiza todo. Extraer `NewsSection`, `EventsSection` como componentes de feature.
-- Tipos de dominio (`SingleNew`, `Events`) viven dentro de `services/` → mover a `domain/`.
-- `topic: number | string` es demasiado permisivo → unificar a `TopicId = 0|1|2|3|4|5` (incluir smartphone).
-- `useSearchAllCategories` (generado por Copilot): acoplamiento frágil a las query keys de otros hooks. Las query keys deben ser constantes compartidas.
-- Inconsistencia en servicios: `fetchNewsWithCache` usa `supabase.functions.invoke()`; `createNewSub` usa `fetch` crudo con headers manuales. Unificar a un único patrón.
-- `data || []` enmascara respuestas exitosas pero malformadas → validar con Zod en la frontera (servicio).
-- Estilos inline mezclados con Bootstrap → consolidar.
-- La adaptación DTO → entidad ocurre en las Edge Functions (servidor). Tenerlo en cuenta al decidir dónde validar en cliente.
+## Cómo añadir cosas nuevas
+- **Nueva feature:** crear `features/<x>/` con `components/ hooks/ services/ index.ts`. Si toca el exterior, definir su port en `domain/ports/` y su entidad en `domain/`. Exponer solo lo necesario por `index.ts`.
+- **Nueva fuente de datos externa:** añadir/extender una Edge Function en `supabase/functions/` (el fetch y los secrets viven ahí, no en el cliente); en el cliente, un servicio que la invoque + mapper DTO→entidad + schema Zod.
+- **Nuevo componente de presentación:** si lo usa una sola feature, va en esa feature; si lo comparten varias (o lo usa algo de `shared/`, como el `Header`), va en `shared/components/`.
 
 ## Límites — NO sobreingeniería
 Este proyecto NO necesita y NO se debe añadir:
 - DDD completo (el dominio no es lo bastante complejo).
-- Monorepo (una sola app).
-- Micro-frontends (un solo desarrollador, sin problema organizativo).
+- Monorepo ni micro-frontends (una sola app, un solo desarrollador).
 - Hexagonal completo en toda la app (solo en los repositorios, donde ya existe la frontera natural).
-- No abstraer prematuramente los 3 hooks de fetching similares: probablemente divergirán (preferir duplicación sobre abstracción hasta que se demuestre lo contrario).
+- No abstraer prematuramente los hooks de fetching similares (`useGetHeadlines`, `useGetEvents`, `useGetReviews`): probablemente divergirán. Preferir duplicación sobre abstracción hasta demostrar lo contrario.
 
-## Notas de contexto
-- La anon key de Supabase es pública por diseño; la seguridad viene de las RLS policies. No tratarla como secreto.
-- React Query NO es la capa de servicios: es la capa de sincronización servidor-cliente. Su caché interna actúa como store (modelo Flux).
-- Zustand fue desinstalado. Para estado cliente compartido entre features: React Context.
+## Deuda técnica conocida (pendiente, NO inventar que está resuelta)
+- `STALE_TIMES` vive en `shared/lib/staletimes.ts`; el plan original era renombrarlo a `queryConfig.ts`. Sigue pendiente.
+- Hay un default global de `staleTime: 24h` en `app/main.tsx` además de los `STALE_TIMES` por dominio; el global solo actúa de red de seguridad porque cada hook pasa su valor explícito.
+- Estilos inline (`style={{...}}`) mezclados con Bootstrap en ~12 archivos (p. ej. `HomePage`, `NewsSearchForm`, las cards). Consolidar hacia clases/Sass cuando se toquen.
+- Fase de testing parcial: existen `Mock*Repository`, fixtures y tests de hooks; la cobertura no es completa.
 
 ## Cómo trabajar conmigo
-- Ir fase por fase del plan. No adelantar fases.
-- Antes de mover muchos archivos a la vez, proponer el cambio y esperar confirmación.
-- Explicar el razonamiento detrás de cada sugerencia (el desarrollador aprende del "por qué").
-- No romper lo que funciona en producción: cambios progresivos y verificables.
+- **Explicar el razonamiento** detrás de cada sugerencia (el desarrollador aprende del "por qué"), no solo dar el código.
+- Antes de mover/renombrar muchos archivos a la vez, proponer el cambio y esperar confirmación.
+- No romper lo que funciona en producción: cambios progresivos y verificables (`npm run type-check && npm run lint && npm run test`).
+- Respetar los invariantes de arquitectura de arriba. Si una petición los contradice, señalarlo antes de implementar.
