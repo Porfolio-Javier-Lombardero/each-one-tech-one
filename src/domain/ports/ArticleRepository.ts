@@ -7,4 +7,9 @@ export interface ArticleRepository {
         dateFilter: DateFilterType;
         page: number;
     }): Promise<Article[]>;
+
+    searchByKeyword(params: {
+        keyword: string;
+        page: number;
+    }): Promise<Article[]>;
 }

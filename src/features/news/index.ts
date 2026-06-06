@@ -5,5 +5,5 @@ export { Datefilter } from './components/Datefilter';
 export type { DateFilterMode } from './components/Datefilter';
 //----- Hooks
 export { useGetHeadlines } from './hooks/useGetHeadlines';
-export { useSearchAllCategories } from './hooks/useSearchAllCategories';
+export { useSearchNews } from './hooks/useSearchNews';
 export { useArticleNavigation } from './hooks/useArticleNavigation';

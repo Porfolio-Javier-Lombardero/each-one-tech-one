@@ -85,18 +85,29 @@ serve(async (req) => {
       });
     }
 
-    const { topic, dateFilter, page = 1 } = await req.json();
+    const { topic, dateFilter, page = 1, keyword } = await req.json();
 
-    if (topic === null || topic === undefined || !dateFilter) {
+    // Keyword search mode: free-text query, no topic/dateFilter required.
+    const term = typeof keyword === "string" ? keyword.trim() : "";
+    const isSearch = term.length > 0;
+
+    if (!isSearch && (topic === null || topic === undefined || !dateFilter)) {
       return new Response(
         JSON.stringify({ error: "Missing topic or dateFilter" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const source = typeof topic === "number" ? "techcrunch" : "guardian";
-    const searchContext = createSearchContext(topic, dateFilter, page);
-    const dateRange = getDateRange(dateFilter);
+    // Search always hits TechCrunch (primary tech source); category mode picks by topic type.
+    const source = isSearch
+      ? "techcrunch"
+      : typeof topic === "number" ? "techcrunch" : "guardian";
+
+    const searchContext = isSearch
+      ? `kw_${term.toLowerCase()}_p${page}`
+      : createSearchContext(topic, dateFilter, page);
+
+    const dateRange = getDateRange(dateFilter ?? "today");
 
     // 1. Check cache
     const { data: cached, error: cacheError } = await supabase
@@ -123,7 +134,19 @@ serve(async (req) => {
     // 2. Fetch raw articles from external API
     let rawArticles: unknown[] = [];
 
-    if (source === "techcrunch") {
+    if (isSearch) {
+      // WordPress REST free-text search; no date window so results span all available history.
+      const url = `https://techcrunch1.p.rapidapi.com/v2/posts?order=desc&status=publish&orderby=date&page=${page}&search=${encodeURIComponent(term)}&context=view&per_page=10`;
+      const res = await fetch(url, {
+        headers: {
+          "x-rapidapi-key": TECHCRUNCH_API_KEY,
+          "x-rapidapi-host": "techcrunch1.p.rapidapi.com",
+        },
+      });
+      if (!res.ok) throw new Error(`TechCrunch API error: ${res.status}`);
+      const json = await res.json();
+      rawArticles = json.data ?? [];
+    } else if (source === "techcrunch") {
       const url = `https://techcrunch1.p.rapidapi.com/v2/posts?categories=${topic}&orderby=date&order=desc&status=publish&page=${page}&per_page=10&after=${dateRange.after}&before=${dateRange.before}`;
       const res = await fetch(url, {
         headers: {

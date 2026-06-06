@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getEmptyMessage } from "@/features/news/utils/getEmptyMessage";
 import { useGetHeadlines } from "@/features/news/hooks/useGetHeadlines";
-import { useSearchAllCategories } from "@/features/news/hooks/useSearchAllCategories";
+import { useSearchNews } from "@/features/news/hooks/useSearchNews";
 import { Categories, TopicId } from "@/domain/Topics";
 import { NewsList } from "@/features/news/components/NewsList";
 import { Article, DateFilterType } from "@/domain/Article";
@@ -20,7 +20,8 @@ export const TopicPage = () => {
 
   const isKnownCategory =
     !!value && (Object.values(Categories) as string[]).includes(value);
-  const isKeywordSearch = !!value && !isKnownCategory;
+  
+    const isKeywordSearch = !!value && !isKnownCategory;
 
   const {
     isLoading: loadingCategoryNews,
@@ -33,7 +34,13 @@ export const TopicPage = () => {
     dateFilter: dateFilter,
   });
 
-  const { isLoading: loadingKeywordNews, news: keywordPool } = useSearchAllCategories();
+  const {
+    isLoading: loadingKeywordNews,
+    news: keywordNews,
+    fetchNextPage: fetchNextKeyword,
+    hasNextPage: hasNextKeyword,
+    isFetchingNextPage: isFetchingKeyword,
+  } = useSearchNews(isKeywordSearch ? (value ?? "") : "");
 
   let noticias: Article[] = [];
   let loadingNews = false;
@@ -42,21 +49,11 @@ export const TopicPage = () => {
   let isFetching = false;
 
   if (isKeywordSearch && value) {
-    const keywords = value
-      .toLowerCase()
-      .split(/[,\s.]+/)
-      .map((k) => k.trim())
-      .filter(Boolean);
-
-    noticias = keywords.length
-      ? keywordPool.filter((noticia) => {
-          if (!noticia?.titulo) return false;
-          const title = noticia.titulo.toLowerCase();
-          return keywords.some((kw) => title.includes(kw));
-        })
-      : [];
-
+    noticias = keywordNews;
     loadingNews = loadingKeywordNews;
+    fetchNext = fetchNextKeyword;
+    hasNext = !!hasNextKeyword;
+    isFetching = isFetchingKeyword;
   } else {
     noticias = news;
 
@@ -80,13 +77,13 @@ export const TopicPage = () => {
           <div className="col-12 p-3  ">
             <h1 className="h1 display-2 text-center text-sm-start">{value}</h1>
           </div>
-          {
+          {!isKeywordSearch && (
             <Datefilter
               setDateFilter={setDateFilter}
               dateFilter={dateFilter}
               mode={dateFilterMode}
             />
-          }
+          )}
         </div>
       </div>
 
