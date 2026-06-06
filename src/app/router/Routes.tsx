@@ -4,7 +4,6 @@ import { RouteObject } from 'react-router-dom'
 import { HomePage } from '../../pages/HomePage'
 import { TopicPage } from '../../pages/news-related-pages/TopicPage'
 import { SingleNewPage } from '../../pages/news-related-pages/SingleNewPage'
-import { SearchResults } from '../../pages/news-related-pages/SearchResults'
 import { ContactPage } from '../../pages/ContactPage'
 import { SubscribePage } from '../../pages/SubscribePage'
 
@@ -36,10 +35,6 @@ export const Routes: RouteObject[] = [
             {
                 path: '/news/*',
                 element: <NotFound />
-            },
-            {
-                path: 'search',
-                element: <SearchResults />
             },
             {
                 path: 'contact',

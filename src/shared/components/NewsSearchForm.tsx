@@ -9,10 +9,11 @@ export const NewsSearchForm = () => {
     event.preventDefault();
     const query = new FormData(event.currentTarget).get('query') as string;
 
-    if (!query || query.trim() === '') return;
+    const term = query?.trim();
+    if (!term) return;
 
     event.currentTarget.reset();
-    navigate(`/topic/${query}`);
+    navigate(`/topic/${encodeURIComponent(term)}`);
   };
 
   return (
