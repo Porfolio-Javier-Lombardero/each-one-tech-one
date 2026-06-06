@@ -105,185 +105,88 @@ each-one-tech-one/
 │  ├─ app/                       # Bootstrap de la aplicación
 │  │  ├─ main.tsx                # Punto de entrada (QueryClient, providers, React Router)
 │  │  ├─ App.tsx
-│  │  └─ router/
-│  │     ├─ Routes.tsx            # Definición de rutas
-│  │     └─ index.tsx
+│  │  └─ router/                 # Definición de rutas
 │  │
 │  ├─ domain/                     # TS puro: SIN React, Supabase ni libs externas
 │  │  ├─ Article.ts              # Entidades del dominio
 │  │  ├─ Event.ts
 │  │  ├─ Review.ts
 │  │  ├─ Subscriber.ts
-│  │  ├─ Topics.ts               # Value objects (TopicId, ApiTopicId, getTopicId)
-│  │  └─ ports/                  # Interfaces (contratos), NO implementaciones
-│  │     ├─ ArticleRepository.ts
-│  │     ├─ EventRepository.ts
-│  │     ├─ ReviewRepository.ts
-│  │     └─ SubscriberRepository.ts
+│  │  ├─ Topics.ts               # Value objects (TopicId, ApiTopicId)
+│  │  └─ ports/                  # Interfaces (contratos)
 │  │
 │  ├─ features/                  # Una carpeta por dominio funcional
 │  │  ├─ news/
-│  │  │  ├─ components/
-│  │  │  │  ├─ NewsSections.tsx
-│  │  │  │  ├─ LatestNewsSection.tsx
-│  │  │  │  ├─ TrendyNowSection.tsx
-│  │  │  │  ├─ NewsList.tsx
-│  │  │  │  ├─ Datefilter.tsx
-│  │  │  │  ├─ TopicCard.tsx
-│  │  │  │  └─ cards/
-│  │  │  │     ├─ LatestNewsCard.tsx
-│  │  │  │     └─ OtherNewsCard.tsx
-│  │  │  ├─ hooks/
-│  │  │  │  ├─ useGetHeadlines.ts
-│  │  │  │  ├─ useSearchNews.ts
-│  │  │  │  ├─ useArticleNavigation.ts
-│  │  │  │  └─ __tests__/
-│  │  │  │     └─ useGetHeadlines.test.tsx
-│  │  │  ├─ services/
-│  │  │  │  ├─ SupabaseArticleRepository.ts
-│  │  │  │  ├─ article.schema.ts
-│  │  │  │  ├─ dtos/
-│  │  │  │  │  └─ d.news.types.ts
-│  │  │  │  ├─ mappers/
-│  │  │  │  │  ├─ mapTechCrunchToArticle.ts
-│  │  │  │  │  ├─ mapGuardianToArticle.ts
-│  │  │  │  │  ├─ formatDate.ts
-│  │  │  │  │  └─ generateShortId.ts
-│  │  │  │  ├─ queries/
-│  │  │  │  │  ├─ fetchNews.ts
-│  │  │  │  │  └─ searchNews.ts
+│  │  │  ├─ components/          # NewsSections, LatestNewsSection, TrendyNowSection, NewsList, Datefilter, cards/
+│  │  │  ├─ hooks/               # useGetHeadlines, useSearchNews, useArticleNavigation, __tests__/
+│  │  │  ├─ services/            # SupabaseArticleRepository, schemas Zod
+│  │  │  │  ├─ dtos/             # d.news.types.ts
+│  │  │  │  ├─ mappers/          # mapTechCrunchToArticle, mapGuardianToArticle, formatDate, etc.
+│  │  │  │  ├─ queries/          # fetchNews, searchNews
 │  │  │  │  └─ queryKeys.ts
-│  │  │  ├─ utils/
-│  │  │  │  ├─ topicUtils.ts
-│  │  │  │  ├─ techcrunchHtmlParser.ts
-│  │  │  │  └─ getEmptyMessage.ts
-│  │  │  └─ index.ts             # API pública: NewsSections, NewsList, Datefilter, hooks
+│  │  │  ├─ utils/               # topicUtils, techcrunchHtmlParser, getEmptyMessage
+│  │  │  └─ index.ts             # API pública
 │  │  │
 │  │  ├─ events/
-│  │  │  ├─ components/
-│  │  │  │  ├─ EventSection.tsx
-│  │  │  │  └─ EventCard.tsx
-│  │  │  ├─ hooks/
-│  │  │  │  ├─ useGetEvents.ts
-│  │  │  │  └─ __tests__/
-│  │  │  │     └─ useGetEvents.test.tsx
+│  │  │  ├─ components/          # EventSection, EventCard
+│  │  │  ├─ hooks/               # useGetEvents, __tests__/
 │  │  │  ├─ services/
-│  │  │  │  ├─ SupabaseEventRepository.ts
-│  │  │  │  ├─ event.schema.ts
-│  │  │  │  ├─ mappers/
-│  │  │  │  │  └─ mapGeminiToEvent.ts
-│  │  │  │  └─ queries/
-│  │  │  │     └─ fetchEvents.ts
-│  │  │  └─ index.ts             # API pública: EventSection
+│  │  │  │  ├─ mappers/          # mapGeminiToEvent
+│  │  │  │  └─ queries/          # fetchEvents
+│  │  │  └─ index.ts             # API pública
 │  │  │
 │  │  ├─ reviews/
-│  │  │  ├─ components/
-│  │  │  │  ├─ ReviewsSection.tsx
-│  │  │  │  └─ VideoPlayer.tsx
-│  │  │  ├─ hooks/
-│  │  │  │  ├─ useGetReviews.ts
-│  │  │  │  └─ __tests__/
-│  │  │  │     └─ useGetReviews.test.tsx
+│  │  │  ├─ components/          # ReviewsSection, VideoPlayer
+│  │  │  ├─ hooks/               # useGetReviews, __tests__/
 │  │  │  ├─ services/
-│  │  │  │  ├─ SupabaseReviewRepository.ts
-│  │  │  │  ├─ review.schema.ts
-│  │  │  │  ├─ dtos/
-│  │  │  │  │  └─ d.reviews.types.ts
-│  │  │  │  ├─ mappers/
-│  │  │  │  │  └─ mapYouTubeToReview.ts
-│  │  │  │  └─ queries/
-│  │  │  │     └─ fetchReviews.ts
-│  │  │  └─ index.ts             # API pública: ReviewsSection
+│  │  │  │  ├─ dtos/             # d.reviews.types.ts
+│  │  │  │  ├─ mappers/          # mapYouTubeToReview
+│  │  │  │  └─ queries/          # fetchReviews
+│  │  │  └─ index.ts             # API pública
 │  │  │
 │  │  └─ newsletter/
-│  │     ├─ hooks/
-│  │     │  └─ useSubscribeNL.ts
-│  │     ├─ services/
-│  │     │  └─ createNewSub.ts
-│  │     └─ index.ts             # API pública: useSubscribeNL
+│  │     ├─ hooks/               # useSubscribeNL
+│  │     ├─ services/            # createNewSub
+│  │     └─ index.ts             # API pública
 │  │
 │  ├─ pages/                     # Orquestadores de ruta (sin lógica de negocio)
 │  │  ├─ HomePage.tsx
 │  │  ├─ ContactPage.tsx
 │  │  ├─ SubscribePage.tsx
-│  │  ├─ news-related-pages/
-│  │  │  ├─ TopicPage.tsx
-│  │  │  └─ SingleNewPage.tsx
-│  │  └─ error/
-│  │     └─ NotFound.tsx
+│  │  ├─ news-related-pages/     # TopicPage, SingleNewPage
+│  │  └─ error/                  # NotFound
 │  │
 │  ├─ shared/                    # Código transversal entre features
-│  │  ├─ components/
-│  │  │  ├─ Header.tsx
-│  │  │  ├─ DesktopNav.tsx
-│  │  │  ├─ MobileNav.tsx
-│  │  │  ├─ Footer.tsx
-│  │  │  ├─ NewsSearchForm.tsx
-│  │  │  ├─ LazyImage.tsx
-│  │  │  ├─ LatestNewsSkeleton.tsx
-│  │  │  ├─ OtherNewsSkeleton.tsx
-│  │  │  └─ navConfig.ts
-│  │  ├─ hooks/
-│  │  │  ├─ useDropdown.ts
-│  │  │  ├─ useScrollToSection.ts
-│  │  │  └─ useScrollToTop.ts
-│  │  ├─ layout/
-│  │  │  └─ MainLayout.tsx
-│  │  ├─ lib/
-│  │  │  ├─ supabaseClient.ts    # Cliente Supabase con validación de env vars
-│  │  │  ├─ staletimes.ts        # STALE_TIMES por dominio
-│  │  │  └─ parseList.ts         # Utilidad de validación Zod
-│  │  ├─ mocks/
-│  │  │  ├─ MockArticleRepository.ts
-│  │  │  ├─ MockEventRepository.ts
-│  │  │  ├─ MockReviewRepository.ts
-│  │  │  └─ fixtures/
-│  │  │     ├─ articles.fixture.ts
-│  │  │     ├─ events.fixture.ts
-│  │  │     └─ reviews.fixture.ts
-│  │  └─ utils/
-│  │     └─ scrollToElement.ts
+│  │  ├─ components/             # Header, Footer, navegación, skeletons, LazyImage, etc.
+│  │  ├─ hooks/                  # useDropdown, useScrollToTop, useScrollToSection
+│  │  ├─ layout/                 # MainLayout
+│  │  ├─ lib/                    # supabaseClient, staletimes, parseList
+│  │  ├─ mocks/                  # Mock*Repository
+│  │  │  └─ fixtures/            # articles, events, reviews
+│  │  └─ utils/                  # scrollToElement
 │  │
 │  ├─ assets/                    # Fuentes, iconos, imágenes
 │  │  ├─ Fonts/
-│  │  │  └─ (archivos .woff2)
 │  │  ├─ icons/
-│  │  │  ├─ SearchIcon.tsx
-│  │  │  ├─ MenuIcon.tsx
-│  │  │  ├─ Share.tsx
-│  │  │  ├─ Facebook.tsx
-│  │  │  └─ Tweeter.tsx
 │  │  └─ images/
-│  │     └─ (imágenes .png, .jpg, .webp)
 │  │
 │  └─ Styles/                    # Sass/CSS
-│     ├─ main.scss
-│     ├─ main.css
 │     ├─ Custom/
-│     │  ├─ _variables.scss
-│     │  ├─ _overrides.scss
-│     │  └─ _fonts.scss
-│     └─ (otros estilos)
+│     ├─ main.scss
+│     └─ main.css
 │
 ├─ supabase/
 │  ├─ config.toml
 │  └─ functions/                 # Edge Functions (Deno): fetch APIs externas + cache
 │     ├─ get-news/
-│     │  ├─ index.ts
-│     │  └─ deno.json
 │     ├─ get-events/
-│     │  ├─ index.ts
-│     │  └─ deno.json
 │     └─ get-reviews/
-│        ├─ index.ts
-│        └─ deno.json
 │
 ├─ .env.example                  # Plantilla de variables de entorno
 ├─ index.html
 ├─ vite.config.ts
 ├─ tsconfig.app.json
 ├─ tsconfig.json
-├─ tsconfig.app.tsbuildinfo
 ├─ eslint.config.js
 ├─ package.json
 └─ package-lock.json
