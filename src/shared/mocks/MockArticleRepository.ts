@@ -5,4 +5,7 @@ export const mockArticleRepository: ArticleRepository = {
     async getHeadlines() {
         return ARTICLES_FIXTURE;
     },
+    async searchByKeyword() {
+        return ARTICLES_FIXTURE;
+    },
 };
