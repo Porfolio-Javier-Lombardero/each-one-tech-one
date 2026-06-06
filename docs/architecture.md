@@ -1,193 +1,202 @@
 # Decisiones de arquitectura
 
-Este documento registra **por qué** el proyecto está estructurado como está. Para el cómo (carpetas, scripts), ver el [README](../README.md). Para el contexto de la refactorización en curso, ver [CLAUDE.md](../CLAUDE.md).
+Este documento explica **por qué** el proyecto está estructurado como está y qué principios guían su mantenimiento y evolución. Para detalles de carpetas y scripts, ver el [README](../README.md). Para reglas operacionales de desarrollo, ver [CLAUDE.md](../CLAUDE.md).
 
 ---
 
-## 1. De arquitectura en capas a Feature-Based
+## 1. Arquitectura Feature-Based
 
-**Decisión:** migrar de capas horizontales (`components/`, `hooks/`, `services/`) a carpetas verticales por dominio (`features/news`, `features/events`, …).
+**Decisión:** organizar el código en carpetas verticales por dominio funcional (`features/news`, `features/events`, `features/reviews`, `features/newsletter`) en lugar de capas horizontales.
 
-**Por qué:** en una arquitectura en capas, tocar una funcionalidad (p. ej. noticias) obliga a saltar entre tres carpetas distantes. Agrupando por feature, todo lo que cambia junto vive junto: el componente, su hook y su servicio están en la misma carpeta. La cohesión sube y el acoplamiento accidental baja.
+**Por qué:** cuando todo lo que cambia junto vive junto (componente, hook y servicio de una feature en la misma carpeta), la cohesión sube y el acoplamiento accidental baja. Tocar noticias no requiere saltar entre tres ubicaciones distantes.
 
-**Estrategia:** migración **progresiva** (strangler fig), sin reescritura. No se rompe lo que funciona en producción; se mueve feature por feature.
-
-**Estado:** la estructura `features/` + `domain/` + `shared/` ya está en su sitio. Las cuatro features (`news`, `events`, `reviews`, `newsletter`) exponen su API pública vía `index.ts`.
-
----
-
-## 2. Clean Architecture, pero solo donde el dominio lo justifica
-
-**Decisión:** aplicar puertos y adaptadores **únicamente en la capa de servicios**, no en toda la app.
-
-**Por qué:** el valor de un puerto (`interface`) + adaptador (`implements`) es invertir la dependencia hacia el dominio y poder sustituir la implementación (real ↔ mock) sin tocar el consumidor. Eso aporta donde hay una frontera natural con el mundo exterior — la fuente de datos. En el resto de la app (componentes de presentación) esa indirección sería sobreingeniería.
-
-**Cómo se ve en el código:**
+**Estructura:**
 
 ```
-domain/ports/ArticleRepository.ts        ← interface (contrato), TS puro
+features/news/
+  components/       # NewsList, cards, secciones, filtros
+  hooks/            # useGetHeadlines, useSearchNews
+  services/         # lógica de fetching, validación, mappers
+  index.ts          # API pública de la feature
+```
+
+Cada feature solo expone lo de su `index.ts`. Repositorios, query keys, schemas son internos.
+
+---
+
+## 2. Clean Architecture en la capa de servicios
+
+**Decisión:** aplicar puertos y adaptadores **únicamente donde hay una frontera natural con el exterior** — la capa de servicios que habla con fuentes de datos.
+
+**Por qué:** invertir la dependencia (servicios → dominio, nunca al revés) permite cambiar la fuente de datos (Supabase real ↔ mock) sin tocar los consumidores. En otras capas (componentes, hooks de presentación) esa indirección es sobreingeniería.
+
+**Cómo se ve:**
+
+```
+domain/ports/ArticleRepository.ts          ← interface (contrato puro)
   ↑ implements
 features/news/services/
-  SupabaseArticleRepository.ts            ← adaptador real
-shared/mocks/MockArticleRepository.ts     ← adaptador de test
+  SupabaseArticleRepository.ts              ← adaptador real (Supabase)
+shared/mocks/MockArticleRepository.ts       ← adaptador de test
 ```
 
-El puerto:
+Los hooks de fetching reciben el repositorio como argumento con default real:
 
 ```ts
-// domain/ports/ArticleRepository.ts
-export interface ArticleRepository {
-  getHeadlines(params: { topic: TopicId; dateFilter: DateFilterType; page: number }): Promise<Article[]>;
-  searchByKeyword(params: { keyword: string; page: number }): Promise<Article[]>;
-}
-```
-
-El hook **recibe el repositorio como dependencia** con un default, de modo que en producción no hay que inyectar nada, pero un test puede pasar el mock:
-
-```ts
-// features/news/hooks/useGetHeadlines.ts
 export const useGetHeadlines = (
   { topic, dateFilter }: Props,
-  repo: ArticleRepository = supabaseArticleRepository, // ← inyección con default
+  repo: ArticleRepository = supabaseArticleRepository, // default para producción
 ) => { /* useInfiniteQuery(...) */ };
 ```
 
-**Límite consciente:** NO se hace DDD completo, ni hexagonal en toda la app, ni micro-frontends. El dominio (noticias/eventos/reviews) no es lo bastante complejo para justificarlo, y es un proyecto de un solo desarrollador.
+En tests, se inyecta un mock sin tocar nada más.
 
 ---
 
 ## 3. La capa `domain/` es TypeScript puro
 
-**Decisión:** `domain/` no importa React, Supabase ni ninguna librería externa. Solo tipos e interfaces.
+**Decisión:** `domain/` no importa React, Supabase ni librerías externas. Solo tipos, interfaces y lógica de dominio.
 
-**Por qué:** el dominio es la fuente de verdad y la parte más estable del sistema. Si dependiera de Supabase o React, un cambio de proveedor o de framework lo arrastraría. Manteniéndolo puro, las dependencias apuntan **hacia adentro** (servicios → dominio), nunca al revés.
+**Por qué:** el dominio es la fuente de verdad y la parte más estable del sistema. Si dependiera de un framework o proveedor, un cambio futuro lo alcanzaría. Manteniéndolo puro, las dependencias apuntan siempre **hacia adentro** (servicios → dominio), nunca al revés.
 
-**Regla práctica:** si un archivo de `domain/` necesita un `import` de una lib externa, está en el lugar equivocado.
+**Contenido:**
+- `Article.ts`, `Event.ts`, `Review.ts`, `Subscriber.ts` — entidades
+- `Topics.ts` — value objects (`TopicId`, `ApiTopicId`)
+- `ports/` — interfaces (contratos con servicios)
 
-**Contenido actual:** `Article.ts`, `Event.ts`, `Review.ts`, `Subscriber.ts`, `Topics.ts` (entidades y value objects) + `ports/` (contratos).
+**Regla práctica:** si un archivo de `domain/` necesita importar una lib externa, está en el lugar equivocado.
 
 ---
 
-## 4. React Query es sincronización, no la capa de servicios
+## 4. React Query como capa de sincronización servidor-cliente
 
-**Decisión:** TanStack React Query v5 gestiona el estado **servidor-cliente**; su caché actúa como store (modelo Flux). No es donde vive la lógica de negocio.
+**Decisión:** TanStack React Query v5 gestiona estado servidor-cliente (caché, refetch, paginación). No es la capa de servicios.
 
-**Por qué:** confundir React Query con la capa de servicios lleva a meter llamadas a la API y mapeos dentro de los hooks. Aquí la separación es estricta:
+**Por qué:** separar responsabilidades claramente:
 
-- **Servicio** (`services/queries/fetchNews.ts`): invoca la Edge Function, mapea DTO → entidad, valida con Zod. No sabe nada de React.
-- **Hook** (`hooks/useGetHeadlines.ts`): envuelve el servicio en `useInfiniteQuery`, gestiona caché, paginación y estados de carga.
-- **Componente**: consume el hook y renderiza.
+- **Servicio** (`services/queries/fetchNews.ts`): invoca la API, mapea DTO → entidad, valida con Zod. No sabe de React.
+- **Hook** (`hooks/useGetHeadlines.ts`): envuelve el servicio en `useInfiniteQuery`, gestiona caché y estados de carga.
+- **Componente**: consume el hook, renderiza.
 
-**Configuración de caché — detalle importante:**
+**Configuración de caché:**
 
-| Dónde | Valor | Rol |
+| Ubicación | Valor | Rol |
 | --- | --- | --- |
-| `app/main.tsx` (`QueryClient` global) | `staleTime: 24h`, `retry: 3`, sin refetch en focus/reconnect | Default para cualquier query sin override |
-| `shared/lib/staletimes.ts` (`STALE_TIMES`) | `NEWS: 5h`, `EVENTS: 15d`, `REVIEWS: 24h` | Override por dominio, pasado en cada hook |
+| `app/main.tsx` | `staleTime: 24h`, `retry: 3` | Default global para cualquier query |
+| `shared/lib/staletimes.ts` | `NEWS: 5h`, `EVENTS: 15d`, `REVIEWS: 24h` | Override específico por dominio |
 
-Cada hook pasa su `staleTime` explícito desde `STALE_TIMES`, así que el default global solo aplica como red de seguridad. El stale time de noticias (5h) coincide con el TTL del cache de la Edge Function (`STALE_MS = 5h`), para que cliente y servidor no se desincronicen.
-
-> Nota: `STALE_TIMES` vive hoy en `shared/lib/staletimes.ts`. CLAUDE.md propone renombrarlo a `queryConfig.ts`; sigue pendiente.
+El stale time de noticias (5h) se sincroniza intencionalmente con el TTL del cache del servidor (Edge Function) para evitar desincronización.
 
 ---
 
-## 5. Estado cliente compartido: React Context (Zustand fue retirado)
+## 5. Validación en la frontera servidor-cliente
 
-**Decisión:** para estado cliente compartido entre features se usa React Context. Zustand se desinstaló.
+**Decisión:** validar respuestas del servidor con Zod en el servicio, justo en la frontera donde los datos cruzados del exterior entran al código.
 
-**Por qué:** la mayor parte del estado de esta app es estado **de servidor** (lo gestiona React Query). El estado puramente cliente que queda (UI: dropdown abierto, etc.) es local o de baja frecuencia, y no justifica una librería de store global. Context cubre el caso sin añadir dependencias.
+**Por qué:** el antipatrón `data || []` enmascara respuestas malformadas (un 200 con shape inesperado pasa como lista vacía). Validar en la frontera convierte un dato corrupto en un error explícito y temprano, en lugar de un bug difuso al renderizar.
 
----
-
-## 6. Validación en la frontera con Zod
-
-**Decisión:** validar la respuesta del servidor con Zod en el servicio, justo donde el dato cruza al cliente.
-
-**Por qué:** el antipatrón `data || []` enmascara respuestas exitosas pero malformadas (un `200` con un shape inesperado pasa silenciosamente como lista vacía). Validar en la frontera convierte un dato corrupto en un error explícito y temprano, en vez de un bug difuso en el render.
-
-**Cómo:** cada servicio valida con un schema que está **atado al tipo de dominio** vía `satisfies`, de modo que si la entidad cambia, el schema deja de compilar:
+**Implementación:**
 
 ```ts
-// features/news/services/article.schema.ts
+// El schema está atado al tipo de dominio vía satisfies
 export const ArticleSchema = z.object({ /* ... */ }) satisfies z.ZodType<Article>;
+
+// El servicio valida y lanza si no coincide
+return parseList(ArticleSchema, mapped, 'get-news');
 ```
 
-```ts
-// features/news/services/queries/fetchNews.ts
-return parseList(ArticleSchema, mapped, 'get-news'); // valida o lanza
-```
+Si la entidad cambia pero el schema no, la compilación falla — el contrato se mantiene consistente.
 
 ---
 
-## 7. Tipado fuerte de `Topic`
+## 6. Tipado fuerte de temas
 
-**Decisión:** el tema de un artículo no es `number | string` libre. Hay dos tipos derivados de constantes en `domain/Topics.ts`:
+**Decisión:** los temas no son `number | string` libre. Dos tipos derivados de constantes:
 
-- `TopicId` — categorías visibles al usuario (`"A.I."`, `"Smartphones"`, …) o `0` (todas).
-- `ApiTopicId` — el id numérico que entiende la API externa (o `"smartphone"`).
+- `TopicId` — categorías visibles al usuario (`"A.I."`, `"Smartphones"`, …)
+- `ApiTopicId` — ids que entiende la API externa
 
-`getTopicId(topic: TopicId): ApiTopicId` traduce de uno a otro.
+`getTopicId(topic: TopicId): ApiTopicId` traduce entre ellos.
 
-**Por qué:** `number | string` es demasiado permisivo y deja pasar valores inválidos en tiempo de compilación. Acotar a un union de literales hace que el compilador rechace temas inexistentes y obliga a manejar todos los casos en el `switch` de traducción.
+**Por qué:** `number | string` es demasiado permisivo. Unions de literales hacen que el compilador rechace valores inválidos y obligue a manejar todos los casos en el switch de traducción.
 
 ---
 
-## 8. El backend es Supabase + Edge Functions
+## 7. Backend con Supabase + Edge Functions
 
-**Decisión:** las llamadas a APIs externas (TechCrunch vía RapidAPI, The Guardian) no se hacen desde el cliente, sino desde **Edge Functions** de Supabase (Deno), que además cachean en Postgres.
+**Decisión:** las llamadas a APIs externas (TechCrunch vía RapidAPI, The Guardian) no se hacen desde el cliente, sino desde Edge Functions de Supabase (Deno), que además cachean en Postgres.
 
 **Por qué:**
 
-1. **Secretos del lado servidor.** Las API keys de TechCrunch/Guardian y la `SERVICE_ROLE_KEY` viven en el entorno de la Edge Function, nunca en el bundle del cliente.
-2. **Cache compartida y barata.** La función guarda el `raw_data` en la tabla `news_cache` con un `search_context` y un TTL de 5h. Si llega otra petición equivalente dentro de la ventana, se sirve de Postgres sin gastar cuota de la API externa.
-3. **Adaptación DTO → entidad en el borde.** La forma cruda de cada API se transforma cerca del origen; el cliente recibe algo más estable.
+1. **Secretos del lado servidor.** Las API keys y la `SERVICE_ROLE_KEY` viven solo en los secrets de la función, nunca en el bundle del cliente.
+2. **Cache compartida.** Una tabla `news_cache` con TTL de 5h evita llamadas redundantes a las APIs externas.
+3. **Estabilidad.** La transformación DTO → entidad ocurre en el servidor; el cliente recibe datos más predecibles.
 
-**Flujo completo de una petición de noticias:**
+**Flujo completo:**
 
 ```
 Componente (NewsSections)
-  → useGetHeadlines               (React Query: caché, paginación, staleTime)
-    → supabaseArticleRepository   (adaptador, implements ArticleRepository)
-      → fetchNews                 (servicio: invoke + map + validar Zod)
-        → supabase.functions.invoke('get-news')
-          → Edge Function get-news (Deno)
-            → ¿cache fresca en news_cache? → sí: devuelve raw
-                                           → no: fetch TechCrunch/Guardian, cachea, devuelve raw
-      ← mapTechCrunchToArticle / mapGuardianToArticle  (DTO → Article)
-      ← parseList(ArticleSchema)  (validación de frontera)
+  ↓
+useGetHeadlines (React Query)
+  ↓
+supabaseArticleRepository (implements ArticleRepository)
+  ↓
+fetchNews (servicio: invoke + map + validar)
+  ↓
+supabase.functions.invoke('get-news')
+  ↓
+Edge Function Deno
+  ↓ ¿Cache fresco?
+    → sí: devuelve raw data
+    → no: fetch TechCrunch/Guardian, cachea, devuelve raw
+  ↓
+Mappers y Zod validation en cliente
+  ↓
+Article[] (entidades validadas)
 ```
-
-La función `get-news` elige fuente según el modo: búsqueda por keyword y categorías numéricas → TechCrunch; smartphones → The Guardian.
 
 ---
 
-## 9. Las features no se conocen entre sí
+## 8. Features aisladas
 
 **Decisión:** ninguna feature importa de otra. Se comunican vía `shared/` o se componen en `pages/`.
 
-**Por qué:** los imports cruzados entre features reintroducen el acoplamiento que la arquitectura Feature-Based busca eliminar. Si `news` importara de `events`, volveríamos a un grafo de dependencias enredado.
+**Por qué:** los imports cruzados entre features reintroducen el acoplamiento que Feature-Based busca eliminar. Un grafo de dependencias limpio facilita cambios sin efectos secundarios.
 
-**Cómo se compone entonces la home:** `HomePage` (en `pages/`) actúa como orquestador y monta una sección de cada feature, sin lógica de negocio propia:
+**Cómo se compone:** `HomePage` (en `pages/`) orquesta secciones de diferentes features sin lógica de negocio:
 
 ```tsx
-// pages/HomePage.tsx
 <NewsSections />   {/* features/news  */}
 <EventSection />   {/* features/events */}
 <ReviewsSection /> {/* features/reviews */}
 ```
 
-Cada `index.ts` de feature define qué es público; lo no exportado (repositorios, query keys, mappers, schemas) es interno y no se puede importar desde fuera.
+---
+
+## 9. Estado compartido con React Context
+
+**Decisión:** para estado cliente compartido entre features se usa React Context. Sin librerías globales de store.
+
+**Por qué:** la mayoría del estado es estado **de servidor** (React Query lo gestiona). El estado puramente cliente (UI: dropdown abierto, modales) es local o poco frecuente, y no justifica dependencias adicionales. Context cubre el caso.
 
 ---
 
-## Problemas conocidos / deuda técnica
+## Límites — no sobreingeniería
+
+Este proyecto **no implementa** ni necesita:
+
+- **DDD completo.** El dominio no es lo bastante complejo para justificar bounded contexts, aggregates, etc.
+- **Hexagonal completo.** Solo los repositorios necesitan ser invertibles; el resto de la app es más simple.
+- **Monorepo o micro-frontends.** Una sola app, un solo desarrollador.
+- **Abstracción prematura de hooks similares.** `useGetHeadlines`, `useGetEvents`, `useGetReviews` son parecidos pero probablemente divergirán. Preferir duplicación sobre abstracción hasta demostrar lo contrario.
+
+---
+
+## Deuda técnica conocida
 
 | Tema | Estado |
 | --- | --- |
-| `HomePage` violaba SRP (orquestaba y renderizaba 3 dominios) | ✅ Resuelto: cada dominio extraído a `XxxSection` de feature; `HomePage` solo compone |
-| `createNewSub` usaba `fetch` crudo con headers manuales | ✅ Resuelto: ahora usa `supabase.from('newsletter_subscribers').insert()` |
-| Tipos de dominio dentro de `services/` | ✅ Resuelto: movidos a `domain/` |
-| `topic: number \| string` demasiado permisivo | ✅ Resuelto: `TopicId` / `ApiTopicId` como unions de literales |
-| `STALE_TIMES` en `staletimes.ts` | ⏳ Pendiente renombrar a `queryConfig.ts` (CLAUDE.md) |
-| Estilos inline mezclados con Bootstrap | ⏳ Pendiente consolidar (ver estilos inline en `HomePage`, `NewsSearchForm`) |
-| Fase 4 (tests con mock adapters) | 🔜 Parcial: existen `Mock*Repository` y fixtures; hay tests de hooks |
+| `STALE_TIMES` en `staletimes.ts` | Pendiente: renombrar a `queryConfig.ts` |
+| Hay default global + overrides por dominio en staleTime | Ambos funcionan; el global es red de seguridad |
+| Estilos inline (`style={{...}}`) mezclados con Bootstrap | ~12 archivos; consolidar hacia Sass cuando se toquen |
+| Testing parcial | Existen mocks y algunos tests; cobertura incompleta |
