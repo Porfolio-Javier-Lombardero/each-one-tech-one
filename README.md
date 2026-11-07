@@ -26,7 +26,7 @@ Aplicación web de **noticias tech**: agrega titulares, eventos y reviews de tec
 | Routing | [React Router v7](https://reactrouter.com/) (`react-router-dom`) |
 | Estilos | [Bootstrap 5](https://getbootstrap.com/) + [Sass](https://sass-lang.com/) + Bootstrap Icons |
 | Validación | [Zod 4](https://zod.dev/) (validación en la frontera de los servicios) |
-| Testing | [Vitest 4](https://vitest.dev/) + [Testing Library](https://testing-library.com/) + jsdom |
+| Testing | [Jest 30](https://jestjs.io/) + [ts-jest](https://kulshekhar.github.io/ts-jest/) + [Testing Library](https://testing-library.com/) + jsdom |
 | Lint | [ESLint 9](https://eslint.org/) + `typescript-eslint` |
 
 > La capa de estado cliente compartido usa **React Context** (Zustand fue desinstalado). React Query no es la capa de servicios: es la capa de sincronización servidor-cliente y su caché actúa como store.
@@ -72,7 +72,7 @@ Vite servirá la app en `http://localhost:5173` por defecto.
 | `npm run lint` | Ejecuta ESLint sobre todo el proyecto. |
 | `npm run lint:fix` | Ejecuta ESLint aplicando autofix. |
 | `npm run type-check` | Comprueba tipos sin emitir (`tsc --noEmit`). |
-| `npm run test` | Ejecuta los tests una vez (`vitest run`). |
+| `npm run test` | Ejecuta los tests una vez (`jest`). `npm run test:watch` / `npm run test:coverage` para modo watch y cobertura. |
 | `npm run test:watch` | Ejecuta los tests en modo watch. |
 
 ---

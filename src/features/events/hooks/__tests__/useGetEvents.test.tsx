@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { mockEventRepository } from '@/shared/mocks/MockEventRepository';
@@ -7,7 +8,7 @@ const createWrapper = () => {
     const queryClient = new QueryClient({
         defaultOptions: { queries: { retry: false } },
     });
-    return ({ children }: { children: React.ReactNode }) => (
+    return ({ children }: { children: ReactNode }) => (
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
 };
@@ -20,5 +21,5 @@ it('returns events from the repository', async () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.events).toHaveLength(2);
-    expect(result.current.events![0].title).toBe('Tech Conference 2026');
+    expect(result.current.events?.[0]?.title).toBe('Tech Conference 2026');
 });

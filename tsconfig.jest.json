@@ -1,0 +1,16 @@
+{
+  // Config de TypeScript SOLO para Jest (ts-jest). Hereda las reglas estrictas de la app
+  // y sobrescribe lo que choca con un runtime CommonJS como el de Jest.
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": false,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "types": ["jest", "@testing-library/jest-dom", "node"]
+  },
+  "include": ["src", "jest"],
+  // tsconfig.app.json excluye los tests; aquí los queremos incluir.
+  "exclude": []
+}

@@ -7,7 +7,7 @@ import tsParser from '@typescript-eslint/parser';
 
 export default [
   {
-    ignores: ['dist', 'node_modules', '*. config. ts', '*.config.js', 'supabase/**']
+    ignores: ['dist', 'node_modules', '*. config. ts', '*.config.js', 'supabase/**', 'jest/**']
   },
   
   // JavaScript files
@@ -37,9 +37,10 @@ export default [
     },
   },
   
-  // TypeScript files
+  // TypeScript files (app, NO tests: tsconfig.app.json los excluye a propósito)
   {
     files: ['**/*.{ts,tsx}'],
+    ignores: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', '**/__tests__/**'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -59,21 +60,55 @@ export default [
       ...js.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,
       ... reactHooks.configs.recommended. rules,
-      
+
       // TypeScript specific rules
-      '@typescript-eslint/no-unused-vars': ['warn', { 
+      '@typescript-eslint/no-unused-vars': ['warn', {
         varsIgnorePattern: '^_',
-        argsIgnorePattern: '^_' 
+        argsIgnorePattern: '^_'
       }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
-      
+
       // React
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
+    },
+  },
+
+  // Archivos de test (Jest): mismo set de reglas, pero con su propio tsconfig
+  // (tsconfig.jest.json SÍ los incluye) y los globals que inyecta Jest (it, expect, jest...).
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', '**/__tests__/**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        project: './tsconfig.jest.json',
+      },
+      globals: { ...globals.browser, ...globals.jest },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': ['warn', {
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_'
+      }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      'react-refresh/only-export-components': 'off',
     },
   },
 ];
