@@ -42,8 +42,10 @@
     },
 
     /* React 19 specific */
-    "types": ["vite/client"]
+    // "jest" aquí es solo para que VS Code tipe `it`/`expect`/`jest` en los .test.tsx dentro
+    // de este mismo proyecto (ver "include" abajo). El runtime real de los tests usa
+    // tsconfig.jest.json vía ts-jest, que es el que de verdad ejecuta Jest.
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"]
   },
-  "include": ["src"],
-  "exclude": ["src/**/__tests__/**", "src/**/*.test.*", "src/**/*.spec.*"]
+  "include": ["src"]
 }
